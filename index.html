@@ -12,76 +12,51 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:      #0f0f13;
-  --bg2:     #16161d;
-  --bg3:     #1e1e2a;
-  --bg4:     #252535;
-  --accent:  #5855d6;
-  --accent2: #7b78f0;
-  --text:    #e8e8f0;
-  --dim:     #888899;
-  --green:   #4ade80;
-  --yellow:  #fbbf24;
-  --orange:  #fb923c;
-  --red:     #f87171;
-  --border:  #2a2a3a;
-  --c-anime:  #5855d6;
-  --c-manga:  #d97706;
-  --c-gaming: #16a34a;
+  --bg:      #0f0f13; --bg2: #16161d; --bg3: #1e1e2a; --bg4: #252535;
+  --accent:  #5855d6; --accent2: #7b78f0; --text: #e8e8f0; --dim: #888899;
+  --green:   #4ade80; --yellow: #fbbf24; --orange: #fb923c; --red: #f87171;
+  --border:  #2a2a3a; --c-anime: #5855d6; --c-manga: #d97706; --c-gaming: #16a34a;
 }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--text);
   font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  min-height: 100dvh;
-  overflow-x: hidden;
+  font-size: 15px; line-height: 1.5; min-height: 100dvh; overflow-x: hidden;
 }
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(15,15,19,0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 10px 16px;
-  display: flex; align-items: center;
+  background: rgba(15,15,19,0.96); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; display: flex; align-items: center;
   justify-content: space-between; gap: 10px;
 }
-.logo {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px; font-weight: 700;
-  color: var(--accent2); white-space: nowrap; flex-shrink: 0;
-}
+.logo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700;
+  color: var(--accent2); white-space: nowrap; flex-shrink: 0; }
 .logo span { color: var(--dim); font-weight: 400; font-size: 12px; }
 .topbar-right { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 .icon-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--dim); font-size: 17px;
-  width: 36px; height: 36px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--dim); font-size: 17px; width: 36px; height: 36px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
 }
 .icon-btn:hover { background: var(--bg4); color: var(--text); }
 .refresh-btn {
-  background: var(--accent); color: #fff; border: none;
-  border-radius: 8px; padding: 8px 14px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center; gap: 6px;
-  white-space: nowrap; transition: background .15s;
+  background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 8px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+  font-weight: 700; cursor: pointer; display: flex; align-items: center;
+  gap: 6px; white-space: nowrap; transition: background .15s;
 }
 .refresh-btn:hover { background: var(--accent2); }
 .refresh-btn:disabled { background: var(--bg3); color: var(--dim); cursor: not-allowed; }
 .spin { animation: spin .8s linear infinite; display: inline-block; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── MODE TABS ── */
+/* MODE TABS */
 .mode-row {
   background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; overflow-x: auto; scrollbar-width: none;
+  display: flex; overflow-x: auto; scrollbar-width: none; align-items: center;
 }
 .mode-row::-webkit-scrollbar { display: none; }
 .mode-btn {
@@ -92,8 +67,20 @@ body {
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
 .mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
+.reddit-user-chip {
+  margin-left: auto; margin-right: 10px; display: none;
+  align-items: center; gap: 6px; flex-shrink: 0;
+}
+.reddit-user-chip.show { display: flex; }
+.reddit-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--orange); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.reddit-username { font-size: 12px; color: var(--orange); font-weight: 600; }
 
-/* ── REDDIT SORT ── */
+/* SORT ROW */
 .reddit-sort {
   display: none; gap: 6px; padding: 6px 16px;
   background: var(--bg2); border-bottom: 1px solid var(--border);
@@ -101,28 +88,29 @@ body {
 }
 .reddit-sort.visible { display: flex; }
 .sort-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 20px; color: var(--dim); font-size: 12px; font-weight: 500;
-  padding: 4px 12px; cursor: pointer; white-space: nowrap; transition: all .15s;
-  flex-shrink: 0;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+  color: var(--dim); font-size: 12px; font-weight: 500; padding: 4px 12px;
+  cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
 }
 .sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+.sort-btn.myfeed-btn { color: var(--yellow); border-color: rgba(251,191,36,0.3); }
+.sort-btn.myfeed-btn.active { background: var(--yellow); border-color: var(--yellow); color: #000; }
 
-/* ── SEARCH ── */
+/* SEARCH */
 .search-row {
   padding: 8px 16px 6px; display: flex; gap: 8px; align-items: center;
   background: var(--bg); border-bottom: 1px solid var(--border);
 }
 .search-wrap { flex: 1; position: relative; }
 .search-wrap .sicon {
-  position: absolute; left: 10px; top: 50%;
-  transform: translateY(-50%); color: var(--dim); font-size: 14px; pointer-events: none;
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--dim); font-size: 14px; pointer-events: none;
 }
 .search-input {
   width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  padding: 7px 12px 7px 32px; outline: none; transition: border-color .15s;
+  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 14px; padding: 7px 12px 7px 32px; outline: none;
+  transition: border-color .15s;
 }
 .search-input:focus { border-color: var(--accent); }
 .count-badge {
@@ -130,7 +118,7 @@ body {
   padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
 }
 
-/* ── CAT TABS ── */
+/* CAT TABS */
 .cat-row {
   display: flex; overflow-x: auto; scrollbar-width: none;
   background: var(--bg2); border-bottom: 1px solid var(--border);
@@ -153,28 +141,22 @@ body {
 .fav-cat-btn.active { border-color: var(--yellow) !important; }
 .fav-cat-btn.active .cat-count { background: var(--yellow) !important; color: #000 !important; }
 
-/* ── PROGRESS + STATUS ── */
+/* STATUS */
 .progress-bar { height: 2px; background: var(--bg3); overflow: hidden; }
 .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
-.progress-fill.indeterminate {
-  width: 40%; animation: indeterminate 1.2s ease-in-out infinite;
-}
-@keyframes indeterminate {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(350%); }
-}
+.progress-fill.indeterminate { width: 40%; animation: indeterminate 1.2s ease-in-out infinite; }
+@keyframes indeterminate { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
 .status-row {
-  display: flex; align-items: center;
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  min-height: 28px; gap: 6px; padding: 0 8px 0 16px;
+  display: flex; align-items: center; background: var(--bg2);
+  border-bottom: 1px solid var(--border); min-height: 28px;
+  gap: 6px; padding: 0 8px 0 16px;
 }
 .status-bar { flex: 1; padding: 5px 0; font-size: 11px; color: var(--dim); }
 .status-bar .err { color: var(--red); }
 .status-bar .ok  { color: var(--green); }
 .auto-badge {
-  font-size: 10px; color: var(--green);
-  background: rgba(74,222,128,0.1); border-radius: 4px;
-  padding: 2px 6px; white-space: nowrap; flex-shrink: 0;
+  font-size: 10px; color: var(--green); background: rgba(74,222,128,0.1);
+  border-radius: 4px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0;
 }
 .mark-read-btn {
   background: none; border: none; color: var(--dim); font-size: 11px;
@@ -183,13 +165,13 @@ body {
 }
 .mark-read-btn:hover { color: var(--text); }
 
-/* ── ARTICLES ── */
+/* ARTICLES */
 #articles { padding: 0; max-width: 900px; margin: 0 auto; }
 
-/* ── CARD ── */
+/* CARD */
 .card {
   padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
-  transition: background .1s; cursor: pointer; position: relative;
+  transition: background .1s; cursor: pointer;
 }
 .card:nth-child(even) { background: var(--bg2); }
 .card:hover { background: var(--bg3); }
@@ -201,13 +183,11 @@ body {
 }
 .card-body { flex: 1; min-width: 0; }
 .card-meta {
-  display: flex; align-items: center; gap: 5px;
-  flex-wrap: wrap; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 4px;
 }
 .source-tag {
   display: inline-block; padding: 2px 7px; border-radius: 4px;
-  font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.02em;
-  flex-shrink: 0;
+  font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.02em; flex-shrink: 0;
 }
 .tag-anime  { background: var(--c-anime); }
 .tag-manga  { background: var(--c-manga); }
@@ -226,9 +206,8 @@ body {
 .card-age { font-size: 11px; color: var(--dim); margin-left: auto; flex-shrink: 0; }
 .read-dot  { font-size: 10px; color: #444; flex-shrink: 0; }
 .reddit-score {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 700; color: var(--green);
-  margin-left: auto; flex-shrink: 0;
+  display: flex; align-items: center; gap: 6px; font-size: 11px;
+  font-weight: 700; color: var(--green); margin-left: auto; flex-shrink: 0;
 }
 .card-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
@@ -241,109 +220,116 @@ body {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden; margin-bottom: 6px;
 }
-.card-actions {
-  display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px;
-}
+.card-actions { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
 .action-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 6px; color: var(--dim); font-size: 11px; font-weight: 500;
-  padding: 3px 9px; cursor: pointer; transition: all .15s;
-  display: flex; align-items: center; gap: 3px; text-decoration: none;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--dim); font-size: 11px; font-weight: 500; padding: 3px 9px;
+  cursor: pointer; transition: all .15s; display: flex; align-items: center;
+  gap: 3px; text-decoration: none;
 }
 .action-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--accent); }
 .action-btn.fav-active { color: var(--yellow); border-color: var(--yellow); }
 
-/* ── LOAD MORE ── */
+/* LOAD MORE */
 .load-more-wrap { padding: 20px; text-align: center; max-width: 900px; margin: 0 auto; }
 .load-more-btn {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-  padding: 10px 28px; cursor: pointer; transition: all .15s;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  font-weight: 500; padding: 10px 28px; cursor: pointer; transition: all .15s;
 }
 .load-more-btn:hover { background: var(--bg4); border-color: var(--accent); }
 
-/* ── EMPTY ── */
+/* EMPTY */
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); }
 .empty .big { font-size: 40px; margin-bottom: 12px; }
-.empty p { font-size: 14px; line-height: 1.6; }
+.empty p { font-size: 14px; line-height: 1.8; }
+.empty .login-hint {
+  margin-top: 16px; display: inline-block;
+  background: var(--orange); color: #fff; border: none; border-radius: 8px;
+  padding: 10px 20px; font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast {
   position: fixed; bottom: 24px; left: 50%;
   transform: translateX(-50%) translateY(80px);
-  background: var(--bg4); border: 1px solid var(--border);
-  border-radius: 10px; color: var(--text); font-size: 13px;
-  padding: 10px 20px; z-index: 9999; transition: transform .25s ease;
-  white-space: nowrap; box-shadow: 0 4px 24px rgba(0,0,0,.5);
+  background: var(--bg4); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-size: 13px; padding: 10px 20px; z-index: 9999;
+  transition: transform .25s ease; white-space: nowrap;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
-/* ── SETTINGS ── */
+/* SETTINGS */
 .overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 200; display: none; backdrop-filter: blur(4px);
 }
 .overlay.open { display: block; }
 .settings-panel {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  max-width: 520px; margin: 0 auto;
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 520px; margin: 0 auto;
   background: var(--bg2); border-radius: 16px 16px 0 0;
   border: 1px solid var(--border); border-bottom: none;
   padding: 0 20px 36px; z-index: 201;
-  transform: translateY(100%);
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
-  max-height: 85vh; overflow-y: auto;
+  transform: translateY(100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
+  max-height: 88vh; overflow-y: auto;
 }
 .settings-panel.open { transform: translateY(0); }
-.s-handle {
-  width: 36px; height: 4px; background: var(--border);
-  border-radius: 2px; margin: 12px auto 16px;
-}
-.s-title {
-  font-family: 'Space Grotesk', sans-serif; font-size: 16px;
-  font-weight: 700; margin-bottom: 20px; color: var(--text);
-}
+.s-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 16px; }
+.s-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
 .s-section { margin-bottom: 20px; }
-.s-label {
-  font-size: 11px; color: var(--dim); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
-}
+.s-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
 .s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .s-opt {
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--dim); font-size: 13px;
-  padding: 6px 14px; cursor: pointer; transition: all .15s;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--dim); font-size: 13px; padding: 6px 14px; cursor: pointer; transition: all .15s;
 }
 .s-opt.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.toggle-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-}
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .toggle-row:last-child { border-bottom: none; }
 .toggle-label { font-size: 14px; color: var(--text); }
 .toggle-sub { font-size: 12px; color: var(--dim); margin-top: 2px; }
 .toggle {
-  width: 44px; height: 24px; background: var(--bg3);
-  border-radius: 12px; border: none; cursor: pointer;
-  position: relative; flex-shrink: 0; transition: background .2s;
+  width: 44px; height: 24px; background: var(--bg3); border-radius: 12px;
+  border: none; cursor: pointer; position: relative; flex-shrink: 0; transition: background .2s;
 }
 .toggle::after {
-  content: ''; position: absolute; left: 3px; top: 3px;
-  width: 18px; height: 18px; background: var(--dim);
-  border-radius: 50%; transition: transform .2s, background .2s;
+  content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px;
+  background: var(--dim); border-radius: 50%; transition: transform .2s, background .2s;
 }
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); background: #fff; }
+
+/* Reddit auth card in settings */
+.reddit-auth-card {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-top: 4px;
+}
+.reddit-auth-card.connected { border-color: rgba(251,146,60,0.4); background: rgba(251,146,60,0.05); }
+.reddit-auth-info { font-size: 13px; color: var(--dim); margin-bottom: 10px; line-height: 1.5; }
+.reddit-auth-info strong { color: var(--orange); }
+.reddit-connect-btn {
+  background: var(--orange); border: none; border-radius: 8px; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 8px 16px; cursor: pointer; transition: opacity .15s; width: 100%;
+}
+.reddit-connect-btn:hover { opacity: 0.88; }
+.reddit-disconnect-btn {
+  background: var(--bg4); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--dim); font-family: 'DM Sans', sans-serif; font-size: 12px;
+  padding: 6px 12px; cursor: pointer; transition: all .15s; margin-top: 8px; width: 100%;
+}
+.reddit-disconnect-btn:hover { color: var(--red); border-color: var(--red); }
+
 .danger-btn {
-  width: 100%; background: rgba(248,113,113,0.08);
-  border: 1px solid rgba(248,113,113,0.25); border-radius: 8px;
-  color: var(--red); font-size: 13px; padding: 10px;
+  width: 100%; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
+  border-radius: 8px; color: var(--red); font-size: 13px; padding: 10px;
   cursor: pointer; margin-top: 8px; transition: all .15s;
 }
 .danger-btn:hover { background: rgba(248,113,113,0.16); }
 
-/* ── PWA BANNER ── */
+/* PWA BANNER */
 .install-banner {
   display: none; background: var(--accent); color: #fff;
   padding: 10px 16px; font-size: 13px;
@@ -351,20 +337,17 @@ body {
 }
 .install-banner.show { display: flex; }
 .install-banner button {
-  background: #fff; color: var(--accent); border: none;
-  border-radius: 6px; padding: 5px 12px; font-weight: 700;
-  cursor: pointer; font-size: 12px; flex-shrink: 0;
+  background: #fff; color: var(--accent); border: none; border-radius: 6px;
+  padding: 5px 12px; font-weight: 700; cursor: pointer; font-size: 12px; flex-shrink: 0;
 }
 
-/* ── SCROLL TOP ── */
+/* SCROLL TOP */
 .scroll-top {
-  position: fixed; bottom: 20px; right: 16px;
-  background: var(--accent); color: #fff; border: none;
-  border-radius: 50%; width: 40px; height: 40px;
-  font-size: 18px; cursor: pointer;
-  opacity: 0; pointer-events: none; transition: opacity .2s;
-  z-index: 50; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 12px rgba(88,85,214,0.4);
+  position: fixed; bottom: 20px; right: 16px; background: var(--accent);
+  color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px;
+  font-size: 18px; cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity .2s; z-index: 50; display: flex; align-items: center;
+  justify-content: center; box-shadow: 0 2px 12px rgba(88,85,214,0.4);
 }
 .scroll-top.visible { opacity: 1; pointer-events: auto; }
 
@@ -399,6 +382,10 @@ body {
 <div class="mode-row">
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
   <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
+  <div class="reddit-user-chip" id="redditChip">
+    <div class="reddit-avatar" id="redditAvatarInitial">?</div>
+    <span class="reddit-username" id="redditUsername"></span>
+  </div>
 </div>
 
 <div class="reddit-sort" id="redditSort">
@@ -406,6 +393,7 @@ body {
   <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
   <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
   <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
+  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')" style="display:none">👤 My Feed</button>
 </div>
 
 <div class="search-row">
@@ -447,7 +435,7 @@ body {
   <button class="load-more-btn" onclick="loadMore()">Load More</button>
 </div>
 
-<!-- Settings -->
+<!-- Settings panel -->
 <div class="overlay" id="settingsOverlay" onclick="closeSettings()"></div>
 <div class="settings-panel" id="settingsPanel">
   <div class="s-handle"></div>
@@ -476,7 +464,7 @@ body {
     <div class="toggle-row">
       <div>
         <div class="toggle-label">Hide read articles</div>
-        <div class="toggle-sub">Filter out articles you've opened</div>
+        <div class="toggle-sub">Filter out articles you've already opened</div>
       </div>
       <button class="toggle" id="hideReadToggle" onclick="toggleSetting('hideRead')"></button>
     </div>
@@ -486,6 +474,23 @@ body {
         <div class="toggle-sub">Display images when available</div>
       </div>
       <button class="toggle on" id="thumbToggle" onclick="toggleSetting('showThumbs')"></button>
+    </div>
+  </div>
+
+  <!-- Reddit account -->
+  <div class="s-section">
+    <div class="s-label">Reddit Account</div>
+    <div class="reddit-auth-card" id="redditAuthCard">
+      <div class="reddit-auth-info" id="redditAuthInfo">
+        Log in to get posts from <strong>your own followed subreddits</strong>
+        with upvote counts. Requires a free Reddit app ID (takes 2 min to set up).
+      </div>
+      <button class="reddit-connect-btn" id="redditConnectBtn" onclick="startRedditLogin()">
+        🔑 Connect Reddit Account
+      </button>
+      <button class="reddit-disconnect-btn" id="redditDisconnectBtn" onclick="disconnectReddit()" style="display:none">
+        Disconnect
+      </button>
     </div>
   </div>
 
@@ -499,11 +504,10 @@ body {
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// ── FEEDS ────────────────────────────────────────────────────────────────────
-// Format: [name, url, category]
-// Each source appears in exactly ONE category to prevent cross-contamination.
+// ── FEED DATA ─────────────────────────────────────────────────────────────────
+// Format: [name, url, category] — each source in exactly ONE category
 const ALL_FEEDS = [
-  // ── ANIME ──
+  // ANIME
   ['Anime News Network',   'https://www.animenewsnetwork.com/all/rss.xml',               'anime'],
   ['AnimeCorner',          'https://animecorner.me/feed/',                                'anime'],
   ['Otaquest',             'https://www.otaquest.com/feed/',                              'anime'],
@@ -524,13 +528,11 @@ const ALL_FEEDS = [
   ['Anime Feminist',       'https://www.animefeminist.com/feed/',                         'anime'],
   ['The Fandom Post',      'https://www.thefandompost.com/category/anime-news/feed/',     'anime'],
   ['RandomC',              'https://randomc.net/feed/',                                   'anime'],
-  ['Anime Evo',            'https://www.anime-evo.net/feed/',                             'anime'],
   ['MyAnimeList News',     'https://myanimelist.net/rss/news.xml',                        'anime'],
   ['Sakuga Blog',          'https://blog.sakugabooru.com/feed/',                          'anime'],
   ['Nerdist – Anime',      'https://nerdist.com/topic/anime/feed/',                       'anime'],
   ['9ty5.org',             'https://9ty5.org/feed/',                                      'anime'],
-
-  // ── MANGA / COMICS ──
+  // MANGA / COMICS
   ['CBR – Manga',          'https://www.cbr.com/feed/tag/manga/',                         'manga'],
   ['CBR – Comics',         'https://www.cbr.com/feed/category/comics/',                   'manga'],
   ['Screen Rant – Comics', 'https://screenrant.com/feed/category/comics/',                'manga'],
@@ -545,8 +547,7 @@ const ALL_FEEDS = [
   ['Smash Pages',          'https://smashpages.net/feed/',                                'manga'],
   ['MangaBookshelf',       'https://mangabookshelf.com/feed/',                            'manga'],
   ['ICv2',                 'https://icv2.com/rss.xml',                                    'manga'],
-
-  // ── GAMING ──
+  // GAMING
   ['IGN',                  'https://feeds.ign.com/ign/all',                               'gaming'],
   ['Kotaku',               'https://kotaku.com/rss',                                      'gaming'],
   ['PC Gamer',             'https://www.pcgamer.com/rss/',                                'gaming'],
@@ -578,80 +579,38 @@ const ALL_FEEDS = [
   ['Rice Digital',         'https://ricedigital.com/feed/',                               'gaming'],
 ];
 
-// Format: [subreddit, category]
-// No subreddit appears in more than one category.
+// Format: [subreddit, category] — no subreddit in more than one category
 const ALL_SUBS = [
-  // ── ANIME ──
-  ['anime',          'anime'],
-  ['animenews',      'anime'],
-  ['OnePiece',       'anime'],
-  ['JuJutsuKaisen',  'anime'],
-  ['Bleach',         'anime'],
-  ['Berserk',        'anime'],
-  ['Chainsawman',    'anime'],
-  ['hunterxhunter',  'anime'],
-  ['Naruto',         'anime'],
-  ['DragonBallSuper','anime'],
-  ['AttackOnTitan',  'anime'],
-  ['DemonSlayer',    'anime'],
-  ['BlueLock',       'anime'],
-  ['Vinland_Saga',   'anime'],
-  ['Gachiakuta',     'anime'],
-  ['ReZero',         'anime'],
-  ['Overlord',       'anime'],
-  ['sololeveling',   'anime'],
-  ['SpyxFamily',     'anime'],
-  ['Mushokutensei',  'anime'],
-  ['FairyTail',      'anime'],
-  ['Animesuggest',   'anime'],
-  ['tokyoghoul',     'anime'],
-  ['OreGairu',       'anime'],
-  ['goodanimemes',   'anime'],
-
-  // ── MANGA / COMICS ──
-  ['manga',          'manga'],
-  ['manhwa',         'manga'],
-  ['manhua',         'manga'],
-  ['comics',         'manga'],
-  ['Marvel',         'manga'],
-  ['DC_Cinematic',   'manga'],
-  ['comicbooks',     'manga'],
-  ['WebtoonCanvas',  'manga'],
-  ['lightnovels',    'manga'],
-  ['OnePunchMan',    'manga'],
-  ['TokyoRevengers', 'manga'],
-  ['Boruto',         'manga'],
-  ['MangaDex',       'manga'],
-
-  // ── GAMING ──
-  ['gaming',         'gaming'],
-  ['Games',          'gaming'],
-  ['pcgaming',       'gaming'],
-  ['PS5',            'gaming'],
-  ['XboxSeriesX',    'gaming'],
-  ['NintendoSwitch', 'gaming'],
-  ['indiegaming',    'gaming'],
-  ['anime_games',    'gaming'],
-  ['Genshin_Impact', 'gaming'],
-  ['NieRAutomata',   'gaming'],
-  ['Sekiro',         'gaming'],
-  ['Eldenring',      'gaming'],
-  ['JRPG',           'gaming'],
-  ['AnimeGamers',    'gaming'],
-  ['Steam',          'gaming'],
-  ['patientgamers',  'gaming'],
-  ['FinalFantasy',   'gaming'],
-  ['pokemon',        'gaming'],
-  ['fireemblem',     'gaming'],
-  ['leagueoflegends','gaming'],
-  ['Minecraft',      'gaming'],
-  ['gamedev',        'gaming'],
+  ['anime','anime'],['animenews','anime'],['OnePiece','anime'],['JuJutsuKaisen','anime'],
+  ['Bleach','anime'],['Berserk','anime'],['Chainsawman','anime'],['hunterxhunter','anime'],
+  ['Naruto','anime'],['DragonBallSuper','anime'],['AttackOnTitan','anime'],
+  ['DemonSlayer','anime'],['BlueLock','anime'],['Vinland_Saga','anime'],['Gachiakuta','anime'],
+  ['ReZero','anime'],['Overlord','anime'],['sololeveling','anime'],['SpyxFamily','anime'],
+  ['Mushokutensei','anime'],['FairyTail','anime'],['Animesuggest','anime'],
+  ['tokyoghoul','anime'],['OreGairu','anime'],['goodanimemes','anime'],
+  ['manga','manga'],['manhwa','manga'],['manhua','manga'],['comics','manga'],
+  ['Marvel','manga'],['DC_Cinematic','manga'],['comicbooks','manga'],
+  ['WebtoonCanvas','manga'],['lightnovels','manga'],['OnePunchMan','manga'],
+  ['TokyoRevengers','manga'],['Boruto','manga'],['MangaDex','manga'],
+  ['gaming','gaming'],['Games','gaming'],['pcgaming','gaming'],['PS5','gaming'],
+  ['XboxSeriesX','gaming'],['NintendoSwitch','gaming'],['indiegaming','gaming'],
+  ['anime_games','gaming'],['Genshin_Impact','gaming'],['NieRAutomata','gaming'],
+  ['Sekiro','gaming'],['Eldenring','gaming'],['JRPG','gaming'],['AnimeGamers','gaming'],
+  ['Steam','gaming'],['patientgamers','gaming'],['FinalFantasy','gaming'],
+  ['pokemon','gaming'],['fireemblem','gaming'],['leagueoflegends','gaming'],
+  ['Minecraft','gaming'],['gamedev','gaming'],
 ];
 
-const RSS_PROXY  = 'https://api.rss2json.com/v1/api.json?rss_url=';
-const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-// ── STATE ────────────────────────────────────────────────────────────────────
+// ── REDDIT OAUTH CONFIG ───────────────────────────────────────────────────────
+// Redirect URI must exactly match what you set in reddit.com/prefs/apps
+const REDDIT_REDIRECT = (() => {
+  const p = window.location.pathname.replace(/\/$/, '');
+  return window.location.origin + p + '/';
+})();
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
 let mode         = 'rss';
 let cat          = 'all';
 let redditSort   = 'hot';
@@ -664,19 +623,16 @@ let readLinks    = new Set(JSON.parse(localStorage.getItem('9ty5_read') || '[]')
 let isFetching   = false;
 let deferredInstall = null;
 let arTimer      = null;
+let redditUser   = null;
 
 let cfg = {
-  autoRefresh: 0,
-  perFeed: 8,
-  hideRead: false,
-  showThumbs: true,
+  autoRefresh: 0, perFeed: 8, hideRead: false, showThumbs: true,
   ...JSON.parse(localStorage.getItem('9ty5_cfg') || '{}'),
 };
 
-// ── PWA ──────────────────────────────────────────────────────────────────────
+// ── PWA ───────────────────────────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredInstall = e;
+  e.preventDefault(); deferredInstall = e;
   document.getElementById('installBanner').classList.add('show');
 });
 function installPWA() {
@@ -691,7 +647,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
 });
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function timeAgo(d) {
   if (!d) return '';
   try {
@@ -704,136 +660,190 @@ function timeAgo(d) {
   } catch { return ''; }
 }
 function isRecent(d) {
-  if (!d) return false;
-  try { return (Date.now() - new Date(d).getTime()) < 7200000; } catch { return false; }
+  try { return d && (Date.now() - new Date(d).getTime()) < 7200000; } catch { return false; }
 }
 function stripHtml(s) {
   if (!s) return '';
   return s.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
 }
 function cleanTitle(s) {
-  if (!s) return '';
-  const t = stripHtml(s);
-  return t.length > 180 ? t.slice(0,180)+'…' : t;
+  const t = stripHtml(s||'');
+  return t.length > 200 ? t.slice(0,200)+'…' : t;
 }
 function cleanSummary(s) {
-  if (!s) return '';
-  const t = stripHtml(s);
-  return t.length > 280 ? t.slice(0,280)+'…' : t;
+  const t = stripHtml(s||'');
+  return t.length > 300 ? t.slice(0,300)+'…' : t;
+}
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function setStatus(msg, cls='') {
   document.getElementById('statusBar').innerHTML = cls ? `<span class="${cls}">${msg}</span>` : msg;
 }
-function showToast(msg, dur=2200) {
+function showToast(msg, dur=2500) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._tid);
-  t._tid = setTimeout(() => t.classList.remove('show'), dur);
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), dur);
 }
 function setBusy(on) {
   isFetching = on;
   document.getElementById('refreshBtn').disabled = on;
   const ic = document.getElementById('refreshIcon');
-  ic.className = on ? 'spin' : '';
-  ic.textContent = '⟳';
+  ic.className = on ? 'spin' : ''; ic.textContent = '⟳';
   const pf = document.getElementById('progressFill');
   on ? pf.classList.add('indeterminate') : pf.classList.remove('indeterminate');
 }
 
-// ── RSS FETCH ────────────────────────────────────────────────────────────────
+// ── RSS FETCH ─────────────────────────────────────────────────────────────────
 async function fetchFeed([name, url, feedCat]) {
   try {
-    const res  = await fetch(RSS_PROXY + encodeURIComponent(url),
-                             {signal: AbortSignal.timeout(9000)});
+    const res  = await fetch(RSS_PROXY + encodeURIComponent(url), {signal: AbortSignal.timeout(9000)});
     const data = await res.json();
     if (data.status !== 'ok' || !data.items?.length) return [];
     return data.items.slice(0, cfg.perFeed).map(item => {
       const thumb = item.thumbnail ||
         (item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i) ? item.enclosure.link : null);
       return {
-        title:   cleanTitle(item.title),
-        link:    item.link || item.guid || '',
+        title: cleanTitle(item.title), link: item.link || item.guid || '',
         summary: cleanSummary(item.description || item.content || ''),
-        age:     timeAgo(item.pubDate),
-        pubDate: item.pubDate || '',
-        source:  name,
-        cat:     feedCat,
-        type:    'rss',
-        thumb:   thumb || null,
+        age: timeAgo(item.pubDate), pubDate: item.pubDate || '',
+        source: name, cat: feedCat, type: 'rss', thumb: thumb||null,
       };
     });
   } catch { return []; }
 }
 
 async function fetchAllRss() {
-  const feeds = ALL_FEEDS.filter(f => cat === 'all' || cat === 'fav' || f[2] === cat);
-  const total = feeds.length;
-  let done = 0;
-  const results = [];
-  const BATCH = 6;
+  const feeds = ALL_FEEDS.filter(f => cat==='all' || cat==='fav' || f[2]===cat);
+  const total = feeds.length; let done = 0; const results = []; const BATCH = 6;
   for (let i = 0; i < feeds.length; i += BATCH) {
     const rows = await Promise.all(feeds.slice(i, i+BATCH).map(fetchFeed));
     rows.forEach(r => results.push(...r));
-    done += Math.min(BATCH, feeds.length - i);
+    done += Math.min(BATCH, feeds.length-i);
     setStatus(`Fetching RSS ${done}/${total}…`);
   }
   results.sort((a,b) => new Date(b.pubDate||0) - new Date(a.pubDate||0));
   allArticles = results;
-  localStorage.setItem('9ty5_rss_cache',    JSON.stringify(results));
+  localStorage.setItem('9ty5_rss_cache', JSON.stringify(results));
   localStorage.setItem('9ty5_rss_cache_ts', Date.now());
   return results;
 }
 
-// ── REDDIT FETCH (allorigins proxy → preserves scores) ───────────────────────
+// ── REDDIT FETCH ──────────────────────────────────────────────────────────────
+// Converts a Reddit JSON children array into article objects
+function parseRedditChildren(children, sub, subCat) {
+  return children
+    .filter(c => !c.data.stickied)
+    .slice(0, 12)
+    .map(c => {
+      const d = c.data;
+      const ts = new Date(d.created_utc * 1000).toISOString();
+      return {
+        title: cleanTitle(d.title), link: 'https://reddit.com' + d.permalink,
+        summary: cleanSummary(d.selftext || ''), score: d.score,
+        comments: d.num_comments, flair: d.link_flair_text || '',
+        age: timeAgo(ts), pubDate: ts, source: `r/${sub}`, sub,
+        cat: subCat, type: 'reddit',
+        thumb: d.thumbnail?.startsWith('http') ? d.thumbnail : null,
+      };
+    });
+}
+
+// Authenticated fetch via Reddit's OAuth API (CORS-friendly with token)
+async function fetchSubAuthenticated(sub, subCat) {
+  const token = getRedditToken();
+  const res = await fetch(
+    `https://oauth.reddit.com/r/${sub}/${redditSort}?limit=12&raw_json=1`,
+    {
+      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
+      signal: AbortSignal.timeout(10000),
+    }
+  );
+  const data = await res.json();
+  return parseRedditChildren(data.data?.children || [], sub, subCat);
+}
+
+// Unauthenticated fallback: Reddit RSS through rss2json (reliable, no CORS, no scores)
+async function fetchSubRss(sub, subCat) {
+  const rssUrl = `https://www.reddit.com/r/${sub}/${redditSort}.rss`;
+  const res    = await fetch(RSS_PROXY + encodeURIComponent(rssUrl),
+                             {signal: AbortSignal.timeout(9000)});
+  const data   = await res.json();
+  if (data.status !== 'ok' || !data.items?.length) return [];
+  return data.items.slice(0, 10).map(item => ({
+    title:   cleanTitle(item.title.replace(/^[\s\S]*?:\s*/,'')),
+    link:    item.link || item.guid || '',
+    summary: cleanSummary(item.description || ''),
+    age:     timeAgo(item.pubDate), pubDate: item.pubDate || '',
+    source:  `r/${sub}`, sub, cat: subCat, type: 'reddit',
+    score: null, comments: null, flair: '', thumb: null,
+  }));
+}
+
 async function fetchSub([sub, subCat]) {
   try {
-    const target = `https://www.reddit.com/r/${sub}/${redditSort}.json?limit=12&raw_json=1`;
-    const res    = await fetch(CORS_PROXY + encodeURIComponent(target),
-                               {signal: AbortSignal.timeout(14000)});
-    const wrap   = await res.json();
-    const parsed = JSON.parse(wrap.contents);
-    return (parsed.data?.children || [])
-      .filter(c => !c.data.stickied)
-      .slice(0, 10)
-      .map(c => {
-        const d = c.data;
-        const ts = new Date(d.created_utc * 1000).toISOString();
-        return {
-          title:    cleanTitle(d.title),
-          link:     'https://reddit.com' + d.permalink,
-          summary:  cleanSummary(d.selftext || ''),
-          score:    d.score,
-          comments: d.num_comments,
-          flair:    d.link_flair_text || '',
-          age:      timeAgo(ts),
-          pubDate:  ts,
-          source:   `r/${sub}`,
-          sub,
-          cat:      subCat,
-          type:     'reddit',
-          thumb:    d.thumbnail?.startsWith('http') ? d.thumbnail : null,
-        };
-      });
+    return getRedditToken()
+      ? await fetchSubAuthenticated(sub, subCat)
+      : await fetchSubRss(sub, subCat);
   } catch { return []; }
 }
 
+// "My Feed" — fetches the authenticated user's home feed (all their followed subs mixed)
+async function fetchMyFeed() {
+  const token = getRedditToken();
+  if (!token) { showToast('Log in to Reddit first'); return []; }
+  try {
+    const res = await fetch(
+      `https://oauth.reddit.com/?sort=hot&limit=50&raw_json=1`,
+      {
+        headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
+        signal: AbortSignal.timeout(12000),
+      }
+    );
+    const data = await res.json();
+    return (data.data?.children || [])
+      .filter(c => !c.data.stickied)
+      .map(c => {
+        const d = c.data;
+        const ts = new Date(d.created_utc * 1000).toISOString();
+        const found = ALL_SUBS.find(s => s[0].toLowerCase() === d.subreddit.toLowerCase());
+        return {
+          title: cleanTitle(d.title), link: 'https://reddit.com' + d.permalink,
+          summary: cleanSummary(d.selftext || ''), score: d.score,
+          comments: d.num_comments, flair: d.link_flair_text || '',
+          age: timeAgo(ts), pubDate: ts, source: `r/${d.subreddit}`,
+          sub: d.subreddit, cat: found ? found[1] : 'all', type: 'reddit',
+          thumb: d.thumbnail?.startsWith('http') ? d.thumbnail : null,
+        };
+      });
+  } catch(e) {
+    showToast('My Feed failed: ' + e.message, 3000); return [];
+  }
+}
+
 async function fetchAllReddit() {
-  const subs  = ALL_SUBS.filter(s => cat === 'all' || cat === 'fav' || s[1] === cat);
-  const total = subs.length;
-  let done = 0;
-  const results = [];
-  const BATCH = 3;
+  if (redditSort === 'myfeed') {
+    setStatus('Loading your personal Reddit feed…');
+    const results = await fetchMyFeed();
+    results.sort((a,b) => (b.score||0)-(a.score||0));
+    allArticles = results;
+    localStorage.setItem('9ty5_reddit_cache', JSON.stringify(results));
+    localStorage.setItem('9ty5_reddit_cache_ts', Date.now());
+    return results;
+  }
+  const subs  = ALL_SUBS.filter(s => cat==='all' || cat==='fav' || s[1]===cat);
+  const total = subs.length; let done = 0; const results = []; const BATCH = 3;
   for (let i = 0; i < subs.length; i += BATCH) {
     const rows = await Promise.all(subs.slice(i, i+BATCH).map(fetchSub));
     rows.forEach(r => results.push(...r));
-    done += Math.min(BATCH, subs.length - i);
-    setStatus(`Fetching Reddit ${done}/${total}…`);
-    if (i + BATCH < subs.length) await new Promise(r => setTimeout(r, 700));
+    done += Math.min(BATCH, subs.length-i);
+    setStatus(`Fetching Reddit ${done}/${total}… ${getRedditToken() ? '(authenticated)' : '(RSS mode)'}`);
+    if (i+BATCH < subs.length) await new Promise(r => setTimeout(r, 500));
   }
-  results.sort((a,b) => (b.score||0) - (a.score||0));
+  results.sort((a,b) => (b.score||0)-(a.score||0));
   allArticles = results;
-  localStorage.setItem('9ty5_reddit_cache',    JSON.stringify(results));
+  localStorage.setItem('9ty5_reddit_cache', JSON.stringify(results));
   localStorage.setItem('9ty5_reddit_cache_ts', Date.now());
   return results;
 }
@@ -844,32 +854,28 @@ async function fetchCurrent() {
   setBusy(true);
   setStatus('Fetching…');
   try {
-    const results = mode === 'rss' ? await fetchAllRss() : await fetchAllReddit();
-    const label   = mode === 'rss' ? 'articles' : 'posts';
+    const results = mode==='rss' ? await fetchAllRss() : await fetchAllReddit();
+    const label   = mode==='rss' ? 'articles' : 'posts';
     setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`, 'ok');
     visibleCount = PAGE_SIZE;
     applyFilter();
   } catch(e) {
     setStatus(`Error: ${e.message}`, 'err');
-  } finally {
-    setBusy(false);
-  }
+  } finally { setBusy(false); }
 }
 
 // ── FILTER + RENDER ───────────────────────────────────────────────────────────
 function applyFilter() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const pool = cat === 'fav' ? favorites : allArticles;
-
+  const pool = cat==='fav' ? favorites : allArticles;
   filteredPool = pool.filter(a => {
-    if (cat !== 'all' && cat !== 'fav' && a.cat !== cat) return false;
+    if (cat!=='all' && cat!=='fav' && a.cat!==cat) return false;
     if (cfg.hideRead && readLinks.has(a.link)) return false;
     if (q && !a.title.toLowerCase().includes(q) &&
              !(a.source||'').toLowerCase().includes(q) &&
              !(a.summary||'').toLowerCase().includes(q)) return false;
     return true;
   });
-
   document.getElementById('countBadge').textContent = filteredPool.length + ' posts';
   updateCounts();
   renderArticles(filteredPool.slice(0, visibleCount));
@@ -885,45 +891,47 @@ function loadMore() {
 }
 
 function updateCounts() {
-  const counts = {all:0, anime:0, manga:0, gaming:0};
+  const counts = {all:0,anime:0,manga:0,gaming:0};
   allArticles.forEach(a => { counts.all++; if (a.cat in counts) counts[a.cat]++; });
   ['all','anime','manga','gaming'].forEach(c => {
     const el = document.getElementById(`cnt-${c}`);
-    if (el) el.textContent = counts[c] || '';
+    if (el) el.textContent = counts[c]||'';
   });
-  const favEl = document.getElementById('cnt-fav');
-  if (favEl) favEl.textContent = favorites.length || '';
+  const fe = document.getElementById('cnt-fav');
+  if (fe) fe.textContent = favorites.length||'';
 }
 
 function renderArticles(items) {
   const el = document.getElementById('articles');
   if (!items.length) {
+    const isRedditNoLogin = mode==='reddit' && !getRedditToken();
     el.innerHTML = `<div class="empty">
       <div class="big">${cat==='fav'?'⭐':'📭'}</div>
       <p>${cat==='fav'
         ? 'No saved articles yet.<br>Tap ☆ on any article to save it.'
         : 'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
+      ${isRedditNoLogin && mode==='reddit'
+        ? `<button class="login-hint" onclick="openSettings()">Connect Reddit for better results</button>`
+        : ''}
     </div>`;
     return;
   }
-  el.innerHTML = items.map((a, i) => {
+  el.innerHTML = items.map((a,i) => {
     const isRead = readLinks.has(a.link);
-    const isFav  = favorites.some(f => f.link === a.link);
+    const isFav  = favorites.some(f => f.link===a.link);
     const tagCls = a.type==='reddit' ? 'tag-reddit'
                  : a.cat==='anime'   ? 'tag-anime'
                  : a.cat==='manga'   ? 'tag-manga' : 'tag-gaming';
-    const newBadge   = (a.type==='rss' && isRecent(a.pubDate)) ? `<span class="new-badge">NEW</span>` : '';
-    const flairPart  = a.flair ? `<span class="tag-flair">${escHtml(a.flair)}</span>` : '';
-    const readDot    = isRead ? `<span class="read-dot">✓</span>` : '';
-    const scorePart  = a.type==='reddit'
-      ? `<span class="reddit-score">⬆${(a.score||0).toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`
+    const newBadge  = a.type==='rss' && isRecent(a.pubDate) ? `<span class="new-badge">NEW</span>` : '';
+    const flairPart = a.flair ? `<span class="tag-flair">${escHtml(a.flair)}</span>` : '';
+    const readDot   = isRead ? `<span class="read-dot">✓</span>` : '';
+    const scorePart = a.score!=null
+      ? `<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`
       : '';
-    const thumbPart  = cfg.showThumbs && a.thumb
+    const thumbPart = cfg.showThumbs && a.thumb
       ? `<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`
       : '';
-    const safeLink = escHtml(a.link);
-    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}"
-         data-idx="${i}" onclick="openCard(${i})">
+    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
         <div class="card-body">
@@ -938,7 +946,7 @@ function renderArticles(items) {
             <button class="action-btn${isFav?' fav-active':''}" onclick="toggleFav(${i})">${isFav?'★ Saved':'☆ Save'}</button>
             <button class="action-btn" onclick="sharePost(${i})">📤 Share</button>
             <button class="action-btn" onclick="copyPost(${i})">📋 Copy</button>
-            <a class="action-btn" href="${safeLink}" target="_blank" rel="noopener noreferrer">🔗 Open</a>
+            <a class="action-btn" href="${escHtml(a.link)}" target="_blank" rel="noopener noreferrer">🔗 Open</a>
           </div>
         </div>
       </div>
@@ -946,19 +954,11 @@ function renderArticles(items) {
   }).join('');
 }
 
-function escHtml(s) {
-  if (!s) return '';
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
 // ── CARD ACTIONS ──────────────────────────────────────────────────────────────
 function getRendered() { return filteredPool.slice(0, visibleCount); }
 
 function openCard(idx) {
-  const a = getRendered()[idx];
-  if (!a) return;
+  const a = getRendered()[idx]; if (!a) return;
   window.open(a.link, '_blank', 'noopener noreferrer');
   readLinks.add(a.link);
   localStorage.setItem('9ty5_read', JSON.stringify([...readLinks]));
@@ -967,39 +967,29 @@ function openCard(idx) {
 }
 
 function toggleFav(idx) {
-  const a = getRendered()[idx];
-  if (!a) return;
-  const fi = favorites.findIndex(f => f.link === a.link);
-  if (fi > -1) { favorites.splice(fi, 1); showToast('Removed from saved'); }
-  else         { favorites.unshift(a);     showToast('⭐ Saved!'); }
+  const a = getRendered()[idx]; if (!a) return;
+  const fi = favorites.findIndex(f => f.link===a.link);
+  if (fi>-1) { favorites.splice(fi,1); showToast('Removed from saved'); }
+  else        { favorites.unshift(a);  showToast('⭐ Saved!'); }
   localStorage.setItem('9ty5_favs', JSON.stringify(favorites));
-  updateCounts();
-  renderArticles(getRendered());
+  updateCounts(); renderArticles(getRendered());
 }
 
 function sharePost(idx) {
-  const a = getRendered()[idx];
-  if (!a) return;
+  const a = getRendered()[idx]; if (!a) return;
   if (navigator.share) {
-    navigator.share({title: a.title, text: a.summary || a.title, url: a.link}).catch(()=>{});
-  } else {
-    copyPost(idx);
-  }
+    navigator.share({title:a.title, text:a.summary||a.title, url:a.link}).catch(()=>{});
+  } else { copyPost(idx); }
 }
 
 function copyPost(idx) {
-  const a = getRendered()[idx];
-  if (!a) return;
-  const text = `${a.title}\n\n${a.summary ? a.summary+'\n\n' : ''}Read more: ${a.link}\n\nvia ${a.source} | 9ty5 News`;
-  navigator.clipboard.writeText(text).then(() => showToast('✓ Copied!')).catch(() => {
-    const el = document.createElement('textarea');
-    el.value = text;
-    Object.assign(el.style, {position:'fixed',opacity:'0'});
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    showToast('✓ Copied!');
+  const a = getRendered()[idx]; if (!a) return;
+  const text = `${a.title}\n\n${a.summary ? a.summary+'\n\n':''}Read more: ${a.link}\n\nvia ${a.source} | 9ty5 News`;
+  navigator.clipboard.writeText(text).then(()=>showToast('✓ Copied!')).catch(()=>{
+    const el = Object.assign(document.createElement('textarea'),{value:text});
+    Object.assign(el.style,{position:'fixed',opacity:'0'});
+    document.body.appendChild(el); el.select(); document.execCommand('copy');
+    document.body.removeChild(el); showToast('✓ Copied!');
   });
 }
 
@@ -1015,30 +1005,26 @@ function markAllRead() {
 function switchMode(m) {
   if (isFetching) return;
   mode = m;
-  document.getElementById('modeRss').className    = 'mode-btn' + (m==='rss'    ? ' active-rss'    : '');
-  document.getElementById('modeReddit').className = 'mode-btn' + (m==='reddit' ? ' active-reddit' : '');
+  document.getElementById('modeRss').className    = 'mode-btn'+(m==='rss'    ? ' active-rss'    : '');
+  document.getElementById('modeReddit').className = 'mode-btn'+(m==='reddit' ? ' active-reddit' : '');
   document.getElementById('redditSort').classList.toggle('visible', m==='reddit');
-  const cacheKey = m==='rss' ? '9ty5_rss_cache' : '9ty5_reddit_cache';
-  const cacheTsKey = m==='rss' ? '9ty5_rss_cache_ts' : '9ty5_reddit_cache_ts';
-  const cached = localStorage.getItem(cacheKey);
+  const cKey = m==='rss' ? '9ty5_rss_cache' : '9ty5_reddit_cache';
+  const tKey = m==='rss' ? '9ty5_rss_cache_ts' : '9ty5_reddit_cache_ts';
+  const cached = localStorage.getItem(cKey);
   if (cached) {
     allArticles = JSON.parse(cached);
-    const ts = localStorage.getItem(cacheTsKey);
+    const ts  = localStorage.getItem(tKey);
     const ago = ts ? timeAgo(new Date(+ts).toISOString()) : '';
     setStatus(`Cached ${ago} — tap Refresh to update`);
-    visibleCount = PAGE_SIZE;
-    applyFilter();
-  } else {
-    fetchCurrent();
-  }
+    visibleCount = PAGE_SIZE; applyFilter();
+  } else { fetchCurrent(); }
 }
 
 function switchCat(btn, c) {
   cat = c;
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  visibleCount = PAGE_SIZE;
-  applyFilter();
+  visibleCount = PAGE_SIZE; applyFilter();
 }
 
 function setSort(btn, s) {
@@ -1048,87 +1034,224 @@ function setSort(btn, s) {
   fetchCurrent();
 }
 
-// ── SETTINGS ─────────────────────────────────────────────────────────────────
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
 function saveCfg() { localStorage.setItem('9ty5_cfg', JSON.stringify(cfg)); }
-
-function openSettings()  {
-  document.getElementById('settingsOverlay').classList.add('open');
-  document.getElementById('settingsPanel').classList.add('open');
-}
-function closeSettings() {
-  document.getElementById('settingsOverlay').classList.remove('open');
-  document.getElementById('settingsPanel').classList.remove('open');
-}
+function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); document.getElementById('settingsPanel').classList.add('open'); }
+function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); document.getElementById('settingsPanel').classList.remove('open'); }
 
 function setAutoRefresh(mins, btn) {
-  document.querySelectorAll('#arOpts .s-opt').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  cfg.autoRefresh = mins;
-  saveCfg();
-  setupAutoRefresh();
+  document.querySelectorAll('#arOpts .s-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); cfg.autoRefresh=mins; saveCfg(); setupAutoRefresh();
 }
-
 function setPerFeed(n, btn) {
-  document.querySelectorAll('#pfOpts .s-opt').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  cfg.perFeed = n;
-  saveCfg();
+  document.querySelectorAll('#pfOpts .s-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); cfg.perFeed=n; saveCfg();
 }
-
 function toggleSetting(key) {
-  cfg[key] = !cfg[key];
-  saveCfg();
-  if (key === 'hideRead') {
-    document.getElementById('hideReadToggle').classList.toggle('on', cfg.hideRead);
-    applyFilter();
-  } else if (key === 'showThumbs') {
-    document.getElementById('thumbToggle').classList.toggle('on', cfg.showThumbs);
-    renderArticles(getRendered());
-  }
+  cfg[key] = !cfg[key]; saveCfg();
+  if (key==='hideRead')   { document.getElementById('hideReadToggle').classList.toggle('on',cfg.hideRead);  applyFilter(); }
+  if (key==='showThumbs') { document.getElementById('thumbToggle').classList.toggle('on',cfg.showThumbs); renderArticles(getRendered()); }
 }
-
 function setupAutoRefresh() {
   clearInterval(arTimer);
   const badge = document.getElementById('autoBadge');
-  if (cfg.autoRefresh > 0) {
-    badge.style.display = 'inline';
-    badge.textContent   = `⟳ ${cfg.autoRefresh}m`;
-    arTimer = setInterval(() => { if (!isFetching) fetchCurrent(); }, cfg.autoRefresh * 60000);
-  } else {
-    badge.style.display = 'none';
-  }
+  if (cfg.autoRefresh>0) {
+    badge.style.display='inline'; badge.textContent=`⟳ ${cfg.autoRefresh}m`;
+    arTimer = setInterval(()=>{ if(!isFetching) fetchCurrent(); }, cfg.autoRefresh*60000);
+  } else { badge.style.display='none'; }
 }
-
 function clearCache() {
   if (!confirm('Clear all cached articles and saved items?')) return;
   ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
-   '9ty5_favs','9ty5_read'].forEach(k => localStorage.removeItem(k));
-  favorites    = [];
-  readLinks    = new Set();
-  allArticles  = [];
-  filteredPool = [];
-  updateCounts();
-  document.getElementById('articles').innerHTML = '';
-  closeSettings();
-  showToast('Cache cleared');
+   '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
+  favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
+  updateCounts(); document.getElementById('articles').innerHTML='';
+  closeSettings(); showToast('Cache cleared');
+}
+function applySettingsToUI() {
+  document.getElementById('hideReadToggle').classList.toggle('on',cfg.hideRead);
+  document.getElementById('thumbToggle').classList.toggle('on',cfg.showThumbs);
+  const arVals=[0,5,15,30];
+  document.querySelectorAll('#arOpts .s-opt').forEach((b,i)=>b.classList.toggle('active',arVals[i]===cfg.autoRefresh));
+  const pfVals=[5,8,12];
+  document.querySelectorAll('#pfOpts .s-opt').forEach((b,i)=>b.classList.toggle('active',pfVals[i]===cfg.perFeed));
 }
 
-function applySettingsToUI() {
-  document.getElementById('hideReadToggle').classList.toggle('on', cfg.hideRead);
-  document.getElementById('thumbToggle').classList.toggle('on', cfg.showThumbs);
-  const arVals = [0,5,15,30];
-  document.querySelectorAll('#arOpts .s-opt').forEach((b,i) =>
-    b.classList.toggle('active', arVals[i] === cfg.autoRefresh));
-  const pfVals = [5,8,12];
-  document.querySelectorAll('#pfOpts .s-opt').forEach((b,i) =>
-    b.classList.toggle('active', pfVals[i] === cfg.perFeed));
+// ── REDDIT OAUTH (PKCE) ───────────────────────────────────────────────────────
+function getRedditToken() {
+  const token = localStorage.getItem('9ty5_reddit_token');
+  const exp   = +localStorage.getItem('9ty5_reddit_token_exp')||0;
+  if (token && Date.now()<exp) return token;
+  return null;
+}
+
+function genVerifier() {
+  const arr = new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  return btoa(String.fromCharCode(...arr)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+async function genChallenge(v) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+  return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+async function startRedditLogin() {
+  let clientId = localStorage.getItem('9ty5_reddit_client_id');
+  if (!clientId) {
+    clientId = prompt(
+      'Enter your Reddit app Client ID.\n\n' +
+      'How to get one (free, takes 2 min):\n' +
+      '1. Go to: reddit.com/prefs/apps\n' +
+      '2. Click "create another app"\n' +
+      '3. Pick type: installed app\n' +
+      '4. Redirect URI: ' + REDDIT_REDIRECT + '\n' +
+      '5. The Client ID is the string below the app name\n\n' +
+      'Paste it here:'
+    );
+    if (!clientId || !clientId.trim()) return;
+    localStorage.setItem('9ty5_reddit_client_id', clientId.trim());
+  }
+  const v = genVerifier();
+  const c = await genChallenge(v);
+  const state = Math.random().toString(36).slice(2);
+  localStorage.setItem('9ty5_pkce_v', v);
+  localStorage.setItem('9ty5_pkce_s', state);
+
+  const params = new URLSearchParams({
+    client_id: clientId.trim(), response_type: 'code', state,
+    redirect_uri: REDDIT_REDIRECT, duration: 'permanent',
+    scope: 'read mysubreddits identity',
+    code_challenge: c, code_challenge_method: 'S256',
+  });
+  window.location.href = 'https://www.reddit.com/api/v1/authorize?' + params;
+}
+
+async function handleOAuthCallback() {
+  const params = new URLSearchParams(window.location.search);
+  const code   = params.get('code');
+  const state  = params.get('state');
+  const error  = params.get('error');
+  if (error) { showToast('Reddit login cancelled'); history.replaceState({},'',location.pathname); return; }
+  if (!code || state!==localStorage.getItem('9ty5_pkce_s')) return;
+  history.replaceState({},'',location.pathname);
+
+  const clientId = localStorage.getItem('9ty5_reddit_client_id');
+  const verifier = localStorage.getItem('9ty5_pkce_v');
+  setStatus('Completing Reddit login…');
+  setBusy(true);
+  try {
+    // corsproxy.io supports POST and passes Authorization headers through
+    const tokenEndpoint = 'https://corsproxy.io/?' + encodeURIComponent('https://www.reddit.com/api/v1/access_token');
+    const res = await fetch(tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + btoa(clientId.trim()+':'),
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code', code,
+        redirect_uri: REDDIT_REDIRECT, code_verifier: verifier,
+      }),
+    });
+    const data = await res.json();
+    if (data.access_token) {
+      localStorage.setItem('9ty5_reddit_token',     data.access_token);
+      localStorage.setItem('9ty5_reddit_refresh',   data.refresh_token||'');
+      localStorage.setItem('9ty5_reddit_token_exp', Date.now()+(data.expires_in||3600)*1000);
+      await loadRedditUser(data.access_token);
+      await loadUserSubs(data.access_token);
+      updateRedditUI();
+      showToast('✓ Reddit connected!', 3000);
+      setStatus('Reddit connected — tap Refresh', 'ok');
+    } else {
+      showToast('Reddit login failed: '+(data.error||'unknown'), 4000);
+      setStatus('Reddit auth failed', 'err');
+    }
+  } catch(e) {
+    showToast('Reddit auth error: '+e.message, 4000);
+  } finally { setBusy(false); }
+}
+
+async function loadRedditUser(token) {
+  try {
+    const res  = await fetch('https://oauth.reddit.com/api/v1/me', {
+      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
+    });
+    const data = await res.json();
+    if (data.name) {
+      localStorage.setItem('9ty5_reddit_user', data.name);
+      redditUser = data.name;
+    }
+  } catch {}
+}
+
+async function loadUserSubs(token) {
+  try {
+    const res  = await fetch('https://oauth.reddit.com/subreddits/mine/subscriber?limit=100', {
+      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
+    });
+    const data = await res.json();
+    const names = (data.data?.children||[]).map(c=>c.data.display_name);
+    localStorage.setItem('9ty5_user_subs', JSON.stringify(names));
+    showToast(`Loaded ${names.length} followed subreddits`);
+  } catch {}
+}
+
+function updateRedditUI() {
+  const token    = getRedditToken();
+  const username = localStorage.getItem('9ty5_reddit_user') || '';
+  const subs     = JSON.parse(localStorage.getItem('9ty5_user_subs')||'[]');
+
+  // Chip in mode row
+  const chip = document.getElementById('redditChip');
+  chip.classList.toggle('show', !!token);
+  if (token && username) {
+    document.getElementById('redditAvatarInitial').textContent = username[0].toUpperCase();
+    document.getElementById('redditUsername').textContent = 'u/'+username;
+  }
+
+  // My Feed sort button
+  document.getElementById('myFeedBtn').style.display = token ? 'block' : 'none';
+
+  // Settings auth card
+  const card = document.getElementById('redditAuthCard');
+  const info = document.getElementById('redditAuthInfo');
+  const connBtn = document.getElementById('redditConnectBtn');
+  const discBtn = document.getElementById('redditDisconnectBtn');
+  if (token) {
+    card.classList.add('connected');
+    info.innerHTML = `Connected as <strong>u/${username||'you'}</strong> · ${subs.length} followed subreddits`;
+    connBtn.style.display = 'none';
+    discBtn.style.display = 'block';
+  } else {
+    card.classList.remove('connected');
+    info.innerHTML = 'Log in to get posts from <strong>your own followed subreddits</strong> with upvote counts. Requires a free Reddit app ID (takes 2 min to set up).';
+    connBtn.style.display = 'block';
+    discBtn.style.display = 'none';
+  }
+}
+
+function disconnectReddit() {
+  ['9ty5_reddit_token','9ty5_reddit_refresh','9ty5_reddit_token_exp',
+   '9ty5_reddit_client_id','9ty5_user_subs','9ty5_pkce_v','9ty5_pkce_s','9ty5_reddit_user']
+    .forEach(k=>localStorage.removeItem(k));
+  redditUser = null;
+  updateRedditUI();
+  showToast('Reddit disconnected');
+  closeSettings();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-function init() {
-  updateCounts();
-  applySettingsToUI();
-  setupAutoRefresh();
+async function init() {
+  updateCounts(); applySettingsToUI(); setupAutoRefresh();
+  redditUser = localStorage.getItem('9ty5_reddit_user') || null;
+  updateRedditUI();
+
+  // Handle Reddit OAuth callback first
+  if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
+    await handleOAuthCallback();
+  }
+
   const cached = localStorage.getItem('9ty5_rss_cache');
   const ts     = localStorage.getItem('9ty5_rss_cache_ts');
   if (cached) {
