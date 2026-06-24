@@ -10,456 +10,375 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ── RESET + BASE ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg:      #0f0f13;
-    --bg2:     #16161d;
-    --bg3:     #1e1e2a;
-    --bg4:     #252535;
-    --accent:  #5855d6;
-    --accent2: #7b78f0;
-    --accent3: #a8a5f0;
-    --text:    #e8e8f0;
-    --dim:     #888899;
-    --green:   #4ade80;
-    --yellow:  #fbbf24;
-    --orange:  #fb923c;
-    --red:     #f87171;
-    --border:  #2a2a3a;
-    --anime:   #5855d6;
-    --comics:  #d97706;
-    --gaming:  #16a34a;
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.5;
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #0f0f13;
+  --bg2:     #16161d;
+  --bg3:     #1e1e2a;
+  --bg4:     #252535;
+  --accent:  #5855d6;
+  --accent2: #7b78f0;
+  --text:    #e8e8f0;
+  --dim:     #888899;
+  --green:   #4ade80;
+  --yellow:  #fbbf24;
+  --orange:  #fb923c;
+  --red:     #f87171;
+  --border:  #2a2a3a;
+  --c-anime:  #5855d6;
+  --c-manga:  #d97706;
+  --c-gaming: #16a34a;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
 
-  /* ── TOPBAR ── */
-  .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(15,15,19,0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .logo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--accent2);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .logo span { color: var(--dim); font-weight: 400; font-size: 12px; }
-  .refresh-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    transition: background .15s;
-    flex-shrink: 0;
-  }
-  .refresh-btn:hover { background: var(--accent2); }
-  .refresh-btn:disabled {
-    background: var(--bg3);
-    color: var(--dim);
-    cursor: not-allowed;
-  }
-  .spin { animation: spin .8s linear infinite; display:inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,15,19,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 10px;
+}
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--accent2); white-space: nowrap; flex-shrink: 0;
+}
+.logo span { color: var(--dim); font-weight: 400; font-size: 12px; }
+.topbar-right { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.icon-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--dim); font-size: 17px;
+  width: 36px; height: 36px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.icon-btn:hover { background: var(--bg4); color: var(--text); }
+.refresh-btn {
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 8px; padding: 8px 14px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; transition: background .15s;
+}
+.refresh-btn:hover { background: var(--accent2); }
+.refresh-btn:disabled { background: var(--bg3); color: var(--dim); cursor: not-allowed; }
+.spin { animation: spin .8s linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── MODE TABS ── */
-  .mode-row {
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .mode-row::-webkit-scrollbar { display: none; }
-  .mode-btn {
-    background: none;
-    border: none;
-    color: var(--dim);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 10px 18px;
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: color .15s, border-color .15s;
-  }
-  .mode-btn.active-rss  { color: var(--accent2); border-color: var(--accent); }
-  .mode-btn.active-reddit { color: var(--orange); border-color: var(--orange); }
+/* ── MODE TABS ── */
+.mode-row {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; scrollbar-width: none;
+}
+.mode-row::-webkit-scrollbar { display: none; }
+.mode-btn {
+  background: none; border: none; color: var(--dim);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+}
+.mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
+.mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
 
-  /* ── SEARCH ── */
-  .search-row {
-    padding: 10px 16px 6px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-  .search-wrap {
-    flex: 1;
-    position: relative;
-  }
-  .search-wrap .icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--dim);
-    font-size: 14px;
-    pointer-events: none;
-  }
-  .search-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 8px 12px 8px 32px;
-    outline: none;
-    transition: border-color .15s;
-  }
-  .search-input:focus { border-color: var(--accent); }
-  .count-badge {
-    background: var(--bg3);
-    color: var(--dim);
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
+/* ── REDDIT SORT ── */
+.reddit-sort {
+  display: none; gap: 6px; padding: 6px 16px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+}
+.reddit-sort.visible { display: flex; }
+.sort-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; color: var(--dim); font-size: 12px; font-weight: 500;
+  padding: 4px 12px; cursor: pointer; white-space: nowrap; transition: all .15s;
+  flex-shrink: 0;
+}
+.sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
 
-  /* ── REDDIT SORT ── */
-  .reddit-sort {
-    display: none;
-    gap: 6px;
-    padding: 6px 16px;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-  .reddit-sort.visible { display: flex; }
-  .sort-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    color: var(--dim);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 4px 12px;
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .sort-btn.active {
-    background: var(--orange);
-    border-color: var(--orange);
-    color: #fff;
-  }
+/* ── SEARCH ── */
+.search-row {
+  padding: 8px 16px 6px; display: flex; gap: 8px; align-items: center;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.search-wrap { flex: 1; position: relative; }
+.search-wrap .sicon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%); color: var(--dim); font-size: 14px; pointer-events: none;
+}
+.search-input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  padding: 7px 12px 7px 32px; outline: none; transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.count-badge {
+  background: var(--bg3); color: var(--dim); font-size: 12px;
+  padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
 
-  /* ── CAT TABS ── */
-  .cat-row {
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-  }
-  .cat-row::-webkit-scrollbar { display: none; }
-  .cat-btn {
-    background: none;
-    border: none;
-    color: var(--dim);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: color .15s, border-color .15s;
-  }
-  .cat-btn.active { color: var(--accent2); border-color: var(--accent); font-weight: 600; }
-  .fav-cat-btn {
-    margin-left: auto;
-    color: var(--yellow) !important;
-  }
-  .fav-cat-btn.active { border-color: var(--yellow) !important; }
+/* ── CAT TABS ── */
+.cat-row {
+  display: flex; overflow-x: auto; scrollbar-width: none;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.cat-row::-webkit-scrollbar { display: none; }
+.cat-btn {
+  background: none; border: none; color: var(--dim);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  padding: 8px 14px; cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+  display: flex; align-items: center; gap: 4px;
+}
+.cat-btn.active { color: var(--accent2); border-color: var(--accent); font-weight: 600; }
+.cat-count {
+  font-size: 10px; background: var(--bg3); color: var(--dim);
+  border-radius: 10px; padding: 1px 5px; min-width: 18px; text-align: center;
+}
+.cat-btn.active .cat-count { background: var(--accent); color: #fff; }
+.fav-cat-btn { margin-left: auto; color: var(--yellow) !important; }
+.fav-cat-btn.active { border-color: var(--yellow) !important; }
+.fav-cat-btn.active .cat-count { background: var(--yellow) !important; color: #000 !important; }
 
-  /* ── STATUS BAR ── */
-  .status-bar {
-    padding: 6px 16px;
-    background: var(--bg2);
-    border-bottom: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--dim);
-    min-height: 28px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .status-bar .err { color: var(--red); }
-  .status-bar .ok  { color: var(--green); }
-  .progress-bar {
-    height: 2px;
-    background: var(--bg3);
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width .3s;
-  }
-  .progress-fill.indeterminate {
-    width: 40%;
-    animation: indeterminate 1.2s ease-in-out infinite;
-  }
-  @keyframes indeterminate {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(350%); }
-  }
+/* ── PROGRESS + STATUS ── */
+.progress-bar { height: 2px; background: var(--bg3); overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
+.progress-fill.indeterminate {
+  width: 40%; animation: indeterminate 1.2s ease-in-out infinite;
+}
+@keyframes indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+.status-row {
+  display: flex; align-items: center;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  min-height: 28px; gap: 6px; padding: 0 8px 0 16px;
+}
+.status-bar { flex: 1; padding: 5px 0; font-size: 11px; color: var(--dim); }
+.status-bar .err { color: var(--red); }
+.status-bar .ok  { color: var(--green); }
+.auto-badge {
+  font-size: 10px; color: var(--green);
+  background: rgba(74,222,128,0.1); border-radius: 4px;
+  padding: 2px 6px; white-space: nowrap; flex-shrink: 0;
+}
+.mark-read-btn {
+  background: none; border: none; color: var(--dim); font-size: 11px;
+  cursor: pointer; padding: 4px 6px; border-radius: 4px;
+  white-space: nowrap; transition: color .15s; flex-shrink: 0;
+}
+.mark-read-btn:hover { color: var(--text); }
 
-  /* ── ARTICLE LIST ── */
-  #articles {
-    padding: 0;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+/* ── ARTICLES ── */
+#articles { padding: 0; max-width: 900px; margin: 0 auto; }
 
-  /* ── CARD ── */
-  .card {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid var(--border);
-    transition: background .1s;
-    cursor: pointer;
-    position: relative;
-  }
-  .card:nth-child(even) { background: var(--bg2); }
-  .card:hover { background: var(--bg3); }
-  .card.is-read { opacity: 0.5; }
+/* ── CARD ── */
+.card {
+  padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+  transition: background .1s; cursor: pointer; position: relative;
+}
+.card:nth-child(even) { background: var(--bg2); }
+.card:hover { background: var(--bg3); }
+.card.is-read { opacity: 0.38; }
+.card-inner { display: flex; gap: 10px; }
+.card-thumb {
+  width: 68px; height: 68px; object-fit: cover;
+  border-radius: 6px; flex-shrink: 0; background: var(--bg3);
+}
+.card-body { flex: 1; min-width: 0; }
+.card-meta {
+  display: flex; align-items: center; gap: 5px;
+  flex-wrap: wrap; margin-bottom: 4px;
+}
+.source-tag {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+.tag-anime  { background: var(--c-anime); }
+.tag-manga  { background: var(--c-manga); }
+.tag-gaming { background: var(--c-gaming); }
+.tag-reddit { background: var(--orange); }
+.new-badge {
+  font-size: 9px; font-weight: 700; color: var(--green);
+  background: rgba(74,222,128,0.12); padding: 1px 5px;
+  border-radius: 4px; letter-spacing: 0.05em; flex-shrink: 0;
+}
+.tag-flair {
+  font-size: 10px; color: var(--dim); background: var(--bg3);
+  padding: 2px 6px; border-radius: 4px;
+  max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.card-age { font-size: 11px; color: var(--dim); margin-left: auto; flex-shrink: 0; }
+.read-dot  { font-size: 10px; color: #444; flex-shrink: 0; }
+.reddit-score {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; color: var(--green);
+  margin-left: auto; flex-shrink: 0;
+}
+.card-title {
+  font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+  color: var(--text); line-height: 1.4; margin-bottom: 3px; word-break: break-word;
+}
+.card:hover .card-title { color: var(--accent2); }
+.card.is-reddit:hover .card-title { color: var(--orange); }
+.card-summary {
+  font-size: 12px; color: var(--dim); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; margin-bottom: 6px;
+}
+.card-actions {
+  display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px;
+}
+.action-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--dim); font-size: 11px; font-weight: 500;
+  padding: 3px 9px; cursor: pointer; transition: all .15s;
+  display: flex; align-items: center; gap: 3px; text-decoration: none;
+}
+.action-btn:hover { background: var(--bg4); color: var(--text); border-color: var(--accent); }
+.action-btn.fav-active { color: var(--yellow); border-color: var(--yellow); }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 5px;
-  }
-  .source-tag {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.02em;
-  }
-  .tag-anime   { background: var(--anime); }
-  .tag-comics  { background: var(--comics); }
-  .tag-gaming  { background: var(--gaming); }
-  .tag-reddit  { background: var(--orange); }
-  .tag-flair {
-    font-size: 11px;
-    color: var(--dim);
-    background: var(--bg3);
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-  .card-age { font-size: 11px; color: var(--dim); margin-left: auto; }
-  .read-badge {
-    font-size: 10px;
-    color: #444455;
-    margin-left: 4px;
-  }
+/* ── LOAD MORE ── */
+.load-more-wrap { padding: 20px; text-align: center; max-width: 900px; margin: 0 auto; }
+.load-more-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  padding: 10px 28px; cursor: pointer; transition: all .15s;
+}
+.load-more-btn:hover { background: var(--bg4); border-color: var(--accent); }
 
-  /* Reddit score */
-  .reddit-score {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--green);
-    margin-left: auto;
-  }
+/* ── EMPTY ── */
+.empty { padding: 60px 20px; text-align: center; color: var(--dim); }
+.empty .big { font-size: 40px; margin-bottom: 12px; }
+.empty p { font-size: 14px; line-height: 1.6; }
 
-  .card-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 4px;
-    word-break: break-word;
-  }
-  .card:hover .card-title { color: var(--accent2); }
-  .card.is-reddit:hover .card-title { color: var(--orange); }
-  .card-summary {
-    font-size: 12px;
-    color: var(--dim);
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text); font-size: 13px;
+  padding: 10px 20px; z-index: 9999; transition: transform .25s ease;
+  white-space: nowrap; box-shadow: 0 4px 24px rgba(0,0,0,.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* Card actions */
-  .card-actions {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-top: 6px;
-  }
-  .action-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--dim);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: all .15s;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    text-decoration: none;
-  }
-  .action-btn:hover {
-    background: var(--bg4);
-    color: var(--text);
-    border-color: var(--accent);
-  }
-  .action-btn.fav-active {
-    color: var(--yellow);
-    border-color: var(--yellow);
-  }
-  .action-btn.copied {
-    color: var(--green);
-    border-color: var(--green);
-  }
+/* ── SETTINGS ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 200; display: none; backdrop-filter: blur(4px);
+}
+.overlay.open { display: block; }
+.settings-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  max-width: 520px; margin: 0 auto;
+  background: var(--bg2); border-radius: 16px 16px 0 0;
+  border: 1px solid var(--border); border-bottom: none;
+  padding: 0 20px 36px; z-index: 201;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  max-height: 85vh; overflow-y: auto;
+}
+.settings-panel.open { transform: translateY(0); }
+.s-handle {
+  width: 36px; height: 4px; background: var(--border);
+  border-radius: 2px; margin: 12px auto 16px;
+}
+.s-title {
+  font-family: 'Space Grotesk', sans-serif; font-size: 16px;
+  font-weight: 700; margin-bottom: 20px; color: var(--text);
+}
+.s-section { margin-bottom: 20px; }
+.s-label {
+  font-size: 11px; color: var(--dim); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.s-opt {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--dim); font-size: 13px;
+  padding: 6px 14px; cursor: pointer; transition: all .15s;
+}
+.s-opt.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-label { font-size: 14px; color: var(--text); }
+.toggle-sub { font-size: 12px; color: var(--dim); margin-top: 2px; }
+.toggle {
+  width: 44px; height: 24px; background: var(--bg3);
+  border-radius: 12px; border: none; cursor: pointer;
+  position: relative; flex-shrink: 0; transition: background .2s;
+}
+.toggle::after {
+  content: ''; position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px; background: var(--dim);
+  border-radius: 50%; transition: transform .2s, background .2s;
+}
+.toggle.on { background: var(--accent); }
+.toggle.on::after { transform: translateX(20px); background: #fff; }
+.danger-btn {
+  width: 100%; background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.25); border-radius: 8px;
+  color: var(--red); font-size: 13px; padding: 10px;
+  cursor: pointer; margin-top: 8px; transition: all .15s;
+}
+.danger-btn:hover { background: rgba(248,113,113,0.16); }
 
-  /* ── EMPTY STATE ── */
-  .empty {
-    padding: 60px 20px;
-    text-align: center;
-    color: var(--dim);
-  }
-  .empty .big { font-size: 40px; margin-bottom: 12px; }
-  .empty p { font-size: 14px; line-height: 1.6; }
+/* ── PWA BANNER ── */
+.install-banner {
+  display: none; background: var(--accent); color: #fff;
+  padding: 10px 16px; font-size: 13px;
+  align-items: center; justify-content: space-between; gap: 10px;
+}
+.install-banner.show { display: flex; }
+.install-banner button {
+  background: #fff; color: var(--accent); border: none;
+  border-radius: 6px; padding: 5px 12px; font-weight: 700;
+  cursor: pointer; font-size: 12px; flex-shrink: 0;
+}
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--bg4);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 13px;
-    padding: 10px 20px;
-    z-index: 9999;
-    transition: transform .25s ease;
-    white-space: nowrap;
-    box-shadow: 0 4px 24px rgba(0,0,0,.5);
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+/* ── SCROLL TOP ── */
+.scroll-top {
+  position: fixed; bottom: 20px; right: 16px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 50%; width: 40px; height: 40px;
+  font-size: 18px; cursor: pointer;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+  z-index: 50; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(88,85,214,0.4);
+}
+.scroll-top.visible { opacity: 1; pointer-events: auto; }
 
-  /* ── PWA INSTALL BANNER ── */
-  .install-banner {
-    display: none;
-    background: var(--accent);
-    color: #fff;
-    padding: 10px 16px;
-    font-size: 13px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .install-banner.show { display: flex; }
-  .install-banner button {
-    background: #fff;
-    color: var(--accent);
-    border: none;
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 12px;
-    flex-shrink: 0;
-  }
-
-  /* ── MOBILE RESPONSIVE ── */
-  @media (max-width: 480px) {
-    .logo span { display: none; }
-    .card-title { font-size: 14px; }
-    .card { padding: 12px 14px 8px; }
-    .refresh-btn { padding: 8px 12px; font-size: 13px; }
-  }
-
-  /* ── SCROLL TO TOP ── */
-  .scroll-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .scroll-top.visible { opacity: 1; pointer-events: auto; }
+@media (max-width: 480px) {
+  .logo span { display: none; }
+  .card-title { font-size: 13px; }
+  .card { padding: 10px 12px 8px; }
+  .card-thumb { width: 56px; height: 56px; }
+  .refresh-btn { padding: 8px 10px; font-size: 13px; }
+}
 </style>
 </head>
 <body>
 
-<!-- PWA install banner -->
 <div class="install-banner" id="installBanner">
   📱 Add to Home Screen for offline access
   <button onclick="installPWA()">Install</button>
@@ -467,348 +386,468 @@
           onclick="document.getElementById('installBanner').classList.remove('show')">✕</button>
 </div>
 
-<!-- Top bar -->
 <div class="topbar">
   <div class="logo">📡 9ty5 News <span>Anime · Manga · Gaming</span></div>
-  <button class="refresh-btn" id="refreshBtn" onclick="fetchCurrent()">
-    <span id="refreshIcon">⟳</span> Refresh
-  </button>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="openSettings()" title="Settings">⚙</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="fetchCurrent()">
+      <span id="refreshIcon">⟳</span> Refresh
+    </button>
+  </div>
 </div>
 
-<!-- Mode tabs -->
 <div class="mode-row">
-  <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">
-    📰 RSS News
-  </button>
-  <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">
-    🔥 Reddit
-  </button>
+  <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
+  <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
 </div>
 
-<!-- Reddit sort -->
 <div class="reddit-sort" id="redditSort">
-  <button class="sort-btn active" data-sort="hot" onclick="setSort(this,'hot')">🔥 Hot</button>
-  <button class="sort-btn" data-sort="top"    onclick="setSort(this,'top')">⭐ Top</button>
-  <button class="sort-btn" data-sort="new"    onclick="setSort(this,'new')">🆕 New</button>
+  <button class="sort-btn active" onclick="setSort(this,'hot')">🔥 Hot</button>
+  <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
+  <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
+  <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
 </div>
 
-<!-- Search -->
 <div class="search-row">
   <div class="search-wrap">
-    <span class="icon">🔍</span>
+    <span class="sicon">🔍</span>
     <input class="search-input" type="search" id="searchInput"
            placeholder="Search articles…" oninput="applyFilter()" autocomplete="off">
   </div>
   <div class="count-badge" id="countBadge">0</div>
 </div>
 
-<!-- Category tabs -->
-<div class="cat-row" id="catRow">
-  <button class="cat-btn active" data-cat="all"    onclick="switchCat(this,'all')">🌐 All</button>
-  <button class="cat-btn"        data-cat="anime"  onclick="switchCat(this,'anime')">🎌 Anime</button>
-  <button class="cat-btn"        data-cat="comics" onclick="switchCat(this,'comics')">📚 Comics</button>
-  <button class="cat-btn"        data-cat="gaming" onclick="switchCat(this,'gaming')">🎮 Gaming</button>
+<div class="cat-row">
+  <button class="cat-btn active" data-cat="all" onclick="switchCat(this,'all')">
+    🌐 All <span class="cat-count" id="cnt-all"></span>
+  </button>
+  <button class="cat-btn" data-cat="anime" onclick="switchCat(this,'anime')">
+    🎌 Anime <span class="cat-count" id="cnt-anime"></span>
+  </button>
+  <button class="cat-btn" data-cat="manga" onclick="switchCat(this,'manga')">
+    📚 Manga <span class="cat-count" id="cnt-manga"></span>
+  </button>
+  <button class="cat-btn" data-cat="gaming" onclick="switchCat(this,'gaming')">
+    🎮 Gaming <span class="cat-count" id="cnt-gaming"></span>
+  </button>
   <button class="cat-btn fav-cat-btn" data-cat="fav" onclick="switchCat(this,'fav')">
-    ⭐ Saved <span id="favCount"></span>
+    ⭐ Saved <span class="cat-count" id="cnt-fav"></span>
   </button>
 </div>
 
-<!-- Progress + status -->
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="status-bar" id="statusBar">Ready — tap Refresh to fetch latest news</div>
+<div class="status-row">
+  <div class="status-bar" id="statusBar">Ready — tap Refresh</div>
+  <span class="auto-badge" id="autoBadge" style="display:none"></span>
+  <button class="mark-read-btn" onclick="markAllRead()">✓ Mark all read</button>
+</div>
 
-<!-- Articles -->
 <div id="articles"></div>
+<div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+  <button class="load-more-btn" onclick="loadMore()">Load More</button>
+</div>
 
-<!-- Toast -->
+<!-- Settings -->
+<div class="overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settingsPanel">
+  <div class="s-handle"></div>
+  <div class="s-title">⚙ Settings</div>
+
+  <div class="s-section">
+    <div class="s-label">Auto-refresh</div>
+    <div class="s-opts" id="arOpts">
+      <button class="s-opt" onclick="setAutoRefresh(0,this)">Off</button>
+      <button class="s-opt" onclick="setAutoRefresh(5,this)">5 min</button>
+      <button class="s-opt" onclick="setAutoRefresh(15,this)">15 min</button>
+      <button class="s-opt" onclick="setAutoRefresh(30,this)">30 min</button>
+    </div>
+  </div>
+
+  <div class="s-section">
+    <div class="s-label">Articles per source</div>
+    <div class="s-opts" id="pfOpts">
+      <button class="s-opt" onclick="setPerFeed(5,this)">5</button>
+      <button class="s-opt" onclick="setPerFeed(8,this)">8</button>
+      <button class="s-opt" onclick="setPerFeed(12,this)">12</button>
+    </div>
+  </div>
+
+  <div class="s-section">
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Hide read articles</div>
+        <div class="toggle-sub">Filter out articles you've opened</div>
+      </div>
+      <button class="toggle" id="hideReadToggle" onclick="toggleSetting('hideRead')"></button>
+    </div>
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Show thumbnails</div>
+        <div class="toggle-sub">Display images when available</div>
+      </div>
+      <button class="toggle on" id="thumbToggle" onclick="toggleSetting('showThumbs')"></button>
+    </div>
+  </div>
+
+  <div class="s-section">
+    <div class="s-label">Data</div>
+    <button class="danger-btn" onclick="clearCache()">🗑 Clear all cache &amp; saved data</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
-
-<!-- Scroll to top -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// ── CONFIG ─────────────────────────────────────────────────────────────────
-const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
-const ALT_PROXY = 'https://api.allorigins.win/get?url=';
+// ── FEEDS ────────────────────────────────────────────────────────────────────
+// Format: [name, url, category]
+// Each source appears in exactly ONE category to prevent cross-contamination.
+const ALL_FEEDS = [
+  // ── ANIME ──
+  ['Anime News Network',   'https://www.animenewsnetwork.com/all/rss.xml',               'anime'],
+  ['AnimeCorner',          'https://animecorner.me/feed/',                                'anime'],
+  ['Otaquest',             'https://www.otaquest.com/feed/',                              'anime'],
+  ['Anime Senpai',         'https://www.animesenpai.net/feed/',                           'anime'],
+  ['Anime Trending',       'https://anitrendz.net/news/feed/',                            'anime'],
+  ['Anime UK News',        'https://animeuknews.net/feed/',                               'anime'],
+  ['Otaku USA',            'https://otakuusamagazine.com/anime/feed',                     'anime'],
+  ["Honey's Anime",        'https://honeysanime.com/feed/',                               'anime'],
+  ['The Anime Daily',      'https://theanimedaily.com/feed/',                             'anime'],
+  ['Anime Herald',         'https://animeherald.com/feed/',                               'anime'],
+  ['Otaku News',           'https://otakunews.com/rss/rss.xml',                           'anime'],
+  ['CBR – Anime',          'https://www.cbr.com/feed/category/anime/',                    'anime'],
+  ['Screen Rant – Anime',  'https://screenrant.com/feed/category/anime/',                 'anime'],
+  ['ComicBook – Anime',    'https://comicbook.com/category/anime/feed/',                  'anime'],
+  ['Den of Geek – Anime',  'https://www.denofgeek.com/anime/feed/',                       'anime'],
+  ['Siliconera – Anime',   'https://www.siliconera.com/category/anime/feed/',             'anime'],
+  ['Animation Magazine',   'https://www.animationmagazine.net/feed/',                     'anime'],
+  ['Anime Feminist',       'https://www.animefeminist.com/feed/',                         'anime'],
+  ['The Fandom Post',      'https://www.thefandompost.com/category/anime-news/feed/',     'anime'],
+  ['RandomC',              'https://randomc.net/feed/',                                   'anime'],
+  ['Anime Evo',            'https://www.anime-evo.net/feed/',                             'anime'],
+  ['MyAnimeList News',     'https://myanimelist.net/rss/news.xml',                        'anime'],
+  ['Sakuga Blog',          'https://blog.sakugabooru.com/feed/',                          'anime'],
+  ['Nerdist – Anime',      'https://nerdist.com/topic/anime/feed/',                       'anime'],
+  ['9ty5.org',             'https://9ty5.org/feed/',                                      'anime'],
 
-const RSS_FEEDS = {
-  anime: [
-    ['Anime News Network',   'https://www.animenewsnetwork.com/all/rss.xml'],
-    ['AnimeCorner',          'https://animecorner.me/feed/'],
-    ['Otaquest',             'https://www.otaquest.com/feed/'],
-    ['Anime Senpai',         'https://www.animesenpai.net/feed/'],
-    ['Anime Trending',       'https://anitrendz.net/news/feed/'],
-    ['Anime UK News',        'https://animeuknews.net/feed/'],
-    ['Otaku USA',            'https://otakuusamagazine.com/anime/feed'],
-    ['Honey\'s Anime',       'https://honeysanime.com/feed/'],
-    ['The Anime Daily',      'https://theanimedaily.com/feed/'],
-    ['Anime Herald',         'https://animeherald.com/feed/'],
-    ['Otaku News',           'https://otakunews.com/rss/rss.xml'],
-    ['CBR – Anime',          'https://www.cbr.com/feed/category/anime/'],
-    ['Screen Rant – Anime',  'https://screenrant.com/feed/category/anime/'],
-    ['ComicBook – Anime',    'https://comicbook.com/category/anime/feed/'],
-    ['Den of Geek – Anime',  'https://www.denofgeek.com/anime/feed/'],
-    ['Nerdist – Anime',      'https://nerdist.com/topic/anime/feed/'],
-    ['Siliconera – Anime',   'https://www.siliconera.com/category/anime/feed/'],
-    ['Animation Magazine',   'https://www.animationmagazine.net/feed/'],
-    ['Manga Bookshelf',      'https://mangabookshelf.com/feed/'],
-    ['9ty5.org',             'https://9ty5.org/feed/'],
-  ],
-  comics: [
-    ['CBR – Comics',         'https://www.cbr.com/feed/category/comics/'],
-    ['CBR – Manga',          'https://www.cbr.com/feed/tag/manga/'],
-    ['Screen Rant – Comics', 'https://screenrant.com/feed/category/comics/'],
-    ['ComicBook.com',        'https://comicbook.com/feed/'],
-    ['IGN – Comics',         'https://feeds.ign.com/ignfeeds/comics'],
-    ['Den of Geek – Comics', 'https://www.denofgeek.com/comics/feed/'],
-    ['Nerdist – Comics',     'https://nerdist.com/topic/comics/feed/'],
-    ['The Comics Beat',      'https://www.comicsbeat.com/feed/'],
-    ['AIPT Comics',          'https://aiptcomics.com/feed/'],
-    ['Multiversity Comics',  'https://www.multiversitycomics.com/feed/'],
-    ['Bleeding Cool',        'https://bleedingcool.com/feed/'],
-    ['Comics Alliance',      'https://comicsalliance.com/feed/'],
-    ['VIZ Media – Manga',    'https://www.viz.com/blog/category/manga/feed'],
-    ['Smash Pages',          'https://smashpages.net/feed/'],
-    ['9ty5.org',             'https://9ty5.org/feed/'],
-  ],
-  gaming: [
-    ['IGN',                  'https://feeds.ign.com/ign/all'],
-    ['Kotaku',               'https://kotaku.com/rss'],
-    ['PC Gamer',             'https://www.pcgamer.com/rss/'],
-    ['GameSpot',             'https://www.gamespot.com/feeds/mashup/'],
-    ['Eurogamer',            'https://www.eurogamer.net/feed'],
-    ['Rock Paper Shotgun',   'https://www.rockpapershotgun.com/feed'],
-    ['GamesRadar',           'https://www.gamesradar.com/games/feed/'],
-    ['Destructoid',          'https://www.destructoid.com/feed/'],
-    ['Polygon',              'https://www.polygon.com/rss/index.xml'],
-    ['The Verge – Gaming',   'https://www.theverge.com/games/rss/index.xml'],
-    ['Siliconera',           'https://www.siliconera.com/feed/'],
-    ['Nintendo Life',        'https://www.nintendolife.com/feeds/news'],
-    ['Push Square',          'https://www.pushsquare.com/feeds/news'],
-    ['Game Rant',            'https://gamerant.com/feed/'],
-    ['PlayStation Blog',     'https://blog.us.playstation.com/feed/'],
-    ['Xbox Wire',            'https://news.xbox.com/en-us/feed/'],
-    ['PCGamesN',             'https://www.pcgamesn.com/feed'],
-    ['DualShockers',         'https://www.dualshockers.com/feed/'],
-    ['9ty5.org',             'https://9ty5.org/feed/'],
-  ],
-};
-RSS_FEEDS.all = [...RSS_FEEDS.anime, ...RSS_FEEDS.comics, ...RSS_FEEDS.gaming]
-  .filter((v,i,a) => a.findIndex(x=>x[1]===v[1])===i);
+  // ── MANGA / COMICS ──
+  ['CBR – Manga',          'https://www.cbr.com/feed/tag/manga/',                         'manga'],
+  ['CBR – Comics',         'https://www.cbr.com/feed/category/comics/',                   'manga'],
+  ['Screen Rant – Comics', 'https://screenrant.com/feed/category/comics/',                'manga'],
+  ['ComicBook.com',        'https://comicbook.com/comics/feed/',                          'manga'],
+  ['Den of Geek – Comics', 'https://www.denofgeek.com/comics/feed/',                      'manga'],
+  ['Nerdist – Comics',     'https://nerdist.com/topic/comics/feed/',                      'manga'],
+  ['The Comics Beat',      'https://www.comicsbeat.com/feed/',                            'manga'],
+  ['AIPT Comics',          'https://aiptcomics.com/feed/',                                'manga'],
+  ['Multiversity Comics',  'https://www.multiversitycomics.com/feed/',                    'manga'],
+  ['Bleeding Cool',        'https://bleedingcool.com/feed/',                              'manga'],
+  ['VIZ Media',            'https://www.viz.com/blog/category/manga/feed',               'manga'],
+  ['Smash Pages',          'https://smashpages.net/feed/',                                'manga'],
+  ['MangaBookshelf',       'https://mangabookshelf.com/feed/',                            'manga'],
+  ['ICv2',                 'https://icv2.com/rss.xml',                                    'manga'],
 
-const SUBREDDITS = {
-  anime:  ['anime','animenews','manga','manhwa','OnePiece','JuJutsuKaisen',
-           'Bleach','Berserk','Chainsawman','hunterxhunter','Naruto',
-           'DragonBallSuper','AttackOnTitan','DemonSlayer','BlueLock',
-           'Vinland_Saga','Gachiakuta'],
-  comics: ['manga','manhwa','manhua','comics','Marvel','DC_Cinematic',
-           'comicbooks','WebtoonCanvas','lightnovels'],
-  gaming: ['gaming','Games','pcgaming','PS5','XboxSeriesX','NintendoSwitch',
-           'indiegaming','anime_games','Genshin_Impact','NieRAutomata',
-           'Sekiro','Eldenring','JRPG','AnimeGamers'],
-};
-SUBREDDITS.all = [...SUBREDDITS.anime,...SUBREDDITS.comics,...SUBREDDITS.gaming]
-  .filter((v,i,a)=>a.indexOf(v)===i);
+  // ── GAMING ──
+  ['IGN',                  'https://feeds.ign.com/ign/all',                               'gaming'],
+  ['Kotaku',               'https://kotaku.com/rss',                                      'gaming'],
+  ['PC Gamer',             'https://www.pcgamer.com/rss/',                                'gaming'],
+  ['GameSpot',             'https://www.gamespot.com/feeds/mashup/',                      'gaming'],
+  ['Eurogamer',            'https://www.eurogamer.net/feed',                              'gaming'],
+  ['Rock Paper Shotgun',   'https://www.rockpapershotgun.com/feed',                       'gaming'],
+  ['GamesRadar',           'https://www.gamesradar.com/games/feed/',                      'gaming'],
+  ['Destructoid',          'https://www.destructoid.com/feed/',                           'gaming'],
+  ['Polygon',              'https://www.polygon.com/rss/index.xml',                       'gaming'],
+  ['The Verge – Gaming',   'https://www.theverge.com/games/rss/index.xml',               'gaming'],
+  ['Siliconera – Gaming',  'https://www.siliconera.com/category/game/feed/',             'gaming'],
+  ['Nintendo Life',        'https://www.nintendolife.com/feeds/news',                     'gaming'],
+  ['Push Square',          'https://www.pushsquare.com/feeds/news',                       'gaming'],
+  ['Game Rant',            'https://gamerant.com/feed/',                                  'gaming'],
+  ['PlayStation Blog',     'https://blog.us.playstation.com/feed/',                       'gaming'],
+  ['Xbox Wire',            'https://news.xbox.com/en-us/feed/',                           'gaming'],
+  ['PCGamesN',             'https://www.pcgamesn.com/feed',                               'gaming'],
+  ['DualShockers',         'https://www.dualshockers.com/feed/',                          'gaming'],
+  ['VG247',                'https://www.vg247.com/feed/',                                 'gaming'],
+  ['VideoGamesChronicle',  'https://www.videogameschronicle.com/feed/',                   'gaming'],
+  ['Ars Technica Gaming',  'https://arstechnica.com/gaming/feed/',                        'gaming'],
+  ['Niche Gamer',          'https://nichegamer.com/feed/',                                'gaming'],
+  ['Noisy Pixel',          'https://noisypixel.net/feed/',                                'gaming'],
+  ['Twinfinite',           'https://twinfinite.net/feed/',                                'gaming'],
+  ['TouchArcade',          'https://toucharcade.com/feed/',                               'gaming'],
+  ['Hardcore Gamer',       'https://hardcoregamer.com/feed/',                             'gaming'],
+  ['WCCFTech Gaming',      'https://wccftech.com/category/gaming/feed/',                  'gaming'],
+  ['TechRaptor',           'https://techraptor.net/feed',                                 'gaming'],
+  ['Rice Digital',         'https://ricedigital.com/feed/',                               'gaming'],
+];
 
-// ── STATE ──────────────────────────────────────────────────────────────────
-let mode       = 'rss';
-let cat        = 'all';
-let redditSort = 'hot';
-let allArticles= [];
-let favorites  = JSON.parse(localStorage.getItem('9ty5_favs') || '[]');
-let readLinks  = new Set(JSON.parse(localStorage.getItem('9ty5_read') || '[]'));
-let isFetching = false;
+// Format: [subreddit, category]
+// No subreddit appears in more than one category.
+const ALL_SUBS = [
+  // ── ANIME ──
+  ['anime',          'anime'],
+  ['animenews',      'anime'],
+  ['OnePiece',       'anime'],
+  ['JuJutsuKaisen',  'anime'],
+  ['Bleach',         'anime'],
+  ['Berserk',        'anime'],
+  ['Chainsawman',    'anime'],
+  ['hunterxhunter',  'anime'],
+  ['Naruto',         'anime'],
+  ['DragonBallSuper','anime'],
+  ['AttackOnTitan',  'anime'],
+  ['DemonSlayer',    'anime'],
+  ['BlueLock',       'anime'],
+  ['Vinland_Saga',   'anime'],
+  ['Gachiakuta',     'anime'],
+  ['ReZero',         'anime'],
+  ['Overlord',       'anime'],
+  ['sololeveling',   'anime'],
+  ['SpyxFamily',     'anime'],
+  ['Mushokutensei',  'anime'],
+  ['FairyTail',      'anime'],
+  ['Animesuggest',   'anime'],
+  ['tokyoghoul',     'anime'],
+  ['OreGairu',       'anime'],
+  ['goodanimemes',   'anime'],
+
+  // ── MANGA / COMICS ──
+  ['manga',          'manga'],
+  ['manhwa',         'manga'],
+  ['manhua',         'manga'],
+  ['comics',         'manga'],
+  ['Marvel',         'manga'],
+  ['DC_Cinematic',   'manga'],
+  ['comicbooks',     'manga'],
+  ['WebtoonCanvas',  'manga'],
+  ['lightnovels',    'manga'],
+  ['OnePunchMan',    'manga'],
+  ['TokyoRevengers', 'manga'],
+  ['Boruto',         'manga'],
+  ['MangaDex',       'manga'],
+
+  // ── GAMING ──
+  ['gaming',         'gaming'],
+  ['Games',          'gaming'],
+  ['pcgaming',       'gaming'],
+  ['PS5',            'gaming'],
+  ['XboxSeriesX',    'gaming'],
+  ['NintendoSwitch', 'gaming'],
+  ['indiegaming',    'gaming'],
+  ['anime_games',    'gaming'],
+  ['Genshin_Impact', 'gaming'],
+  ['NieRAutomata',   'gaming'],
+  ['Sekiro',         'gaming'],
+  ['Eldenring',      'gaming'],
+  ['JRPG',           'gaming'],
+  ['AnimeGamers',    'gaming'],
+  ['Steam',          'gaming'],
+  ['patientgamers',  'gaming'],
+  ['FinalFantasy',   'gaming'],
+  ['pokemon',        'gaming'],
+  ['fireemblem',     'gaming'],
+  ['leagueoflegends','gaming'],
+  ['Minecraft',      'gaming'],
+  ['gamedev',        'gaming'],
+];
+
+const RSS_PROXY  = 'https://api.rss2json.com/v1/api.json?rss_url=';
+const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let mode         = 'rss';
+let cat          = 'all';
+let redditSort   = 'hot';
+let allArticles  = [];
+let filteredPool = [];
+let visibleCount = 30;
+const PAGE_SIZE  = 30;
+let favorites    = JSON.parse(localStorage.getItem('9ty5_favs') || '[]');
+let readLinks    = new Set(JSON.parse(localStorage.getItem('9ty5_read') || '[]'));
+let isFetching   = false;
 let deferredInstall = null;
+let arTimer      = null;
 
-// ── PWA ────────────────────────────────────────────────────────────────────
+let cfg = {
+  autoRefresh: 0,
+  perFeed: 8,
+  hideRead: false,
+  showThumbs: true,
+  ...JSON.parse(localStorage.getItem('9ty5_cfg') || '{}'),
+};
+
+// ── PWA ──────────────────────────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredInstall = e;
   document.getElementById('installBanner').classList.add('show');
 });
 function installPWA() {
-  if (deferredInstall) {
-    deferredInstall.prompt();
-    deferredInstall.userChoice.then(() => {
-      deferredInstall = null;
-      document.getElementById('installBanner').classList.remove('show');
-    });
-  }
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  deferredInstall.userChoice.then(() => {
+    deferredInstall = null;
+    document.getElementById('installBanner').classList.remove('show');
+  });
 }
-
-// ── SCROLL TO TOP ──────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
   document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
 });
 
-// ── HELPERS ────────────────────────────────────────────────────────────────
-function timeAgo(dateStr) {
-  if (!dateStr) return '';
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function timeAgo(d) {
+  if (!d) return '';
   try {
-    const d = new Date(dateStr);
-    const s = (Date.now() - d.getTime()) / 1000;
+    const s = (Date.now() - new Date(d).getTime()) / 1000;
     if (s < 60)     return 'just now';
     if (s < 3600)   return `${Math.floor(s/60)}m ago`;
     if (s < 86400)  return `${Math.floor(s/3600)}h ago`;
     if (s < 604800) return `${Math.floor(s/86400)}d ago`;
-    return d.toLocaleDateString('en', {month:'short', day:'numeric'});
+    return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});
   } catch { return ''; }
 }
-
-function stripHtml(html) {
-  if (!html) return '';
-  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 200);
+function isRecent(d) {
+  if (!d) return false;
+  try { return (Date.now() - new Date(d).getTime()) < 7200000; } catch { return false; }
 }
-
-function trunc(str, n=110) {
-  if (!str) return '';
-  const s = stripHtml(str);
-  return s.length > n ? s.slice(0,n)+'…' : s;
+function stripHtml(s) {
+  if (!s) return '';
+  return s.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
 }
-
-function setStatus(msg, type='') {
-  const bar = document.getElementById('statusBar');
-  bar.innerHTML = `<span class="${type}">${msg}</span>`;
+function cleanTitle(s) {
+  if (!s) return '';
+  const t = stripHtml(s);
+  return t.length > 180 ? t.slice(0,180)+'…' : t;
 }
-
+function cleanSummary(s) {
+  if (!s) return '';
+  const t = stripHtml(s);
+  return t.length > 280 ? t.slice(0,280)+'…' : t;
+}
+function setStatus(msg, cls='') {
+  document.getElementById('statusBar').innerHTML = cls ? `<span class="${cls}">${msg}</span>` : msg;
+}
 function showToast(msg, dur=2200) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), dur);
 }
-
-function setProgress(on) {
-  const f = document.getElementById('progressFill');
-  if (on) f.classList.add('indeterminate');
-  else    f.classList.remove('indeterminate');
-}
-
 function setBusy(on) {
   isFetching = on;
-  const btn  = document.getElementById('refreshBtn');
-  const icon = document.getElementById('refreshIcon');
-  btn.disabled = on;
-  icon.className = on ? 'spin' : '';
-  icon.textContent = on ? '⟳' : '⟳';
-  setProgress(on);
+  document.getElementById('refreshBtn').disabled = on;
+  const ic = document.getElementById('refreshIcon');
+  ic.className = on ? 'spin' : '';
+  ic.textContent = '⟳';
+  const pf = document.getElementById('progressFill');
+  on ? pf.classList.add('indeterminate') : pf.classList.remove('indeterminate');
 }
 
-// ── FETCH RSS ──────────────────────────────────────────────────────────────
-async function fetchRssFeed(name, url) {
+// ── RSS FETCH ────────────────────────────────────────────────────────────────
+async function fetchFeed([name, url, feedCat]) {
   try {
     const res  = await fetch(RSS_PROXY + encodeURIComponent(url),
-                             {signal: AbortSignal.timeout(8000)});
+                             {signal: AbortSignal.timeout(9000)});
     const data = await res.json();
     if (data.status !== 'ok' || !data.items?.length) return [];
-    return data.items.slice(0,8).map(item => ({
-      title:   trunc(item.title),
-      link:    item.link || item.guid,
-      summary: stripHtml(item.description || item.content || ''),
-      age:     timeAgo(item.pubDate),
-      pubDate: item.pubDate,
-      source:  name,
-      cat:     getCatBySource(name, 'rss'),
-      type:    'rss',
-    }));
-  } catch {
-    return [];
-  }
+    return data.items.slice(0, cfg.perFeed).map(item => {
+      const thumb = item.thumbnail ||
+        (item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i) ? item.enclosure.link : null);
+      return {
+        title:   cleanTitle(item.title),
+        link:    item.link || item.guid || '',
+        summary: cleanSummary(item.description || item.content || ''),
+        age:     timeAgo(item.pubDate),
+        pubDate: item.pubDate || '',
+        source:  name,
+        cat:     feedCat,
+        type:    'rss',
+        thumb:   thumb || null,
+      };
+    });
+  } catch { return []; }
 }
 
 async function fetchAllRss() {
-  const feeds = RSS_FEEDS[cat === 'fav' ? 'all' : cat] || RSS_FEEDS.all;
-  const total  = feeds.length;
-  let done     = 0;
+  const feeds = ALL_FEEDS.filter(f => cat === 'all' || cat === 'fav' || f[2] === cat);
+  const total = feeds.length;
+  let done = 0;
   const results = [];
-  const BATCH  = 5;
-
+  const BATCH = 6;
   for (let i = 0; i < feeds.length; i += BATCH) {
-    const batch = feeds.slice(i, i + BATCH);
-    const rows  = await Promise.all(
-      batch.map(([name, url]) => fetchRssFeed(name, url))
-    );
+    const rows = await Promise.all(feeds.slice(i, i+BATCH).map(fetchFeed));
     rows.forEach(r => results.push(...r));
-    done += batch.length;
+    done += Math.min(BATCH, feeds.length - i);
     setStatus(`Fetching RSS ${done}/${total}…`);
   }
-
   results.sort((a,b) => new Date(b.pubDate||0) - new Date(a.pubDate||0));
   allArticles = results;
   localStorage.setItem('9ty5_rss_cache',    JSON.stringify(results));
-  localStorage.setItem('9ty5_rss_cache_at', new Date().toISOString());
+  localStorage.setItem('9ty5_rss_cache_ts', Date.now());
   return results;
 }
 
-// ── FETCH REDDIT ───────────────────────────────────────────────────────────
-async function fetchSubreddit(sub) {
+// ── REDDIT FETCH (allorigins proxy → preserves scores) ───────────────────────
+async function fetchSub([sub, subCat]) {
   try {
-    const url = `https://www.reddit.com/r/${sub}/${redditSort}.json?limit=10`;
-    const res  = await fetch(url, {
-      headers: {'Accept': 'application/json'},
-      signal: AbortSignal.timeout(10000)
-    });
-    const data = await res.json();
-    return (data.data?.children || [])
+    const target = `https://www.reddit.com/r/${sub}/${redditSort}.json?limit=12&raw_json=1`;
+    const res    = await fetch(CORS_PROXY + encodeURIComponent(target),
+                               {signal: AbortSignal.timeout(14000)});
+    const wrap   = await res.json();
+    const parsed = JSON.parse(wrap.contents);
+    return (parsed.data?.children || [])
       .filter(c => !c.data.stickied)
-      .map(c => ({
-        title:    trunc(c.data.title),
-        link:     'https://reddit.com' + c.data.permalink,
-        summary:  stripHtml(c.data.selftext || ''),
-        score:    c.data.score,
-        comments: c.data.num_comments,
-        flair:    c.data.link_flair_text || '',
-        age:      timeAgo(new Date(c.data.created_utc * 1000).toISOString()),
-        created:  c.data.created_utc,
-        source:   `r/${sub}`,
-        sub,
-        cat:      getCatBySource(sub, 'reddit'),
-        type:     'reddit',
-      }));
-  } catch {
-    return [];
-  }
+      .slice(0, 10)
+      .map(c => {
+        const d = c.data;
+        const ts = new Date(d.created_utc * 1000).toISOString();
+        return {
+          title:    cleanTitle(d.title),
+          link:     'https://reddit.com' + d.permalink,
+          summary:  cleanSummary(d.selftext || ''),
+          score:    d.score,
+          comments: d.num_comments,
+          flair:    d.link_flair_text || '',
+          age:      timeAgo(ts),
+          pubDate:  ts,
+          source:   `r/${sub}`,
+          sub,
+          cat:      subCat,
+          type:     'reddit',
+          thumb:    d.thumbnail?.startsWith('http') ? d.thumbnail : null,
+        };
+      });
+  } catch { return []; }
 }
 
 async function fetchAllReddit() {
-  const subs  = SUBREDDITS[cat === 'fav' ? 'all' : cat] || SUBREDDITS.all;
+  const subs  = ALL_SUBS.filter(s => cat === 'all' || cat === 'fav' || s[1] === cat);
   const total = subs.length;
-  let done    = 0;
+  let done = 0;
   const results = [];
-  const BATCH = 4;
-
+  const BATCH = 3;
   for (let i = 0; i < subs.length; i += BATCH) {
-    const batch   = subs.slice(i, i + BATCH);
-    const rows    = await Promise.all(batch.map(fetchSubreddit));
+    const rows = await Promise.all(subs.slice(i, i+BATCH).map(fetchSub));
     rows.forEach(r => results.push(...r));
-    done += batch.length;
+    done += Math.min(BATCH, subs.length - i);
     setStatus(`Fetching Reddit ${done}/${total}…`);
-    await new Promise(r => setTimeout(r, 500)); // rate-limit
+    if (i + BATCH < subs.length) await new Promise(r => setTimeout(r, 700));
   }
-
   results.sort((a,b) => (b.score||0) - (a.score||0));
   allArticles = results;
   localStorage.setItem('9ty5_reddit_cache',    JSON.stringify(results));
-  localStorage.setItem('9ty5_reddit_cache_at', new Date().toISOString());
+  localStorage.setItem('9ty5_reddit_cache_ts', Date.now());
   return results;
 }
 
-// ── MAIN FETCH ─────────────────────────────────────────────────────────────
+// ── MAIN FETCH ────────────────────────────────────────────────────────────────
 async function fetchCurrent() {
   if (isFetching) return;
   setBusy(true);
-  setStatus('Checking connection…');
+  setStatus('Fetching…');
   try {
-    let results;
-    if (mode === 'rss') {
-      results = await fetchAllRss();
-      const ts = new Date().toLocaleTimeString();
-      setStatus(`✓ ${results.length} articles fetched — ${ts}`, 'ok');
-    } else {
-      results = await fetchAllReddit();
-      const ts = new Date().toLocaleTimeString();
-      setStatus(`✓ ${results.length} Reddit posts — ${ts}`, 'ok');
-    }
+    const results = mode === 'rss' ? await fetchAllRss() : await fetchAllReddit();
+    const label   = mode === 'rss' ? 'articles' : 'posts';
+    setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`, 'ok');
+    visibleCount = PAGE_SIZE;
     applyFilter();
   } catch(e) {
     setStatus(`Error: ${e.message}`, 'err');
@@ -817,135 +856,145 @@ async function fetchCurrent() {
   }
 }
 
-// ── FILTER + RENDER ────────────────────────────────────────────────────────
+// ── FILTER + RENDER ───────────────────────────────────────────────────────────
 function applyFilter() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  let pool;
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const pool = cat === 'fav' ? favorites : allArticles;
 
-  if (cat === 'fav') {
-    pool = favorites;
-  } else {
-    pool = allArticles.filter(a => {
-      if (cat !== 'all' && a.cat !== cat) return false;
-      if (q && !a.title.toLowerCase().includes(q) &&
-               !a.source.toLowerCase().includes(q) &&
-               !(a.summary||'').toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }
+  filteredPool = pool.filter(a => {
+    if (cat !== 'all' && cat !== 'fav' && a.cat !== cat) return false;
+    if (cfg.hideRead && readLinks.has(a.link)) return false;
+    if (q && !a.title.toLowerCase().includes(q) &&
+             !(a.source||'').toLowerCase().includes(q) &&
+             !(a.summary||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
 
-  document.getElementById('countBadge').textContent =
-    pool.length + ' posts';
-  renderArticles(pool);
+  document.getElementById('countBadge').textContent = filteredPool.length + ' posts';
+  updateCounts();
+  renderArticles(filteredPool.slice(0, visibleCount));
+  document.getElementById('loadMoreWrap').style.display =
+    filteredPool.length > visibleCount ? 'block' : 'none';
+}
+
+function loadMore() {
+  visibleCount += PAGE_SIZE;
+  renderArticles(filteredPool.slice(0, visibleCount));
+  document.getElementById('loadMoreWrap').style.display =
+    filteredPool.length > visibleCount ? 'block' : 'none';
+}
+
+function updateCounts() {
+  const counts = {all:0, anime:0, manga:0, gaming:0};
+  allArticles.forEach(a => { counts.all++; if (a.cat in counts) counts[a.cat]++; });
+  ['all','anime','manga','gaming'].forEach(c => {
+    const el = document.getElementById(`cnt-${c}`);
+    if (el) el.textContent = counts[c] || '';
+  });
+  const favEl = document.getElementById('cnt-fav');
+  if (favEl) favEl.textContent = favorites.length || '';
 }
 
 function renderArticles(items) {
   const el = document.getElementById('articles');
   if (!items.length) {
-    el.innerHTML = `
-      <div class="empty">
-        <div class="big">${cat==='fav'?'⭐':'📭'}</div>
-        <p>${cat==='fav'
-          ? 'No saved articles yet.<br>Tap ☆ on any article to save it.'
-          : 'No articles found.<br>Tap ⟳ Refresh to fetch latest news.'}</p>
-      </div>`;
+    el.innerHTML = `<div class="empty">
+      <div class="big">${cat==='fav'?'⭐':'📭'}</div>
+      <p>${cat==='fav'
+        ? 'No saved articles yet.<br>Tap ☆ on any article to save it.'
+        : 'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
+    </div>`;
     return;
   }
-
-  el.innerHTML = items.map((a,i) => {
+  el.innerHTML = items.map((a, i) => {
     const isRead = readLinks.has(a.link);
     const isFav  = favorites.some(f => f.link === a.link);
     const tagCls = a.type==='reddit' ? 'tag-reddit'
                  : a.cat==='anime'   ? 'tag-anime'
-                 : a.cat==='comics'  ? 'tag-comics' : 'tag-gaming';
-
-    const scorePart = a.type==='reddit'
+                 : a.cat==='manga'   ? 'tag-manga' : 'tag-gaming';
+    const newBadge   = (a.type==='rss' && isRecent(a.pubDate)) ? `<span class="new-badge">NEW</span>` : '';
+    const flairPart  = a.flair ? `<span class="tag-flair">${escHtml(a.flair)}</span>` : '';
+    const readDot    = isRead ? `<span class="read-dot">✓</span>` : '';
+    const scorePart  = a.type==='reddit'
       ? `<span class="reddit-score">⬆${(a.score||0).toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`
       : '';
-
-    const flairPart = a.flair
-      ? `<span class="tag-flair">${a.flair}</span>` : '';
-
-    const readPart = isRead
-      ? `<span class="read-badge">✓ read</span>` : '';
-
-    return `
-    <div class="card ${a.type==='reddit'?'is-reddit':''} ${isRead?'is-read':''}"
-         onclick="openCard('${encodeURIComponent(a.link)}','${i}')">
-      <div class="card-meta">
-        <span class="source-tag ${tagCls}">${a.source}</span>
-        ${flairPart}
-        ${readPart}
-        ${scorePart}
-        <span class="card-age">${a.age}</span>
-      </div>
-      <div class="card-title">${a.title}</div>
-      ${a.summary ? `<div class="card-summary">${a.summary}</div>` : ''}
-      <div class="card-actions" onclick="event.stopPropagation()">
-        <button class="action-btn ${isFav?'fav-active':''}"
-                onclick="toggleFav(${i})">
-          ${isFav?'★':'☆'} ${isFav?'Saved':'Save'}
-        </button>
-        <button class="action-btn" onclick="copyPost(${i})">
-          📋 Copy
-        </button>
-        <a class="action-btn" href="${a.link}" target="_blank" rel="noopener">
-          🔗 Open
-        </a>
+    const thumbPart  = cfg.showThumbs && a.thumb
+      ? `<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+      : '';
+    const safeLink = escHtml(a.link);
+    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}"
+         data-idx="${i}" onclick="openCard(${i})">
+      <div class="card-inner">
+        ${thumbPart}
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="source-tag ${tagCls}">${escHtml(a.source)}</span>
+            ${newBadge}${flairPart}${readDot}${scorePart}
+            <span class="card-age">${a.age}</span>
+          </div>
+          <div class="card-title">${escHtml(a.title)}</div>
+          ${a.summary ? `<div class="card-summary">${escHtml(a.summary)}</div>` : ''}
+          <div class="card-actions" onclick="event.stopPropagation()">
+            <button class="action-btn${isFav?' fav-active':''}" onclick="toggleFav(${i})">${isFav?'★ Saved':'☆ Save'}</button>
+            <button class="action-btn" onclick="sharePost(${i})">📤 Share</button>
+            <button class="action-btn" onclick="copyPost(${i})">📋 Copy</button>
+            <a class="action-btn" href="${safeLink}" target="_blank" rel="noopener noreferrer">🔗 Open</a>
+          </div>
+        </div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── CARD ACTIONS ──────────────────────────────────────────────────────────
-function openCard(encodedLink, idx) {
-  const link = decodeURIComponent(encodedLink);
-  window.open(link, '_blank', 'noopener');
-  readLinks.add(link);
+function escHtml(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── CARD ACTIONS ──────────────────────────────────────────────────────────────
+function getRendered() { return filteredPool.slice(0, visibleCount); }
+
+function openCard(idx) {
+  const a = getRendered()[idx];
+  if (!a) return;
+  window.open(a.link, '_blank', 'noopener noreferrer');
+  readLinks.add(a.link);
   localStorage.setItem('9ty5_read', JSON.stringify([...readLinks]));
-  // dim the card
-  const card = document.querySelectorAll('.card')[idx];
+  const card = document.querySelector(`.card[data-idx="${idx}"]`);
   if (card) card.classList.add('is-read');
 }
 
 function toggleFav(idx) {
-  const q    = document.getElementById('searchInput').value.toLowerCase();
-  const pool = cat === 'fav' ? favorites : allArticles.filter(a => {
-    if (cat !== 'all' && a.cat !== cat) return false;
-    if (q && !a.title.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  const a = pool[idx];
+  const a = getRendered()[idx];
   if (!a) return;
   const fi = favorites.findIndex(f => f.link === a.link);
-  if (fi > -1) {
-    favorites.splice(fi, 1);
-    showToast('Removed from saved');
-  } else {
-    favorites.unshift(a);
-    showToast('⭐ Saved!');
-  }
+  if (fi > -1) { favorites.splice(fi, 1); showToast('Removed from saved'); }
+  else         { favorites.unshift(a);     showToast('⭐ Saved!'); }
   localStorage.setItem('9ty5_favs', JSON.stringify(favorites));
-  updateFavCount();
-  applyFilter();
+  updateCounts();
+  renderArticles(getRendered());
+}
+
+function sharePost(idx) {
+  const a = getRendered()[idx];
+  if (!a) return;
+  if (navigator.share) {
+    navigator.share({title: a.title, text: a.summary || a.title, url: a.link}).catch(()=>{});
+  } else {
+    copyPost(idx);
+  }
 }
 
 function copyPost(idx) {
-  const q    = document.getElementById('searchInput').value.toLowerCase();
-  const pool = cat === 'fav' ? favorites : allArticles.filter(a => {
-    if (cat !== 'all' && a.cat !== cat) return false;
-    if (q && !a.title.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  const a = pool[idx];
+  const a = getRendered()[idx];
   if (!a) return;
-  const text = `${a.title}\n\nRead more: ${a.link}\n\nvia ${a.source}`;
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('✓ Copied to clipboard!');
-  }).catch(() => {
-    // fallback
+  const text = `${a.title}\n\n${a.summary ? a.summary+'\n\n' : ''}Read more: ${a.link}\n\nvia ${a.source} | 9ty5 News`;
+  navigator.clipboard.writeText(text).then(() => showToast('✓ Copied!')).catch(() => {
     const el = document.createElement('textarea');
     el.value = text;
+    Object.assign(el.style, {position:'fixed',opacity:'0'});
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
@@ -954,30 +1003,33 @@ function copyPost(idx) {
   });
 }
 
-function updateFavCount() {
-  const n = favorites.length;
-  document.getElementById('favCount').textContent = n ? `(${n})` : '';
+function markAllRead() {
+  const rendered = getRendered();
+  rendered.forEach(a => readLinks.add(a.link));
+  localStorage.setItem('9ty5_read', JSON.stringify([...readLinks]));
+  renderArticles(rendered);
+  showToast(`✓ Marked ${rendered.length} as read`);
 }
 
-// ── MODE / CAT ─────────────────────────────────────────────────────────────
+// ── MODE / CAT / SORT ─────────────────────────────────────────────────────────
 function switchMode(m) {
   if (isFetching) return;
   mode = m;
-  document.getElementById('modeRss').className =
-    'mode-btn' + (m==='rss' ? ' active-rss' : '');
-  document.getElementById('modeReddit').className =
-    'mode-btn' + (m==='reddit' ? ' active-reddit' : '');
+  document.getElementById('modeRss').className    = 'mode-btn' + (m==='rss'    ? ' active-rss'    : '');
+  document.getElementById('modeReddit').className = 'mode-btn' + (m==='reddit' ? ' active-reddit' : '');
   document.getElementById('redditSort').classList.toggle('visible', m==='reddit');
-
-  // load from cache
-  if (m === 'rss') {
-    const c = localStorage.getItem('9ty5_rss_cache');
-    if (c) { allArticles = JSON.parse(c); applyFilter(); }
-    else   { fetchCurrent(); }
+  const cacheKey = m==='rss' ? '9ty5_rss_cache' : '9ty5_reddit_cache';
+  const cacheTsKey = m==='rss' ? '9ty5_rss_cache_ts' : '9ty5_reddit_cache_ts';
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    allArticles = JSON.parse(cached);
+    const ts = localStorage.getItem(cacheTsKey);
+    const ago = ts ? timeAgo(new Date(+ts).toISOString()) : '';
+    setStatus(`Cached ${ago} — tap Refresh to update`);
+    visibleCount = PAGE_SIZE;
+    applyFilter();
   } else {
-    const c = localStorage.getItem('9ty5_reddit_cache');
-    if (c) { allArticles = JSON.parse(c); applyFilter(); }
-    else   { fetchCurrent(); }
+    fetchCurrent();
   }
 }
 
@@ -985,6 +1037,7 @@ function switchCat(btn, c) {
   cat = c;
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  visibleCount = PAGE_SIZE;
   applyFilter();
 }
 
@@ -995,30 +1048,93 @@ function setSort(btn, s) {
   fetchCurrent();
 }
 
-// ── CAT HELPERS ────────────────────────────────────────────────────────────
-function getCatBySource(source, type) {
-  if (type === 'rss') {
-    if (RSS_FEEDS.anime.some(f => f[0] === source))   return 'anime';
-    if (RSS_FEEDS.comics.some(f => f[0] === source))  return 'comics';
-    if (RSS_FEEDS.gaming.some(f => f[0] === source))  return 'gaming';
-  } else {
-    if (SUBREDDITS.anime.includes(source.replace('r/','')))   return 'anime';
-    if (SUBREDDITS.comics.includes(source.replace('r/','')))  return 'comics';
-    if (SUBREDDITS.gaming.includes(source.replace('r/','')))  return 'gaming';
-  }
-  return 'all';
+// ── SETTINGS ─────────────────────────────────────────────────────────────────
+function saveCfg() { localStorage.setItem('9ty5_cfg', JSON.stringify(cfg)); }
+
+function openSettings()  {
+  document.getElementById('settingsOverlay').classList.add('open');
+  document.getElementById('settingsPanel').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settingsOverlay').classList.remove('open');
+  document.getElementById('settingsPanel').classList.remove('open');
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
+function setAutoRefresh(mins, btn) {
+  document.querySelectorAll('#arOpts .s-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  cfg.autoRefresh = mins;
+  saveCfg();
+  setupAutoRefresh();
+}
+
+function setPerFeed(n, btn) {
+  document.querySelectorAll('#pfOpts .s-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  cfg.perFeed = n;
+  saveCfg();
+}
+
+function toggleSetting(key) {
+  cfg[key] = !cfg[key];
+  saveCfg();
+  if (key === 'hideRead') {
+    document.getElementById('hideReadToggle').classList.toggle('on', cfg.hideRead);
+    applyFilter();
+  } else if (key === 'showThumbs') {
+    document.getElementById('thumbToggle').classList.toggle('on', cfg.showThumbs);
+    renderArticles(getRendered());
+  }
+}
+
+function setupAutoRefresh() {
+  clearInterval(arTimer);
+  const badge = document.getElementById('autoBadge');
+  if (cfg.autoRefresh > 0) {
+    badge.style.display = 'inline';
+    badge.textContent   = `⟳ ${cfg.autoRefresh}m`;
+    arTimer = setInterval(() => { if (!isFetching) fetchCurrent(); }, cfg.autoRefresh * 60000);
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function clearCache() {
+  if (!confirm('Clear all cached articles and saved items?')) return;
+  ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
+   '9ty5_favs','9ty5_read'].forEach(k => localStorage.removeItem(k));
+  favorites    = [];
+  readLinks    = new Set();
+  allArticles  = [];
+  filteredPool = [];
+  updateCounts();
+  document.getElementById('articles').innerHTML = '';
+  closeSettings();
+  showToast('Cache cleared');
+}
+
+function applySettingsToUI() {
+  document.getElementById('hideReadToggle').classList.toggle('on', cfg.hideRead);
+  document.getElementById('thumbToggle').classList.toggle('on', cfg.showThumbs);
+  const arVals = [0,5,15,30];
+  document.querySelectorAll('#arOpts .s-opt').forEach((b,i) =>
+    b.classList.toggle('active', arVals[i] === cfg.autoRefresh));
+  const pfVals = [5,8,12];
+  document.querySelectorAll('#pfOpts .s-opt').forEach((b,i) =>
+    b.classList.toggle('active', pfVals[i] === cfg.perFeed));
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
-  updateFavCount();
-  // Try loading cached RSS on start
-  const cached   = localStorage.getItem('9ty5_rss_cache');
-  const cachedAt = localStorage.getItem('9ty5_rss_cache_at');
+  updateCounts();
+  applySettingsToUI();
+  setupAutoRefresh();
+  const cached = localStorage.getItem('9ty5_rss_cache');
+  const ts     = localStorage.getItem('9ty5_rss_cache_ts');
   if (cached) {
     allArticles = JSON.parse(cached);
-    const ts = cachedAt ? new Date(cachedAt).toLocaleString() : 'unknown';
-    setStatus(`Loaded from cache (${ts}) — tap Refresh to update`);
+    const ago = ts ? timeAgo(new Date(+ts).toISOString()) : '';
+    setStatus(`Cached ${ago} — tap Refresh to update`);
     applyFilter();
   } else {
     fetchCurrent();
@@ -1028,13 +1144,10 @@ function init() {
 init();
 </script>
 
-<!-- PWA manifest -->
 <link rel="manifest" href="manifest.json">
-
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .catch(()=>{});
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
 </script>
 </body>
