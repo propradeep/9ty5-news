@@ -12,10 +12,10 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:      #0f0f13; --bg2: #16161d; --bg3: #1e1e2a; --bg4: #252535;
-  --accent:  #5855d6; --accent2: #7b78f0; --text: #e8e8f0; --dim: #888899;
-  --green:   #4ade80; --yellow: #fbbf24; --orange: #fb923c; --red: #f87171;
-  --border:  #2a2a3a; --c-anime: #5855d6; --c-manga: #d97706; --c-gaming: #16a34a;
+  --bg:#0f0f13; --bg2:#16161d; --bg3:#1e1e2a; --bg4:#252535;
+  --accent:#5855d6; --accent2:#7b78f0; --text:#e8e8f0; --dim:#888899;
+  --green:#4ade80; --yellow:#fbbf24; --orange:#fb923c; --red:#f87171;
+  --border:#2a2a3a; --c-anime:#5855d6; --c-manga:#d97706; --c-gaming:#16a34a;
 }
 html { scroll-behavior: smooth; }
 body {
@@ -56,7 +56,7 @@ body {
 /* MODE TABS */
 .mode-row {
   background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; overflow-x: auto; scrollbar-width: none; align-items: center;
+  display: flex; overflow-x: auto; scrollbar-width: none;
 }
 .mode-row::-webkit-scrollbar { display: none; }
 .mode-btn {
@@ -67,24 +67,12 @@ body {
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
 .mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
-.reddit-user-chip {
-  margin-left: auto; margin-right: 10px; display: none;
-  align-items: center; gap: 6px; flex-shrink: 0;
-}
-.reddit-user-chip.show { display: flex; }
-.reddit-avatar {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--orange); display: flex; align-items: center;
-  justify-content: center; font-size: 12px; font-weight: 700; color: #fff;
-  flex-shrink: 0;
-}
-.reddit-username { font-size: 12px; color: var(--orange); font-weight: 600; }
 
 /* SORT ROW */
 .reddit-sort {
   display: none; gap: 6px; padding: 6px 16px;
   background: var(--bg2); border-bottom: 1px solid var(--border);
-  overflow-x: auto; scrollbar-width: none;
+  overflow-x: auto; scrollbar-width: none; align-items: center;
 }
 .reddit-sort.visible { display: flex; }
 .sort-btn {
@@ -93,8 +81,12 @@ body {
   cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
 }
 .sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-.sort-btn.myfeed-btn { color: var(--yellow); border-color: rgba(251,191,36,0.3); }
-.sort-btn.myfeed-btn.active { background: var(--yellow); border-color: var(--yellow); color: #000; }
+.myfeed-btn { border-color: rgba(251,191,36,0.4) !important; color: var(--yellow) !important; }
+.myfeed-btn.active { background: var(--yellow) !important; border-color: var(--yellow) !important; color: #000 !important; }
+.myfeed-count {
+  font-size: 10px; background: rgba(251,191,36,0.15); color: var(--yellow);
+  border-radius: 10px; padding: 1px 5px; margin-left: -4px;
+}
 
 /* SEARCH */
 .search-row {
@@ -109,8 +101,7 @@ body {
 .search-input {
   width: 100%; background: var(--bg3); border: 1px solid var(--border);
   border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 14px; padding: 7px 12px 7px 32px; outline: none;
-  transition: border-color .15s;
+  font-size: 14px; padding: 7px 12px 7px 32px; outline: none; transition: border-color .15s;
 }
 .search-input:focus { border-color: var(--accent); }
 .count-badge {
@@ -148,8 +139,7 @@ body {
 @keyframes indeterminate { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
 .status-row {
   display: flex; align-items: center; background: var(--bg2);
-  border-bottom: 1px solid var(--border); min-height: 28px;
-  gap: 6px; padding: 0 8px 0 16px;
+  border-bottom: 1px solid var(--border); min-height: 28px; gap: 6px; padding: 0 8px 0 16px;
 }
 .status-bar { flex: 1; padding: 5px 0; font-size: 11px; color: var(--dim); }
 .status-bar .err { color: var(--red); }
@@ -165,10 +155,8 @@ body {
 }
 .mark-read-btn:hover { color: var(--text); }
 
-/* ARTICLES */
+/* CARDS */
 #articles { padding: 0; max-width: 900px; margin: 0 auto; }
-
-/* CARD */
 .card {
   padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
   transition: background .1s; cursor: pointer;
@@ -182,9 +170,7 @@ body {
   border-radius: 6px; flex-shrink: 0; background: var(--bg3);
 }
 .card-body { flex: 1; min-width: 0; }
-.card-meta {
-  display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 4px;
-}
+.card-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 4px; }
 .source-tag {
   display: inline-block; padding: 2px 7px; border-radius: 4px;
   font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.02em; flex-shrink: 0;
@@ -195,8 +181,8 @@ body {
 .tag-reddit { background: var(--orange); }
 .new-badge {
   font-size: 9px; font-weight: 700; color: var(--green);
-  background: rgba(74,222,128,0.12); padding: 1px 5px;
-  border-radius: 4px; letter-spacing: 0.05em; flex-shrink: 0;
+  background: rgba(74,222,128,0.12); padding: 1px 5px; border-radius: 4px;
+  letter-spacing: 0.05em; flex-shrink: 0;
 }
 .tag-flair {
   font-size: 10px; color: var(--dim); background: var(--bg3);
@@ -243,11 +229,10 @@ body {
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); }
 .empty .big { font-size: 40px; margin-bottom: 12px; }
 .empty p { font-size: 14px; line-height: 1.8; }
-.empty .login-hint {
-  margin-top: 16px; display: inline-block;
-  background: var(--orange); color: #fff; border: none; border-radius: 8px;
-  padding: 10px 20px; font-size: 13px; font-weight: 700; cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+.empty-action {
+  margin-top: 16px; display: inline-block; background: var(--orange); color: #fff;
+  border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
 }
 
 /* TOAST */
@@ -256,8 +241,7 @@ body {
   transform: translateX(-50%) translateY(80px);
   background: var(--bg4); border: 1px solid var(--border); border-radius: 10px;
   color: var(--text); font-size: 13px; padding: 10px 20px; z-index: 9999;
-  transition: transform .25s ease; white-space: nowrap;
-  box-shadow: 0 4px 24px rgba(0,0,0,.5);
+  transition: transform .25s ease; white-space: nowrap; box-shadow: 0 4px 24px rgba(0,0,0,.5);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -268,18 +252,19 @@ body {
 }
 .overlay.open { display: block; }
 .settings-panel {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 520px; margin: 0 auto;
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 540px; margin: 0 auto;
   background: var(--bg2); border-radius: 16px 16px 0 0;
   border: 1px solid var(--border); border-bottom: none;
-  padding: 0 20px 36px; z-index: 201;
+  padding: 0 20px 40px; z-index: 201;
   transform: translateY(100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
-  max-height: 88vh; overflow-y: auto;
+  max-height: 90vh; overflow-y: auto;
 }
 .settings-panel.open { transform: translateY(0); }
 .s-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 16px; }
 .s-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
-.s-section { margin-bottom: 20px; }
+.s-section { margin-bottom: 22px; }
 .s-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.s-sublabel { font-size: 12px; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
 .s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .s-opt {
   background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
@@ -301,26 +286,32 @@ body {
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); background: #fff; }
 
-/* Reddit auth card in settings */
-.reddit-auth-card {
+/* My Feed subreddit input */
+.subs-card {
   background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
   padding: 14px; margin-top: 4px;
 }
-.reddit-auth-card.connected { border-color: rgba(251,146,60,0.4); background: rgba(251,146,60,0.05); }
-.reddit-auth-info { font-size: 13px; color: var(--dim); margin-bottom: 10px; line-height: 1.5; }
-.reddit-auth-info strong { color: var(--orange); }
-.reddit-connect-btn {
-  background: var(--orange); border: none; border-radius: 8px; color: #fff;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
-  padding: 8px 16px; cursor: pointer; transition: opacity .15s; width: 100%;
+.subs-textarea {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
+  min-height: 110px; transition: border-color .15s; line-height: 1.6;
+  margin-top: 8px;
 }
-.reddit-connect-btn:hover { opacity: 0.88; }
-.reddit-disconnect-btn {
-  background: var(--bg4); border: 1px solid var(--border); border-radius: 8px;
-  color: var(--dim); font-family: 'DM Sans', sans-serif; font-size: 12px;
-  padding: 6px 12px; cursor: pointer; transition: all .15s; margin-top: 8px; width: 100%;
+.subs-textarea:focus { border-color: var(--accent); }
+.subs-textarea::placeholder { color: var(--dim); opacity: 0.6; }
+.subs-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px; flex-wrap: wrap; gap: 8px;
 }
-.reddit-disconnect-btn:hover { color: var(--red); border-color: var(--red); }
+.subs-count { font-size: 11px; color: var(--green); }
+.subs-hint { font-size: 11px; color: var(--dim); }
+.paste-hint {
+  background: rgba(88,85,214,0.1); border: 1px solid rgba(88,85,214,0.2);
+  border-radius: 8px; padding: 10px 12px; margin-top: 10px;
+  font-size: 12px; color: var(--dim); line-height: 1.6;
+}
+.paste-hint strong { color: var(--accent2); }
 
 .danger-btn {
   width: 100%; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
@@ -382,10 +373,6 @@ body {
 <div class="mode-row">
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
   <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
-  <div class="reddit-user-chip" id="redditChip">
-    <div class="reddit-avatar" id="redditAvatarInitial">?</div>
-    <span class="reddit-username" id="redditUsername"></span>
-  </div>
 </div>
 
 <div class="reddit-sort" id="redditSort">
@@ -393,7 +380,9 @@ body {
   <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
   <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
   <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
-  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')" style="display:none">👤 My Feed</button>
+  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')">
+    👤 My Feed <span class="myfeed-count" id="myFeedCount" style="display:none"></span>
+  </button>
 </div>
 
 <div class="search-row">
@@ -435,7 +424,7 @@ body {
   <button class="load-more-btn" onclick="loadMore()">Load More</button>
 </div>
 
-<!-- Settings panel -->
+<!-- Settings -->
 <div class="overlay" id="settingsOverlay" onclick="closeSettings()"></div>
 <div class="settings-panel" id="settingsPanel">
   <div class="s-handle"></div>
@@ -477,20 +466,26 @@ body {
     </div>
   </div>
 
-  <!-- Reddit account -->
+  <!-- My Feed: custom subreddits -->
   <div class="s-section">
-    <div class="s-label">Reddit Account</div>
-    <div class="reddit-auth-card" id="redditAuthCard">
-      <div class="reddit-auth-info" id="redditAuthInfo">
-        Log in to get posts from <strong>your own followed subreddits</strong>
-        with upvote counts. Requires a free Reddit app ID (takes 2 min to set up).
+    <div class="s-label">👤 My Feed — Your Subreddits</div>
+    <div class="subs-card">
+      <div class="s-sublabel">
+        Enter your subreddits one per line (or comma-separated).
+        The <strong style="color:var(--yellow)">👤 My Feed</strong> button in Reddit mode fetches only these.
       </div>
-      <button class="reddit-connect-btn" id="redditConnectBtn" onclick="startRedditLogin()">
-        🔑 Connect Reddit Account
-      </button>
-      <button class="reddit-disconnect-btn" id="redditDisconnectBtn" onclick="disconnectReddit()" style="display:none">
-        Disconnect
-      </button>
+      <textarea class="subs-textarea" id="customSubsInput"
+        placeholder="anime&#10;OnePiece&#10;manga&#10;gaming&#10;AskReddit&#10;pics&#10;LOTR&#10;philosophy"
+        oninput="saveCustomSubs()"></textarea>
+      <div class="subs-meta">
+        <span class="subs-count" id="subsCount"></span>
+        <span class="subs-hint">No login needed — uses RSS</span>
+      </div>
+      <div class="paste-hint">
+        💡 <strong>How to find your subreddits:</strong> on Reddit go to
+        <strong>reddit.com/subreddits/mine</strong> — you'll see your full list there.
+        Copy the names and paste them here.
+      </div>
     </div>
   </div>
 
@@ -501,13 +496,13 @@ body {
 </div>
 
 <div class="toast" id="toast"></div>
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="scroll-top" id="scrollTop"
+        onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 // ── FEED DATA ─────────────────────────────────────────────────────────────────
-// Format: [name, url, category] — each source in exactly ONE category
 const ALL_FEEDS = [
-  // ANIME
+  // ANIME — each source in exactly one category
   ['Anime News Network',   'https://www.animenewsnetwork.com/all/rss.xml',               'anime'],
   ['AnimeCorner',          'https://animecorner.me/feed/',                                'anime'],
   ['Otaquest',             'https://www.otaquest.com/feed/',                              'anime'],
@@ -579,7 +574,7 @@ const ALL_FEEDS = [
   ['Rice Digital',         'https://ricedigital.com/feed/',                               'gaming'],
 ];
 
-// Format: [subreddit, category] — no subreddit in more than one category
+// Format: [subreddit, category] — used for category-filtered Reddit fetching
 const ALL_SUBS = [
   ['anime','anime'],['animenews','anime'],['OnePiece','anime'],['JuJutsuKaisen','anime'],
   ['Bleach','anime'],['Berserk','anime'],['Chainsawman','anime'],['hunterxhunter','anime'],
@@ -603,334 +598,248 @@ const ALL_SUBS = [
 
 const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-// ── REDDIT OAUTH CONFIG ───────────────────────────────────────────────────────
-// Redirect URI must exactly match what you set in reddit.com/prefs/apps
-const REDDIT_REDIRECT = (() => {
-  const p = window.location.pathname.replace(/\/$/, '');
-  return window.location.origin + p + '/';
-})();
-
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let mode         = 'rss';
-let cat          = 'all';
-let redditSort   = 'hot';
-let allArticles  = [];
-let filteredPool = [];
-let visibleCount = 30;
-const PAGE_SIZE  = 30;
-let favorites    = JSON.parse(localStorage.getItem('9ty5_favs') || '[]');
-let readLinks    = new Set(JSON.parse(localStorage.getItem('9ty5_read') || '[]'));
-let isFetching   = false;
-let deferredInstall = null;
-let arTimer      = null;
-let redditUser   = null;
-
-let cfg = {
-  autoRefresh: 0, perFeed: 8, hideRead: false, showThumbs: true,
-  ...JSON.parse(localStorage.getItem('9ty5_cfg') || '{}'),
-};
+let mode='rss', cat='all', redditSort='hot';
+let allArticles=[], filteredPool=[], visibleCount=30;
+const PAGE_SIZE=30;
+let favorites   = JSON.parse(localStorage.getItem('9ty5_favs')||'[]');
+let readLinks   = new Set(JSON.parse(localStorage.getItem('9ty5_read')||'[]'));
+let isFetching  = false, deferredInstall=null, arTimer=null;
+let cfg = { autoRefresh:0, perFeed:8, hideRead:false, showThumbs:true,
+            ...JSON.parse(localStorage.getItem('9ty5_cfg')||'{}') };
 
 // ── PWA ───────────────────────────────────────────────────────────────────────
 window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredInstall = e;
+  e.preventDefault(); deferredInstall=e;
   document.getElementById('installBanner').classList.add('show');
 });
 function installPWA() {
   if (!deferredInstall) return;
   deferredInstall.prompt();
-  deferredInstall.userChoice.then(() => {
-    deferredInstall = null;
-    document.getElementById('installBanner').classList.remove('show');
-  });
+  deferredInstall.userChoice.then(()=>{ deferredInstall=null; document.getElementById('installBanner').classList.remove('show'); });
 }
-window.addEventListener('scroll', () => {
-  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400);
 });
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function timeAgo(d) {
   if (!d) return '';
   try {
-    const s = (Date.now() - new Date(d).getTime()) / 1000;
-    if (s < 60)     return 'just now';
-    if (s < 3600)   return `${Math.floor(s/60)}m ago`;
-    if (s < 86400)  return `${Math.floor(s/3600)}h ago`;
-    if (s < 604800) return `${Math.floor(s/86400)}d ago`;
+    const s=(Date.now()-new Date(d).getTime())/1000;
+    if(s<60)    return 'just now';
+    if(s<3600)  return `${Math.floor(s/60)}m ago`;
+    if(s<86400) return `${Math.floor(s/3600)}h ago`;
+    if(s<604800)return `${Math.floor(s/86400)}d ago`;
     return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});
   } catch { return ''; }
 }
-function isRecent(d) {
-  try { return d && (Date.now() - new Date(d).getTime()) < 7200000; } catch { return false; }
-}
+function isRecent(d) { try { return d&&(Date.now()-new Date(d).getTime())<7200000; } catch { return false; } }
 function stripHtml(s) {
-  if (!s) return '';
+  if(!s) return '';
   return s.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
 }
-function cleanTitle(s) {
-  const t = stripHtml(s||'');
-  return t.length > 200 ? t.slice(0,200)+'…' : t;
-}
-function cleanSummary(s) {
-  const t = stripHtml(s||'');
-  return t.length > 300 ? t.slice(0,300)+'…' : t;
-}
+function cleanTitle(s) { const t=stripHtml(s||''); return t.length>200?t.slice(0,200)+'…':t; }
+function cleanSummary(s) { const t=stripHtml(s||''); return t.length>300?t.slice(0,300)+'…':t; }
 function escHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
                       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
-function setStatus(msg, cls='') {
-  document.getElementById('statusBar').innerHTML = cls ? `<span class="${cls}">${msg}</span>` : msg;
+function setStatus(msg,cls='') {
+  document.getElementById('statusBar').innerHTML=cls?`<span class="${cls}">${msg}</span>`:msg;
 }
-function showToast(msg, dur=2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), dur);
+function showToast(msg,dur=2500) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),dur);
 }
 function setBusy(on) {
-  isFetching = on;
-  document.getElementById('refreshBtn').disabled = on;
-  const ic = document.getElementById('refreshIcon');
-  ic.className = on ? 'spin' : ''; ic.textContent = '⟳';
-  const pf = document.getElementById('progressFill');
-  on ? pf.classList.add('indeterminate') : pf.classList.remove('indeterminate');
+  isFetching=on; document.getElementById('refreshBtn').disabled=on;
+  const ic=document.getElementById('refreshIcon'); ic.className=on?'spin':''; ic.textContent='⟳';
+  const pf=document.getElementById('progressFill');
+  on?pf.classList.add('indeterminate'):pf.classList.remove('indeterminate');
+}
+
+// ── MY FEED: custom subreddits ─────────────────────────────────────────────────
+function getCustomSubs() {
+  const raw=localStorage.getItem('9ty5_custom_subs')||'';
+  return raw.split(/[\n,]+/).map(s=>s.trim().replace(/^r\//i,'')).filter(Boolean);
+}
+function saveCustomSubs() {
+  localStorage.setItem('9ty5_custom_subs', document.getElementById('customSubsInput').value);
+  updateSubsCount();
+  updateMyFeedBadge();
+}
+function updateSubsCount() {
+  const n=getCustomSubs().length;
+  const el=document.getElementById('subsCount');
+  if(el) el.textContent=n?`${n} subreddits saved`:'';
+}
+function updateMyFeedBadge() {
+  const n=getCustomSubs().length;
+  const el=document.getElementById('myFeedCount');
+  if(el) { el.textContent=n||''; el.style.display=n?'inline':'none'; }
+}
+function initCustomSubsUI() {
+  const el=document.getElementById('customSubsInput');
+  if(el) el.value=localStorage.getItem('9ty5_custom_subs')||'';
+  updateSubsCount();
+  updateMyFeedBadge();
 }
 
 // ── RSS FETCH ─────────────────────────────────────────────────────────────────
-async function fetchFeed([name, url, feedCat]) {
+async function fetchFeed([name,url,feedCat]) {
   try {
-    const res  = await fetch(RSS_PROXY + encodeURIComponent(url), {signal: AbortSignal.timeout(9000)});
-    const data = await res.json();
-    if (data.status !== 'ok' || !data.items?.length) return [];
-    return data.items.slice(0, cfg.perFeed).map(item => {
-      const thumb = item.thumbnail ||
-        (item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i) ? item.enclosure.link : null);
+    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{signal:AbortSignal.timeout(9000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items?.length) return [];
+    return data.items.slice(0,cfg.perFeed).map(item=>{
+      const thumb=item.thumbnail||(item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i)?item.enclosure.link:null);
       return {
-        title: cleanTitle(item.title), link: item.link || item.guid || '',
-        summary: cleanSummary(item.description || item.content || ''),
-        age: timeAgo(item.pubDate), pubDate: item.pubDate || '',
-        source: name, cat: feedCat, type: 'rss', thumb: thumb||null,
+        title:cleanTitle(item.title), link:item.link||item.guid||'',
+        summary:cleanSummary(item.description||item.content||''),
+        age:timeAgo(item.pubDate), pubDate:item.pubDate||'',
+        source:name, cat:feedCat, type:'rss', thumb:thumb||null,
       };
     });
   } catch { return []; }
 }
-
 async function fetchAllRss() {
-  const feeds = ALL_FEEDS.filter(f => cat==='all' || cat==='fav' || f[2]===cat);
-  const total = feeds.length; let done = 0; const results = []; const BATCH = 6;
-  for (let i = 0; i < feeds.length; i += BATCH) {
-    const rows = await Promise.all(feeds.slice(i, i+BATCH).map(fetchFeed));
-    rows.forEach(r => results.push(...r));
-    done += Math.min(BATCH, feeds.length-i);
+  const feeds=ALL_FEEDS.filter(f=>cat==='all'||cat==='fav'||f[2]===cat);
+  const total=feeds.length; let done=0; const results=[]; const BATCH=6;
+  for(let i=0;i<feeds.length;i+=BATCH) {
+    const rows=await Promise.all(feeds.slice(i,i+BATCH).map(fetchFeed));
+    rows.forEach(r=>results.push(...r));
+    done+=Math.min(BATCH,feeds.length-i);
     setStatus(`Fetching RSS ${done}/${total}…`);
   }
-  results.sort((a,b) => new Date(b.pubDate||0) - new Date(a.pubDate||0));
-  allArticles = results;
-  localStorage.setItem('9ty5_rss_cache', JSON.stringify(results));
-  localStorage.setItem('9ty5_rss_cache_ts', Date.now());
+  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  allArticles=results;
+  localStorage.setItem('9ty5_rss_cache',JSON.stringify(results));
+  localStorage.setItem('9ty5_rss_cache_ts',Date.now());
   return results;
 }
 
-// ── REDDIT FETCH ──────────────────────────────────────────────────────────────
-// Converts a Reddit JSON children array into article objects
-function parseRedditChildren(children, sub, subCat) {
-  return children
-    .filter(c => !c.data.stickied)
-    .slice(0, 12)
-    .map(c => {
-      const d = c.data;
-      const ts = new Date(d.created_utc * 1000).toISOString();
-      return {
-        title: cleanTitle(d.title), link: 'https://reddit.com' + d.permalink,
-        summary: cleanSummary(d.selftext || ''), score: d.score,
-        comments: d.num_comments, flair: d.link_flair_text || '',
-        age: timeAgo(ts), pubDate: ts, source: `r/${sub}`, sub,
-        cat: subCat, type: 'reddit',
-        thumb: d.thumbnail?.startsWith('http') ? d.thumbnail : null,
-      };
-    });
-}
-
-// Authenticated fetch via Reddit's OAuth API (CORS-friendly with token)
-async function fetchSubAuthenticated(sub, subCat) {
-  const token = getRedditToken();
-  const res = await fetch(
-    `https://oauth.reddit.com/r/${sub}/${redditSort}?limit=12&raw_json=1`,
-    {
-      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
-      signal: AbortSignal.timeout(10000),
-    }
-  );
-  const data = await res.json();
-  return parseRedditChildren(data.data?.children || [], sub, subCat);
-}
-
-// Unauthenticated fallback: Reddit RSS through rss2json (reliable, no CORS, no scores)
-async function fetchSubRss(sub, subCat) {
-  const rssUrl = `https://www.reddit.com/r/${sub}/${redditSort}.rss`;
-  const res    = await fetch(RSS_PROXY + encodeURIComponent(rssUrl),
-                             {signal: AbortSignal.timeout(9000)});
-  const data   = await res.json();
-  if (data.status !== 'ok' || !data.items?.length) return [];
-  return data.items.slice(0, 10).map(item => ({
-    title:   cleanTitle(item.title.replace(/^[\s\S]*?:\s*/,'')),
-    link:    item.link || item.guid || '',
-    summary: cleanSummary(item.description || ''),
-    age:     timeAgo(item.pubDate), pubDate: item.pubDate || '',
-    source:  `r/${sub}`, sub, cat: subCat, type: 'reddit',
-    score: null, comments: null, flair: '', thumb: null,
-  }));
-}
-
-async function fetchSub([sub, subCat]) {
+// ── REDDIT FETCH (RSS via rss2json — no API key, no CORS, no login needed) ────
+async function fetchSubRss([sub, subCat]) {
   try {
-    return getRedditToken()
-      ? await fetchSubAuthenticated(sub, subCat)
-      : await fetchSubRss(sub, subCat);
+    const sort = redditSort==='myfeed'?'hot':redditSort;
+    const rssUrl=`https://www.reddit.com/r/${sub}/${sort}.rss`;
+    const res=await fetch(RSS_PROXY+encodeURIComponent(rssUrl),{signal:AbortSignal.timeout(9000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items?.length) return [];
+    return data.items.slice(0,10).map(item=>({
+      // Reddit RSS titles look like "Username: Post title" — strip the prefix
+      title:   cleanTitle(item.title.replace(/^[^:]+:\s*/,'')),
+      link:    item.link||item.guid||'',
+      summary: cleanSummary(item.description||''),
+      age:     timeAgo(item.pubDate), pubDate:item.pubDate||'',
+      source:  `r/${sub}`, sub, cat:subCat, type:'reddit',
+      score:null, comments:null, flair:'', thumb:null,
+    }));
   } catch { return []; }
 }
 
-// "My Feed" — fetches the authenticated user's home feed (all their followed subs mixed)
-async function fetchMyFeed() {
-  const token = getRedditToken();
-  if (!token) { showToast('Log in to Reddit first'); return []; }
-  try {
-    const res = await fetch(
-      `https://oauth.reddit.com/?sort=hot&limit=50&raw_json=1`,
-      {
-        headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
-        signal: AbortSignal.timeout(12000),
-      }
-    );
-    const data = await res.json();
-    return (data.data?.children || [])
-      .filter(c => !c.data.stickied)
-      .map(c => {
-        const d = c.data;
-        const ts = new Date(d.created_utc * 1000).toISOString();
-        const found = ALL_SUBS.find(s => s[0].toLowerCase() === d.subreddit.toLowerCase());
-        return {
-          title: cleanTitle(d.title), link: 'https://reddit.com' + d.permalink,
-          summary: cleanSummary(d.selftext || ''), score: d.score,
-          comments: d.num_comments, flair: d.link_flair_text || '',
-          age: timeAgo(ts), pubDate: ts, source: `r/${d.subreddit}`,
-          sub: d.subreddit, cat: found ? found[1] : 'all', type: 'reddit',
-          thumb: d.thumbnail?.startsWith('http') ? d.thumbnail : null,
-        };
-      });
-  } catch(e) {
-    showToast('My Feed failed: ' + e.message, 3000); return [];
-  }
-}
-
 async function fetchAllReddit() {
-  if (redditSort === 'myfeed') {
-    setStatus('Loading your personal Reddit feed…');
-    const results = await fetchMyFeed();
-    results.sort((a,b) => (b.score||0)-(a.score||0));
-    allArticles = results;
-    localStorage.setItem('9ty5_reddit_cache', JSON.stringify(results));
-    localStorage.setItem('9ty5_reddit_cache_ts', Date.now());
-    return results;
+  let subs;
+  if(redditSort==='myfeed') {
+    const custom=getCustomSubs();
+    if(!custom.length) {
+      showToast('Add your subreddits in Settings → My Feed first',3500);
+      openSettings();
+      return [];
+    }
+    // Map custom names to [sub, cat], categorise against known list where possible
+    subs=custom.map(sub=>{
+      const found=ALL_SUBS.find(s=>s[0].toLowerCase()===sub.toLowerCase());
+      return [sub, found?found[1]:'all'];
+    });
+    setStatus(`Loading My Feed — ${subs.length} subreddits…`);
+  } else {
+    subs=ALL_SUBS.filter(s=>cat==='all'||cat==='fav'||s[1]===cat);
+    setStatus(`Fetching Reddit…`);
   }
-  const subs  = ALL_SUBS.filter(s => cat==='all' || cat==='fav' || s[1]===cat);
-  const total = subs.length; let done = 0; const results = []; const BATCH = 3;
-  for (let i = 0; i < subs.length; i += BATCH) {
-    const rows = await Promise.all(subs.slice(i, i+BATCH).map(fetchSub));
-    rows.forEach(r => results.push(...r));
-    done += Math.min(BATCH, subs.length-i);
-    setStatus(`Fetching Reddit ${done}/${total}… ${getRedditToken() ? '(authenticated)' : '(RSS mode)'}`);
-    if (i+BATCH < subs.length) await new Promise(r => setTimeout(r, 500));
+
+  const total=subs.length; let done=0; const results=[]; const BATCH=4;
+  for(let i=0;i<subs.length;i+=BATCH) {
+    const rows=await Promise.all(subs.slice(i,i+BATCH).map(fetchSubRss));
+    rows.forEach(r=>results.push(...r));
+    done+=Math.min(BATCH,subs.length-i);
+    setStatus(`Fetching Reddit ${done}/${total}…`);
+    if(i+BATCH<subs.length) await new Promise(r=>setTimeout(r,400));
   }
-  results.sort((a,b) => (b.score||0)-(a.score||0));
-  allArticles = results;
-  localStorage.setItem('9ty5_reddit_cache', JSON.stringify(results));
-  localStorage.setItem('9ty5_reddit_cache_ts', Date.now());
+  // My Feed: sort by date. Others: sort by date too (no scores in RSS)
+  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  allArticles=results;
+  localStorage.setItem('9ty5_reddit_cache',JSON.stringify(results));
+  localStorage.setItem('9ty5_reddit_cache_ts',Date.now());
   return results;
 }
 
 // ── MAIN FETCH ────────────────────────────────────────────────────────────────
 async function fetchCurrent() {
-  if (isFetching) return;
+  if(isFetching) return;
   setBusy(true);
-  setStatus('Fetching…');
   try {
-    const results = mode==='rss' ? await fetchAllRss() : await fetchAllReddit();
-    const label   = mode==='rss' ? 'articles' : 'posts';
-    setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`, 'ok');
-    visibleCount = PAGE_SIZE;
-    applyFilter();
-  } catch(e) {
-    setStatus(`Error: ${e.message}`, 'err');
-  } finally { setBusy(false); }
+    const results=mode==='rss'?await fetchAllRss():await fetchAllReddit();
+    const label=mode==='rss'?'articles':'posts';
+    setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`,'ok');
+    visibleCount=PAGE_SIZE; applyFilter();
+  } catch(e) { setStatus(`Error: ${e.message}`,'err'); }
+  finally { setBusy(false); }
 }
 
 // ── FILTER + RENDER ───────────────────────────────────────────────────────────
 function applyFilter() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const pool = cat==='fav' ? favorites : allArticles;
-  filteredPool = pool.filter(a => {
-    if (cat!=='all' && cat!=='fav' && a.cat!==cat) return false;
-    if (cfg.hideRead && readLinks.has(a.link)) return false;
-    if (q && !a.title.toLowerCase().includes(q) &&
-             !(a.source||'').toLowerCase().includes(q) &&
-             !(a.summary||'').toLowerCase().includes(q)) return false;
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const pool=cat==='fav'?favorites:allArticles;
+  filteredPool=pool.filter(a=>{
+    if(cat!=='all'&&cat!=='fav'&&a.cat!==cat) return false;
+    if(cfg.hideRead&&readLinks.has(a.link)) return false;
+    if(q&&!a.title.toLowerCase().includes(q)&&
+         !(a.source||'').toLowerCase().includes(q)&&
+         !(a.summary||'').toLowerCase().includes(q)) return false;
     return true;
   });
-  document.getElementById('countBadge').textContent = filteredPool.length + ' posts';
+  document.getElementById('countBadge').textContent=filteredPool.length+' posts';
   updateCounts();
-  renderArticles(filteredPool.slice(0, visibleCount));
-  document.getElementById('loadMoreWrap').style.display =
-    filteredPool.length > visibleCount ? 'block' : 'none';
+  renderArticles(filteredPool.slice(0,visibleCount));
+  document.getElementById('loadMoreWrap').style.display=filteredPool.length>visibleCount?'block':'none';
 }
 
 function loadMore() {
-  visibleCount += PAGE_SIZE;
-  renderArticles(filteredPool.slice(0, visibleCount));
-  document.getElementById('loadMoreWrap').style.display =
-    filteredPool.length > visibleCount ? 'block' : 'none';
+  visibleCount+=PAGE_SIZE;
+  renderArticles(filteredPool.slice(0,visibleCount));
+  document.getElementById('loadMoreWrap').style.display=filteredPool.length>visibleCount?'block':'none';
 }
 
 function updateCounts() {
-  const counts = {all:0,anime:0,manga:0,gaming:0};
-  allArticles.forEach(a => { counts.all++; if (a.cat in counts) counts[a.cat]++; });
-  ['all','anime','manga','gaming'].forEach(c => {
-    const el = document.getElementById(`cnt-${c}`);
-    if (el) el.textContent = counts[c]||'';
-  });
-  const fe = document.getElementById('cnt-fav');
-  if (fe) fe.textContent = favorites.length||'';
+  const c={all:0,anime:0,manga:0,gaming:0};
+  allArticles.forEach(a=>{ c.all++; if(a.cat in c) c[a.cat]++; });
+  ['all','anime','manga','gaming'].forEach(k=>{ const el=document.getElementById(`cnt-${k}`); if(el) el.textContent=c[k]||''; });
+  const fe=document.getElementById('cnt-fav'); if(fe) fe.textContent=favorites.length||'';
 }
 
 function renderArticles(items) {
-  const el = document.getElementById('articles');
-  if (!items.length) {
-    const isRedditNoLogin = mode==='reddit' && !getRedditToken();
-    el.innerHTML = `<div class="empty">
+  const el=document.getElementById('articles');
+  if(!items.length) {
+    const noSubs=mode==='reddit'&&redditSort==='myfeed'&&!getCustomSubs().length;
+    el.innerHTML=`<div class="empty">
       <div class="big">${cat==='fav'?'⭐':'📭'}</div>
-      <p>${cat==='fav'
-        ? 'No saved articles yet.<br>Tap ☆ on any article to save it.'
-        : 'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
-      ${isRedditNoLogin && mode==='reddit'
-        ? `<button class="login-hint" onclick="openSettings()">Connect Reddit for better results</button>`
-        : ''}
+      <p>${cat==='fav'?'No saved articles yet.<br>Tap ☆ on any article to save it.':'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
+      ${noSubs?`<button class="empty-action" onclick="openSettings()">⚙ Add my subreddits</button>`:''}
     </div>`;
     return;
   }
-  el.innerHTML = items.map((a,i) => {
-    const isRead = readLinks.has(a.link);
-    const isFav  = favorites.some(f => f.link===a.link);
-    const tagCls = a.type==='reddit' ? 'tag-reddit'
-                 : a.cat==='anime'   ? 'tag-anime'
-                 : a.cat==='manga'   ? 'tag-manga' : 'tag-gaming';
-    const newBadge  = a.type==='rss' && isRecent(a.pubDate) ? `<span class="new-badge">NEW</span>` : '';
-    const flairPart = a.flair ? `<span class="tag-flair">${escHtml(a.flair)}</span>` : '';
-    const readDot   = isRead ? `<span class="read-dot">✓</span>` : '';
-    const scorePart = a.score!=null
-      ? `<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`
-      : '';
-    const thumbPart = cfg.showThumbs && a.thumb
-      ? `<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`
-      : '';
+  el.innerHTML=items.map((a,i)=>{
+    const isRead=readLinks.has(a.link);
+    const isFav=favorites.some(f=>f.link===a.link);
+    const tagCls=a.type==='reddit'?'tag-reddit':a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
+    const newBadge=a.type==='rss'&&isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
+    const flairPart=a.flair?`<span class="tag-flair">${escHtml(a.flair)}</span>`:'';
+    const readDot=isRead?`<span class="read-dot">✓</span>`:'';
+    const scorePart=a.score!=null?`<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`:'';
+    const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
     return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
@@ -941,7 +850,7 @@ function renderArticles(items) {
             <span class="card-age">${a.age}</span>
           </div>
           <div class="card-title">${escHtml(a.title)}</div>
-          ${a.summary ? `<div class="card-summary">${escHtml(a.summary)}</div>` : ''}
+          ${a.summary?`<div class="card-summary">${escHtml(a.summary)}</div>`:''}
           <div class="card-actions" onclick="event.stopPropagation()">
             <button class="action-btn${isFav?' fav-active':''}" onclick="toggleFav(${i})">${isFav?'★ Saved':'☆ Save'}</button>
             <button class="action-btn" onclick="sharePost(${i})">📤 Share</button>
@@ -955,113 +864,103 @@ function renderArticles(items) {
 }
 
 // ── CARD ACTIONS ──────────────────────────────────────────────────────────────
-function getRendered() { return filteredPool.slice(0, visibleCount); }
+function getRendered() { return filteredPool.slice(0,visibleCount); }
 
 function openCard(idx) {
-  const a = getRendered()[idx]; if (!a) return;
-  window.open(a.link, '_blank', 'noopener noreferrer');
+  const a=getRendered()[idx]; if(!a) return;
+  window.open(a.link,'_blank','noopener noreferrer');
   readLinks.add(a.link);
-  localStorage.setItem('9ty5_read', JSON.stringify([...readLinks]));
-  const card = document.querySelector(`.card[data-idx="${idx}"]`);
-  if (card) card.classList.add('is-read');
+  localStorage.setItem('9ty5_read',JSON.stringify([...readLinks]));
+  const card=document.querySelector(`.card[data-idx="${idx}"]`);
+  if(card) card.classList.add('is-read');
 }
-
 function toggleFav(idx) {
-  const a = getRendered()[idx]; if (!a) return;
-  const fi = favorites.findIndex(f => f.link===a.link);
-  if (fi>-1) { favorites.splice(fi,1); showToast('Removed from saved'); }
-  else        { favorites.unshift(a);  showToast('⭐ Saved!'); }
-  localStorage.setItem('9ty5_favs', JSON.stringify(favorites));
+  const a=getRendered()[idx]; if(!a) return;
+  const fi=favorites.findIndex(f=>f.link===a.link);
+  if(fi>-1){favorites.splice(fi,1);showToast('Removed from saved');}
+  else{favorites.unshift(a);showToast('⭐ Saved!');}
+  localStorage.setItem('9ty5_favs',JSON.stringify(favorites));
   updateCounts(); renderArticles(getRendered());
 }
-
 function sharePost(idx) {
-  const a = getRendered()[idx]; if (!a) return;
-  if (navigator.share) {
-    navigator.share({title:a.title, text:a.summary||a.title, url:a.link}).catch(()=>{});
-  } else { copyPost(idx); }
+  const a=getRendered()[idx]; if(!a) return;
+  if(navigator.share){navigator.share({title:a.title,text:a.summary||a.title,url:a.link}).catch(()=>{});}
+  else copyPost(idx);
 }
-
 function copyPost(idx) {
-  const a = getRendered()[idx]; if (!a) return;
-  const text = `${a.title}\n\n${a.summary ? a.summary+'\n\n':''}Read more: ${a.link}\n\nvia ${a.source} | 9ty5 News`;
+  const a=getRendered()[idx]; if(!a) return;
+  const text=`${a.title}\n\n${a.summary?a.summary+'\n\n':''}Read more: ${a.link}\n\nvia ${a.source} | 9ty5 News`;
   navigator.clipboard.writeText(text).then(()=>showToast('✓ Copied!')).catch(()=>{
-    const el = Object.assign(document.createElement('textarea'),{value:text});
+    const el=Object.assign(document.createElement('textarea'),{value:text});
     Object.assign(el.style,{position:'fixed',opacity:'0'});
     document.body.appendChild(el); el.select(); document.execCommand('copy');
     document.body.removeChild(el); showToast('✓ Copied!');
   });
 }
-
 function markAllRead() {
-  const rendered = getRendered();
-  rendered.forEach(a => readLinks.add(a.link));
-  localStorage.setItem('9ty5_read', JSON.stringify([...readLinks]));
-  renderArticles(rendered);
-  showToast(`✓ Marked ${rendered.length} as read`);
+  const r=getRendered(); r.forEach(a=>readLinks.add(a.link));
+  localStorage.setItem('9ty5_read',JSON.stringify([...readLinks]));
+  renderArticles(r); showToast(`✓ Marked ${r.length} as read`);
 }
 
 // ── MODE / CAT / SORT ─────────────────────────────────────────────────────────
 function switchMode(m) {
-  if (isFetching) return;
-  mode = m;
-  document.getElementById('modeRss').className    = 'mode-btn'+(m==='rss'    ? ' active-rss'    : '');
-  document.getElementById('modeReddit').className = 'mode-btn'+(m==='reddit' ? ' active-reddit' : '');
-  document.getElementById('redditSort').classList.toggle('visible', m==='reddit');
-  const cKey = m==='rss' ? '9ty5_rss_cache' : '9ty5_reddit_cache';
-  const tKey = m==='rss' ? '9ty5_rss_cache_ts' : '9ty5_reddit_cache_ts';
-  const cached = localStorage.getItem(cKey);
-  if (cached) {
-    allArticles = JSON.parse(cached);
-    const ts  = localStorage.getItem(tKey);
-    const ago = ts ? timeAgo(new Date(+ts).toISOString()) : '';
+  if(isFetching) return;
+  mode=m;
+  document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
+  document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
+  document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
+  const cKey=m==='rss'?'9ty5_rss_cache':'9ty5_reddit_cache';
+  const tKey=m==='rss'?'9ty5_rss_cache_ts':'9ty5_reddit_cache_ts';
+  const cached=localStorage.getItem(cKey);
+  if(cached){
+    allArticles=JSON.parse(cached);
+    const ts=localStorage.getItem(tKey);
+    const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
     setStatus(`Cached ${ago} — tap Refresh to update`);
-    visibleCount = PAGE_SIZE; applyFilter();
+    visibleCount=PAGE_SIZE; applyFilter();
   } else { fetchCurrent(); }
 }
-
-function switchCat(btn, c) {
-  cat = c;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+function switchCat(btn,c) {
+  cat=c;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  visibleCount = PAGE_SIZE; applyFilter();
+  visibleCount=PAGE_SIZE; applyFilter();
 }
-
-function setSort(btn, s) {
-  redditSort = s;
-  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+function setSort(btn,s) {
+  redditSort=s;
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   fetchCurrent();
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
-function saveCfg() { localStorage.setItem('9ty5_cfg', JSON.stringify(cfg)); }
+function saveCfg() { localStorage.setItem('9ty5_cfg',JSON.stringify(cfg)); }
 function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); document.getElementById('settingsPanel').classList.add('open'); }
 function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); document.getElementById('settingsPanel').classList.remove('open'); }
-
-function setAutoRefresh(mins, btn) {
+function setAutoRefresh(mins,btn) {
   document.querySelectorAll('#arOpts .s-opt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); cfg.autoRefresh=mins; saveCfg(); setupAutoRefresh();
 }
-function setPerFeed(n, btn) {
+function setPerFeed(n,btn) {
   document.querySelectorAll('#pfOpts .s-opt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); cfg.perFeed=n; saveCfg();
 }
 function toggleSetting(key) {
-  cfg[key] = !cfg[key]; saveCfg();
-  if (key==='hideRead')   { document.getElementById('hideReadToggle').classList.toggle('on',cfg.hideRead);  applyFilter(); }
-  if (key==='showThumbs') { document.getElementById('thumbToggle').classList.toggle('on',cfg.showThumbs); renderArticles(getRendered()); }
+  cfg[key]=!cfg[key]; saveCfg();
+  if(key==='hideRead'){document.getElementById('hideReadToggle').classList.toggle('on',cfg.hideRead); applyFilter();}
+  if(key==='showThumbs'){document.getElementById('thumbToggle').classList.toggle('on',cfg.showThumbs); renderArticles(getRendered());}
 }
 function setupAutoRefresh() {
   clearInterval(arTimer);
-  const badge = document.getElementById('autoBadge');
-  if (cfg.autoRefresh>0) {
+  const badge=document.getElementById('autoBadge');
+  if(cfg.autoRefresh>0){
     badge.style.display='inline'; badge.textContent=`⟳ ${cfg.autoRefresh}m`;
-    arTimer = setInterval(()=>{ if(!isFetching) fetchCurrent(); }, cfg.autoRefresh*60000);
+    arTimer=setInterval(()=>{ if(!isFetching) fetchCurrent(); },cfg.autoRefresh*60000);
   } else { badge.style.display='none'; }
 }
 function clearCache() {
-  if (!confirm('Clear all cached articles and saved items?')) return;
+  if(!confirm('Clear all cached articles and saved items?')) return;
   ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
    '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
   favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
@@ -1077,201 +976,23 @@ function applySettingsToUI() {
   document.querySelectorAll('#pfOpts .s-opt').forEach((b,i)=>b.classList.toggle('active',pfVals[i]===cfg.perFeed));
 }
 
-// ── REDDIT OAUTH (PKCE) ───────────────────────────────────────────────────────
-function getRedditToken() {
-  const token = localStorage.getItem('9ty5_reddit_token');
-  const exp   = +localStorage.getItem('9ty5_reddit_token_exp')||0;
-  if (token && Date.now()<exp) return token;
-  return null;
-}
-
-function genVerifier() {
-  const arr = new Uint8Array(32);
-  crypto.getRandomValues(arr);
-  return btoa(String.fromCharCode(...arr)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
-async function genChallenge(v) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
-  return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
-
-async function startRedditLogin() {
-  let clientId = localStorage.getItem('9ty5_reddit_client_id');
-  if (!clientId) {
-    clientId = prompt(
-      'Enter your Reddit app Client ID.\n\n' +
-      'How to get one (free, takes 2 min):\n' +
-      '1. Go to: reddit.com/prefs/apps\n' +
-      '2. Click "create another app"\n' +
-      '3. Pick type: installed app\n' +
-      '4. Redirect URI: ' + REDDIT_REDIRECT + '\n' +
-      '5. The Client ID is the string below the app name\n\n' +
-      'Paste it here:'
-    );
-    if (!clientId || !clientId.trim()) return;
-    localStorage.setItem('9ty5_reddit_client_id', clientId.trim());
-  }
-  const v = genVerifier();
-  const c = await genChallenge(v);
-  const state = Math.random().toString(36).slice(2);
-  localStorage.setItem('9ty5_pkce_v', v);
-  localStorage.setItem('9ty5_pkce_s', state);
-
-  const params = new URLSearchParams({
-    client_id: clientId.trim(), response_type: 'code', state,
-    redirect_uri: REDDIT_REDIRECT, duration: 'permanent',
-    scope: 'read mysubreddits identity',
-    code_challenge: c, code_challenge_method: 'S256',
-  });
-  window.location.href = 'https://www.reddit.com/api/v1/authorize?' + params;
-}
-
-async function handleOAuthCallback() {
-  const params = new URLSearchParams(window.location.search);
-  const code   = params.get('code');
-  const state  = params.get('state');
-  const error  = params.get('error');
-  if (error) { showToast('Reddit login cancelled'); history.replaceState({},'',location.pathname); return; }
-  if (!code || state!==localStorage.getItem('9ty5_pkce_s')) return;
-  history.replaceState({},'',location.pathname);
-
-  const clientId = localStorage.getItem('9ty5_reddit_client_id');
-  const verifier = localStorage.getItem('9ty5_pkce_v');
-  setStatus('Completing Reddit login…');
-  setBusy(true);
-  try {
-    // corsproxy.io supports POST and passes Authorization headers through
-    const tokenEndpoint = 'https://corsproxy.io/?' + encodeURIComponent('https://www.reddit.com/api/v1/access_token');
-    const res = await fetch(tokenEndpoint, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Basic ' + btoa(clientId.trim()+':'),
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'authorization_code', code,
-        redirect_uri: REDDIT_REDIRECT, code_verifier: verifier,
-      }),
-    });
-    const data = await res.json();
-    if (data.access_token) {
-      localStorage.setItem('9ty5_reddit_token',     data.access_token);
-      localStorage.setItem('9ty5_reddit_refresh',   data.refresh_token||'');
-      localStorage.setItem('9ty5_reddit_token_exp', Date.now()+(data.expires_in||3600)*1000);
-      await loadRedditUser(data.access_token);
-      await loadUserSubs(data.access_token);
-      updateRedditUI();
-      showToast('✓ Reddit connected!', 3000);
-      setStatus('Reddit connected — tap Refresh', 'ok');
-    } else {
-      showToast('Reddit login failed: '+(data.error||'unknown'), 4000);
-      setStatus('Reddit auth failed', 'err');
-    }
-  } catch(e) {
-    showToast('Reddit auth error: '+e.message, 4000);
-  } finally { setBusy(false); }
-}
-
-async function loadRedditUser(token) {
-  try {
-    const res  = await fetch('https://oauth.reddit.com/api/v1/me', {
-      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
-    });
-    const data = await res.json();
-    if (data.name) {
-      localStorage.setItem('9ty5_reddit_user', data.name);
-      redditUser = data.name;
-    }
-  } catch {}
-}
-
-async function loadUserSubs(token) {
-  try {
-    const res  = await fetch('https://oauth.reddit.com/subreddits/mine/subscriber?limit=100', {
-      headers: { 'Authorization': `Bearer ${token}`, 'User-Agent': 'web:9ty5news:1.0' },
-    });
-    const data = await res.json();
-    const names = (data.data?.children||[]).map(c=>c.data.display_name);
-    localStorage.setItem('9ty5_user_subs', JSON.stringify(names));
-    showToast(`Loaded ${names.length} followed subreddits`);
-  } catch {}
-}
-
-function updateRedditUI() {
-  const token    = getRedditToken();
-  const username = localStorage.getItem('9ty5_reddit_user') || '';
-  const subs     = JSON.parse(localStorage.getItem('9ty5_user_subs')||'[]');
-
-  // Chip in mode row
-  const chip = document.getElementById('redditChip');
-  chip.classList.toggle('show', !!token);
-  if (token && username) {
-    document.getElementById('redditAvatarInitial').textContent = username[0].toUpperCase();
-    document.getElementById('redditUsername').textContent = 'u/'+username;
-  }
-
-  // My Feed sort button
-  document.getElementById('myFeedBtn').style.display = token ? 'block' : 'none';
-
-  // Settings auth card
-  const card = document.getElementById('redditAuthCard');
-  const info = document.getElementById('redditAuthInfo');
-  const connBtn = document.getElementById('redditConnectBtn');
-  const discBtn = document.getElementById('redditDisconnectBtn');
-  if (token) {
-    card.classList.add('connected');
-    info.innerHTML = `Connected as <strong>u/${username||'you'}</strong> · ${subs.length} followed subreddits`;
-    connBtn.style.display = 'none';
-    discBtn.style.display = 'block';
-  } else {
-    card.classList.remove('connected');
-    info.innerHTML = 'Log in to get posts from <strong>your own followed subreddits</strong> with upvote counts. Requires a free Reddit app ID (takes 2 min to set up).';
-    connBtn.style.display = 'block';
-    discBtn.style.display = 'none';
-  }
-}
-
-function disconnectReddit() {
-  ['9ty5_reddit_token','9ty5_reddit_refresh','9ty5_reddit_token_exp',
-   '9ty5_reddit_client_id','9ty5_user_subs','9ty5_pkce_v','9ty5_pkce_s','9ty5_reddit_user']
-    .forEach(k=>localStorage.removeItem(k));
-  redditUser = null;
-  updateRedditUI();
-  showToast('Reddit disconnected');
-  closeSettings();
-}
-
 // ── INIT ──────────────────────────────────────────────────────────────────────
-async function init() {
+function init() {
   updateCounts(); applySettingsToUI(); setupAutoRefresh();
-  redditUser = localStorage.getItem('9ty5_reddit_user') || null;
-  updateRedditUI();
-
-  // Handle Reddit OAuth callback first
-  if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
-    await handleOAuthCallback();
-  }
-
-  const cached = localStorage.getItem('9ty5_rss_cache');
-  const ts     = localStorage.getItem('9ty5_rss_cache_ts');
-  if (cached) {
-    allArticles = JSON.parse(cached);
-    const ago = ts ? timeAgo(new Date(+ts).toISOString()) : '';
+  initCustomSubsUI();
+  const cached=localStorage.getItem('9ty5_rss_cache');
+  const ts=localStorage.getItem('9ty5_rss_cache_ts');
+  if(cached){
+    allArticles=JSON.parse(cached);
+    const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
     setStatus(`Cached ${ago} — tap Refresh to update`);
     applyFilter();
-  } else {
-    fetchCurrent();
-  }
+  } else { fetchCurrent(); }
 }
-
 init();
 </script>
 
 <link rel="manifest" href="manifest.json">
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(()=>{});
-}
-</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
 </body>
 </html>
