@@ -543,7 +543,7 @@ const ALL_FEEDS = [
   ['MangaBookshelf',       'https://mangabookshelf.com/feed/',                            'manga'],
   ['ICv2',                 'https://icv2.com/rss.xml',                                    'manga'],
   // GAMING
-  ['IGN',                  'https://feeds.ign.com/ign/all',                               'gaming'],
+  ['IGN',                  'https://feeds.ign.com/ign/game-reviews',                     'gaming'],
   ['Kotaku',               'https://kotaku.com/rss',                                      'gaming'],
   ['PC Gamer',             'https://www.pcgamer.com/rss/',                                'gaming'],
   ['GameSpot',             'https://www.gamespot.com/feeds/mashup/',                      'gaming'],
@@ -645,6 +645,20 @@ function escHtml(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
                       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
+function safeUrl(u) {
+  try {
+    const parsed=new URL(u, location.href);
+    return (parsed.protocol==='http:'||parsed.protocol==='https:')?parsed.href:'';
+  } catch { return ''; }
+}
+function safeStorageSet(key,val) {
+  try { localStorage.setItem(key,val); return true; } catch { return false; }
+}
+function fetchTimeoutSignal(ms) {
+  try { return AbortSignal.timeout(ms); } catch {
+    const c=new AbortController(); setTimeout(()=>c.abort(),ms); return c.signal;
+  }
+}
 function setStatus(msg,cls='') {
   document.getElementById('statusBar').innerHTML=cls?`<span class="${cls}">${msg}</span>`:msg;
 }
@@ -666,7 +680,7 @@ function getCustomSubs() {
   return raw.split(/[\n,]+/).map(s=>s.trim().replace(/^r\//i,'')).filter(Boolean);
 }
 function saveCustomSubs() {
-  localStorage.setItem('9ty5_custom_subs', document.getElementById('customSubsInput').value);
+  safeStorageSet('9ty5_custom_subs', document.getElementById('customSubsInput').value);
   updateSubsCount();
   updateMyFeedBadge();
 }
@@ -690,16 +704,16 @@ function initCustomSubsUI() {
 // ── RSS FETCH ─────────────────────────────────────────────────────────────────
 async function fetchFeed([name,url,feedCat]) {
   try {
-    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{signal:AbortSignal.timeout(9000)});
+    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{signal:fetchTimeoutSignal(9000)});
     const data=await res.json();
     if(data.status!=='ok'||!data.items?.length) return [];
     return data.items.slice(0,cfg.perFeed).map(item=>{
       const thumb=item.thumbnail||(item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i)?item.enclosure.link:null);
       return {
-        title:cleanTitle(item.title), link:item.link||item.guid||'',
+        title:cleanTitle(item.title), link:safeUrl(item.link||item.guid||''),
         summary:cleanSummary(item.description||item.content||''),
         age:timeAgo(item.pubDate), pubDate:item.pubDate||'',
-        source:name, cat:feedCat, type:'rss', thumb:thumb||null,
+        source:name, cat:feedCat, type:'rss', thumb:safeUrl(thumb||'')||null,
       };
     });
   } catch { return []; }
@@ -715,8 +729,8 @@ async function fetchAllRss() {
   }
   results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
   allArticles=results;
-  localStorage.setItem('9ty5_rss_cache',JSON.stringify(results));
-  localStorage.setItem('9ty5_rss_cache_ts',Date.now());
+  safeStorageSet('9ty5_rss_cache',JSON.stringify(results));
+  safeStorageSet('9ty5_rss_cache_ts',Date.now());
   return results;
 }
 
@@ -725,13 +739,13 @@ async function fetchSubRss([sub, subCat]) {
   try {
     const sort = redditSort==='myfeed'?'hot':redditSort;
     const rssUrl=`https://www.reddit.com/r/${sub}/${sort}.rss`;
-    const res=await fetch(RSS_PROXY+encodeURIComponent(rssUrl),{signal:AbortSignal.timeout(9000)});
+    const res=await fetch(RSS_PROXY+encodeURIComponent(rssUrl),{signal:fetchTimeoutSignal(9000)});
     const data=await res.json();
     if(data.status!=='ok'||!data.items?.length) return [];
     return data.items.slice(0,10).map(item=>({
       // Reddit RSS titles look like "Username: Post title" — strip the prefix
       title:   cleanTitle(item.title.replace(/^[^:]+:\s*/,'')),
-      link:    item.link||item.guid||'',
+      link:    safeUrl(item.link||item.guid||''),
       summary: cleanSummary(item.description||''),
       age:     timeAgo(item.pubDate), pubDate:item.pubDate||'',
       source:  `r/${sub}`, sub, cat:subCat, type:'reddit',
@@ -771,8 +785,8 @@ async function fetchAllReddit() {
   // My Feed: sort by date. Others: sort by date too (no scores in RSS)
   results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
   allArticles=results;
-  localStorage.setItem('9ty5_reddit_cache',JSON.stringify(results));
-  localStorage.setItem('9ty5_reddit_cache_ts',Date.now());
+  safeStorageSet('9ty5_reddit_cache',JSON.stringify(results));
+  safeStorageSet('9ty5_reddit_cache_ts',Date.now());
   return results;
 }
 
@@ -855,7 +869,7 @@ function renderArticles(items) {
             <button class="action-btn${isFav?' fav-active':''}" onclick="toggleFav(${i})">${isFav?'★ Saved':'☆ Save'}</button>
             <button class="action-btn" onclick="sharePost(${i})">📤 Share</button>
             <button class="action-btn" onclick="copyPost(${i})">📋 Copy</button>
-            <a class="action-btn" href="${escHtml(a.link)}" target="_blank" rel="noopener noreferrer">🔗 Open</a>
+            ${a.link?`<a class="action-btn" href="${escHtml(a.link)}" target="_blank" rel="noopener noreferrer">🔗 Open</a>`:''}
           </div>
         </div>
       </div>
@@ -867,10 +881,10 @@ function renderArticles(items) {
 function getRendered() { return filteredPool.slice(0,visibleCount); }
 
 function openCard(idx) {
-  const a=getRendered()[idx]; if(!a) return;
+  const a=getRendered()[idx]; if(!a||!a.link) return;
   window.open(a.link,'_blank','noopener noreferrer');
   readLinks.add(a.link);
-  localStorage.setItem('9ty5_read',JSON.stringify([...readLinks]));
+  safeStorageSet('9ty5_read',JSON.stringify([...readLinks]));
   const card=document.querySelector(`.card[data-idx="${idx}"]`);
   if(card) card.classList.add('is-read');
 }
@@ -879,7 +893,7 @@ function toggleFav(idx) {
   const fi=favorites.findIndex(f=>f.link===a.link);
   if(fi>-1){favorites.splice(fi,1);showToast('Removed from saved');}
   else{favorites.unshift(a);showToast('⭐ Saved!');}
-  localStorage.setItem('9ty5_favs',JSON.stringify(favorites));
+  safeStorageSet('9ty5_favs',JSON.stringify(favorites));
   updateCounts(); renderArticles(getRendered());
 }
 function sharePost(idx) {
@@ -899,7 +913,7 @@ function copyPost(idx) {
 }
 function markAllRead() {
   const r=getRendered(); r.forEach(a=>readLinks.add(a.link));
-  localStorage.setItem('9ty5_read',JSON.stringify([...readLinks]));
+  safeStorageSet('9ty5_read',JSON.stringify([...readLinks]));
   renderArticles(r); showToast(`✓ Marked ${r.length} as read`);
 }
 
@@ -935,7 +949,7 @@ function setSort(btn,s) {
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
-function saveCfg() { localStorage.setItem('9ty5_cfg',JSON.stringify(cfg)); }
+function saveCfg() { safeStorageSet('9ty5_cfg',JSON.stringify(cfg)); }
 function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); document.getElementById('settingsPanel').classList.add('open'); }
 function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); document.getElementById('settingsPanel').classList.remove('open'); }
 function setAutoRefresh(mins,btn) {
@@ -993,6 +1007,6 @@ init();
 </script>
 
 <link rel="manifest" href="manifest.json">
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});</script>
 </body>
 </html>
