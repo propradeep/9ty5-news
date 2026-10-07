@@ -121,9 +121,13 @@ def load_previous():
 def fetch_rss_source(f):
     sid = f"rss:{f['name']}"
     try:
-        entries = parse_feed(f["url"])[:PER_FEED]
-        items = [to_item(e, f["name"], f["cat"], "rss") for e in entries]
+        entries = parse_feed(f["url"])
+        items = [to_item(e, f["name"], f["cat"], "rss") for e in entries[:60]]
         items = [i for i in items if i["title"] and i["link"]]
+        if f.get("filter"):  # optional keyword filter for general feeds, e.g. "anime|manga"
+            rx = re.compile(f["filter"], re.I)
+            items = [i for i in items if rx.search(i["title"] + " " + i["summary"])]
+        items = items[:PER_FEED]
         status = "ok" if items else "empty"
         return {"id": sid, "type": "rss", "name": f["name"], "status": status, "count": len(items)}, items
     except Exception as ex:  # noqa: BLE001 - report every failure
