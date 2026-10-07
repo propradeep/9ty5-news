@@ -41,8 +41,10 @@ which reads `config/sources.json` and writes `data/news.json`. The page only rea
   reddit.com/prefs/apps) for reliable results. Without them it falls back to public `.rss`,
   which Reddit often blocks from CI servers. "My Feed" filters this data, so any subreddit
   you list in Settings must also be in `config/sources.json`.
-- **X / official accounts**: X has no native RSS. Set the repo *variable* `X_FEED_TEMPLATE`
-  (e.g. `https://your-rsshub.example.com/twitter/user/{handle}`) or put per-account feed URLs
-  (for example from RSS.app) in `config/sources.json` → `x_feed_overrides`.
+- **Official accounts (⭐ Official tab)**: add Bluesky handles under `bluesky` (free native RSS at
+  `bsky.app/profile/<handle>/rss`) and YouTube channels under `youtube` (`channel_id`) in
+  `config/sources.json`. X has no native RSS; X accounts under `x_accounts` are only fetched if you set
+  the repo *variable* `X_FEED_TEMPLATE` (RSSHub-style URL with `{handle}`) or per-account feed URLs
+  (for example from RSS.app) in `x_feed_overrides`.
 - Each source reports `ok / empty / error / skipped` in `data/news.json`; the page shows a
   warning banner listing any problems. If a source fails, its previous posts are kept (marked "cached").

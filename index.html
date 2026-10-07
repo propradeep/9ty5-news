@@ -67,7 +67,7 @@ body {
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
 .mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
-.mode-btn.active-x      { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
+.mode-btn.active-official { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
 .health { display:none; margin: 0 12px 6px; padding: 8px 10px; border-radius: 8px; font-size: 12px;
   background: rgba(255,170,0,.12); border: 1px solid rgba(255,170,0,.4); color: #ffb84d; cursor: pointer; }
 .health.show { display:block; }
@@ -381,7 +381,7 @@ body {
 <div class="mode-row">
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
   <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
-  <button class="mode-btn" id="modeX" onclick="switchMode('x')">𝕏 Official</button>
+  <button class="mode-btn" id="modeX" onclick="switchMode('official')">⭐ Official</button>
 </div>
 
 <div class="reddit-sort" id="redditSort">
@@ -628,7 +628,7 @@ function itemsForMode() {
   if(!NEWS) return [];
   let list;
   if(mode==='rss') list=limitPerSource(NEWS.rss||[],cfg.perFeed);
-  else if(mode==='x') list=limitPerSource(NEWS.x||[],cfg.perFeed);
+  else if(mode==='official') list=limitPerSource(NEWS.official||[],cfg.perFeed);
   else if(redditSort==='myfeed') {
     const mine=new Set(getCustomSubs().map(x=>x.toLowerCase()));
     const known=new Set((NEWS.reddit.hot||[]).map(a=>a.sub.toLowerCase()));
@@ -652,7 +652,7 @@ function showHealth() {
 function showMode() {
   allArticles=itemsForMode(); showHealth();
   const gen=NEWS&&NEWS.generated_at?timeAgo(NEWS.generated_at):'';
-  const label=mode==='reddit'?'posts':mode==='x'?'posts':'articles';
+  const label=mode==='rss'?'articles':'posts';
   setStatus(`✓ ${allArticles.length} ${label}${gen?` — updated ${gen}`:''}`,'ok');
   visibleCount=PAGE_SIZE; applyFilter();
 }
@@ -789,7 +789,7 @@ function switchMode(m) {
   mode=m;
   document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
   document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
-  document.getElementById('modeX').className='mode-btn'+(m==='x'?' active-x':'');
+  document.getElementById('modeX').className='mode-btn'+(m==='official'?' active-official':'');
   document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
   if(NEWS) showMode(); else fetchCurrent();
 }

@@ -8,7 +8,9 @@ Sources (config/sources.json):
   feeds        -> plain RSS/Atom
   subreddits   -> Reddit (official OAuth API if REDDIT_CLIENT_ID/SECRET are set,
                   otherwise public .rss which Reddit often blocks from CI IPs)
-  x_accounts   -> X/Twitter via an RSS bridge (no native RSS exists):
+  bluesky      -> official accounts via Bluesky's native RSS (free, stable)
+  youtube      -> channel uploads via YouTube's native RSS (free, stable)
+  x_accounts   -> X/Twitter via an RSS bridge, only if one is configured (no native RSS exists):
                     X_FEED_TEMPLATE  e.g. https://your-rsshub.example.com/twitter/user/{handle}
                     x_feed_overrides in sources.json  {"handle": "https://rss.app/feeds/xxxx.xml"}
 
@@ -229,31 +231,44 @@ def fetch_reddit(subs):
     return statuses, by_sort, mode
 
 
-# ── X / Twitter via bridge ───────────────────────────────────────────────────
-def fetch_x(accounts, overrides):
+# ── Official accounts: Bluesky + YouTube (free native RSS) and X (via a bridge) ─
+def fetch_official(cfg):
+    """Returns (statuses, items). All entries are type 'official' so the page can
+    show them in one tab; each item's source says where it came from."""
+    jobs = []  # (id, display name, cat, feed url, kind)
+    for b in cfg.get("bluesky", []):
+        jobs.append((f"bsky:{b['handle']}", b.get("name") or f"@{b['handle']}", b["cat"],
+                     f"https://bsky.app/profile/{b['handle']}/rss", "bluesky"))
+    for y in cfg.get("youtube", []):
+        jobs.append((f"yt:{y['channel_id']}", y.get("name") or y["channel_id"], y["cat"],
+                     f"https://www.youtube.com/feeds/videos.xml?channel_id={y['channel_id']}", "youtube"))
+    # X has no native RSS: only fetched when a bridge is configured, otherwise left out
     template = os.environ.get("X_FEED_TEMPLATE", "").strip()
-    statuses, items = [], []
-
-    def one(a):
-        sid, name = f"x:{a['handle']}", f"@{a['handle']}"
+    overrides = cfg.get("x_feed_overrides", {})
+    for a in cfg.get("x_accounts", []):
         url = overrides.get(a["handle"]) or (template.format(handle=a["handle"]) if template else "")
-        if not url:
-            return {"id": sid, "type": "x", "name": name, "status": "skipped", "count": 0,
-                    "error": "no X bridge configured (set X_FEED_TEMPLATE or x_feed_overrides)"}, []
+        if url:
+            jobs.append((f"x:{a['handle']}", f"@{a['handle']} (X)", a["cat"], url, "x"))
+
+    def one(job):
+        sid, name, cat, url, kind = job
         try:
             entries = parse_feed(url)[:PER_FEED]
             its = []
             for e in entries:
-                it = to_item(e, name, a["cat"], "x")
+                it = to_item(e, name, cat, "official", kind=kind)
                 it["title"] = clip(e.get("title") or e.get("summary", ""), 280)
                 if it["title"] and it["link"]:
                     its.append(it)
-            return {"id": sid, "type": "x", "name": name, "status": "ok" if its else "empty", "count": len(its)}, its
+            return {"id": sid, "type": "official", "name": name, "status": "ok" if its else "empty",
+                    "count": len(its)}, its
         except Exception as ex:  # noqa: BLE001
-            return {"id": sid, "type": "x", "name": name, "status": "error", "count": 0, "error": str(ex)[:160]}, []
+            return {"id": sid, "type": "official", "name": name, "status": "error", "count": 0,
+                    "error": str(ex)[:160]}, []
 
+    statuses, items = [], []
     with ThreadPoolExecutor(max_workers=4) as pool:
-        for st, its in pool.map(one, accounts):
+        for st, its in pool.map(one, jobs):
             statuses.append(st)
             items.extend(its)
     return statuses, items
@@ -304,9 +319,9 @@ def main():
         )
     statuses += reddit_status
 
-    x_status, x_items = fetch_x(cfg.get("x_accounts", []), cfg.get("x_feed_overrides", {}))
-    x_items = keep_stale(x_status, x_items, prev.get("x", []), lambda i: i["source"])
-    statuses += x_status
+    official_status, official_items = fetch_official(cfg)
+    official_items = keep_stale(official_status, official_items, prev.get("official", []), lambda i: i["source"])
+    statuses += official_status
 
     out = {
         "generated_at": now_iso(),
@@ -314,7 +329,7 @@ def main():
         "sources": statuses,
         "rss": newest_first(rss_items),
         "reddit": {s: (newest_first(v) if s == "new" else v) for s, v in reddit_by_sort.items()},
-        "x": newest_first(x_items),
+        "official": newest_first(official_items),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -325,7 +340,7 @@ def main():
         summary[s["type"]][s["status"]] += 1
     print(json.dumps(summary), file=sys.stderr)
     # Fail the run only if nothing at all was fetched (so a real outage is visible).
-    if not (out["rss"] or any(out["reddit"].values()) or out["x"]):
+    if not (out["rss"] or any(out["reddit"].values()) or out["official"]):
         sys.exit("No items fetched from any source")
 
 

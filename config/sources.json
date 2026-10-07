@@ -578,6 +578,39 @@
       "cat": "gaming"
     }
   ],
+  "bluesky": [
+    {
+      "handle": "animenewsnetwork.com",
+      "name": "Anime News Network (Bluesky)",
+      "cat": "anime"
+    },
+    {
+      "handle": "crunchyroll.com",
+      "name": "Crunchyroll (Bluesky)",
+      "cat": "anime"
+    },
+    {
+      "handle": "myanimelist.net",
+      "name": "MyAnimeList (Bluesky)",
+      "cat": "anime"
+    },
+    {
+      "handle": "anilist.co",
+      "name": "AniList (Bluesky)",
+      "cat": "anime"
+    },
+    {
+      "handle": "viz.com",
+      "name": "VIZ Media (Bluesky)",
+      "cat": "manga"
+    },
+    {
+      "handle": "kodansha.us",
+      "name": "Kodansha USA (Bluesky)",
+      "cat": "manga"
+    }
+  ],
+  "youtube": [],
   "x_accounts": [
     {
       "handle": "animenewsnetwork",
