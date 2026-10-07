@@ -10,6 +10,7 @@ Sources (config/sources.json):
                   otherwise public .rss which Reddit often blocks from CI IPs)
   bluesky      -> official accounts via Bluesky's native RSS (free, stable)
   youtube      -> channel uploads via YouTube's native RSS (free, stable)
+  (releases)   -> new anime episodes from AniList's public airing schedule (last 24h)
   x_accounts   -> X/Twitter via an RSS bridge, only if one is configured (no native RSS exists):
                     X_FEED_TEMPLATE  e.g. https://your-rsshub.example.com/twitter/user/{handle}
                     x_feed_overrides in sources.json  {"handle": "https://rss.app/feeds/xxxx.xml"}
@@ -279,6 +280,53 @@ def fetch_official(cfg):
     return statuses, items
 
 
+# ── New anime episodes: AniList's free public GraphQL API (no key needed) ────
+ANILIST_QUERY = """
+query ($from: Int, $to: Int) {
+  Page(perPage: 50) {
+    airingSchedules(airingAt_greater: $from, airingAt_lesser: $to, sort: TIME_DESC) {
+      airingAt
+      episode
+      media { siteUrl isAdult countryOfOrigin title { romaji english } coverImage { medium } }
+    }
+  }
+}
+"""
+
+
+def fetch_releases():
+    sid, name = "anilist:airing", "AniList Airing"
+    try:
+        now = int(time.time())
+        r = requests.post(
+            "https://graphql.anilist.co",
+            json={"query": ANILIST_QUERY, "variables": {"from": now - 24 * 3600, "to": now}},
+            headers={"User-Agent": UA_BROWSER, "Accept": "application/json"},
+            timeout=TIMEOUT,
+        )
+        r.raise_for_status()
+        rows = r.json()["data"]["Page"]["airingSchedules"]
+        items = []
+        for row in rows:
+            m = row["media"]
+            if m.get("isAdult"):
+                continue
+            t = m["title"].get("english") or m["title"].get("romaji") or ""
+            items.append({
+                "title": f"{t} — Episode {row['episode']} aired",
+                "link": m["siteUrl"],
+                "summary": "",
+                "pubDate": datetime.fromtimestamp(row["airingAt"], tz=timezone.utc).isoformat(timespec="seconds"),
+                "source": name, "cat": "anime", "type": "releases",
+                "thumb": (m.get("coverImage") or {}).get("medium"),
+            })
+        st = {"id": sid, "type": "releases", "name": name, "status": "ok" if items else "empty", "count": len(items)}
+        return [st], items
+    except Exception as ex:  # noqa: BLE001
+        return [{"id": sid, "type": "releases", "name": name, "status": "error", "count": 0,
+                 "error": str(ex)[:160]}], []
+
+
 # ── stale fallback ───────────────────────────────────────────────────────────
 def keep_stale(statuses, new_items, old_items, key_fn):
     """For sources that errored, carry over their previous items, flagged stale."""
@@ -328,6 +376,10 @@ def main():
     official_items = keep_stale(official_status, official_items, prev.get("official", []), lambda i: i["source"])
     statuses += official_status
 
+    releases_status, releases_items = fetch_releases()
+    releases_items = keep_stale(releases_status, releases_items, prev.get("releases", []), lambda i: i["source"])
+    statuses += releases_status
+
     out = {
         "generated_at": now_iso(),
         "reddit_mode": reddit_mode,
@@ -335,6 +387,7 @@ def main():
         "rss": newest_first(rss_items),
         "reddit": {s: (newest_first(v) if s == "new" else v) for s, v in reddit_by_sort.items()},
         "official": newest_first(official_items),
+        "releases": newest_first(releases_items),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

@@ -270,6 +270,11 @@
       "name": "TechRaptor",
       "url": "https://techraptor.net/feed",
       "cat": "gaming"
+    },
+    {
+      "name": "Kodansha USA",
+      "url": "https://kodansha.us/feed/",
+      "cat": "manga"
     }
   ],
   "subreddits": [

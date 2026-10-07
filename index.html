@@ -67,6 +67,7 @@ body {
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
 .mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
+.mode-btn.active-releases { color: var(--green, #3ecf8e); border-color: var(--green, #3ecf8e); }
 .mode-btn.active-official { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
 .health { display:none; margin: 0 12px 6px; padding: 8px 10px; border-radius: 8px; font-size: 12px;
   background: rgba(255,170,0,.12); border: 1px solid rgba(255,170,0,.4); color: #ffb84d; cursor: pointer; }
@@ -382,6 +383,7 @@ body {
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
   <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
   <button class="mode-btn" id="modeX" onclick="switchMode('official')">⭐ Official</button>
+  <button class="mode-btn" id="modeReleases" onclick="switchMode('releases')">🆕 Releases</button>
 </div>
 
 <div class="reddit-sort" id="redditSort">
@@ -629,6 +631,7 @@ function itemsForMode() {
   let list;
   if(mode==='rss') list=limitPerSource(NEWS.rss||[],cfg.perFeed);
   else if(mode==='official') list=limitPerSource(NEWS.official||[],cfg.perFeed);
+  else if(mode==='releases') list=NEWS.releases||[];
   else if(redditSort==='myfeed') {
     const mine=new Set(getCustomSubs().map(x=>x.toLowerCase()));
     const known=new Set((NEWS.reddit.hot||[]).map(a=>a.sub.toLowerCase()));
@@ -790,6 +793,7 @@ function switchMode(m) {
   document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
   document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
   document.getElementById('modeX').className='mode-btn'+(m==='official'?' active-official':'');
+  document.getElementById('modeReleases').className='mode-btn'+(m==='releases'?' active-releases':'');
   document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
   if(NEWS) showMode(); else fetchCurrent();
 }
