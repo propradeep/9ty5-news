@@ -16,11 +16,6 @@
       "cat": "anime"
     },
     {
-      "name": "Anime Trending",
-      "url": "https://anitrendz.net/news/feed/",
-      "cat": "anime"
-    },
-    {
       "name": "Anime UK News",
       "url": "https://animeuknews.net/feed/",
       "cat": "anime"
@@ -253,11 +248,6 @@
     {
       "name": "Ars Technica Gaming",
       "url": "https://arstechnica.com/gaming/feed/",
-      "cat": "gaming"
-    },
-    {
-      "name": "Noisy Pixel",
-      "url": "https://noisypixel.net/feed/",
       "cat": "gaming"
     },
     {

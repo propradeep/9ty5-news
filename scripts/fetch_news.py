@@ -128,7 +128,8 @@ def fetch_rss_source(f):
             rx = re.compile(f["filter"], re.I)
             items = [i for i in items if rx.search(i["title"] + " " + i["summary"])]
         items = items[:PER_FEED]
-        status = "ok" if items else "empty"
+        # A filtered feed with no matching posts right now is healthy, not broken.
+        status = "ok" if (items or f.get("filter")) else "empty"
         return {"id": sid, "type": "rss", "name": f["name"], "status": status, "count": len(items)}, items
     except Exception as ex:  # noqa: BLE001 - report every failure
         return {"id": sid, "type": "rss", "name": f["name"], "status": "error", "count": 0, "error": str(ex)[:160]}, []
