@@ -1,4 +1,4 @@
-const CACHE = '9ty5-news-v2';
+const CACHE = '9ty5-news-v3';
 const STATIC = ['./', './index.html'];
 
 self.addEventListener('install', e => {
@@ -24,7 +24,20 @@ self.addEventListener('fetch', e => {
     e.respondWith(fetch(e.request).catch(() => new Response('[]')));
     return;
   }
-  if (e.request.mode === 'navigate' || url.endsWith('/index.html') || url.endsWith('.js') || url.endsWith('.json')) {
+  const path = new URL(url).pathname;
+  if (path.endsWith('/data/news.json')) {
+    // News data: always try the network; cache under a fixed key (ignoring the
+    // cache-busting query) so the last good copy is shown when offline.
+    const key = new Request(new URL('./data/news.json', self.registration.scope).href);
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(key, copy)); }
+        return res;
+      }).catch(() => caches.match(key))
+    );
+    return;
+  }
+  if (e.request.mode === 'navigate' || path.endsWith('/index.html') || path.endsWith('.js') || path.endsWith('.json')) {
     // Network-first for the app shell so pushed updates are picked up immediately;
     // cache is only a fallback when offline.
     e.respondWith(

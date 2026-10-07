@@ -1,0 +1,638 @@
+{
+  "feeds": [
+    {
+      "name": "Anime News Network",
+      "url": "https://www.animenewsnetwork.com/all/rss.xml",
+      "cat": "anime"
+    },
+    {
+      "name": "AnimeCorner",
+      "url": "https://animecorner.me/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Otaquest",
+      "url": "https://www.otaquest.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Anime Senpai",
+      "url": "https://www.animesenpai.net/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Anime Trending",
+      "url": "https://anitrendz.net/news/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Anime UK News",
+      "url": "https://animeuknews.net/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Otaku USA",
+      "url": "https://otakuusamagazine.com/anime/feed",
+      "cat": "anime"
+    },
+    {
+      "name": "Honey's Anime",
+      "url": "https://honeysanime.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "The Anime Daily",
+      "url": "https://theanimedaily.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Anime Herald",
+      "url": "https://animeherald.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Otaku News",
+      "url": "https://otakunews.com/rss/rss.xml",
+      "cat": "anime"
+    },
+    {
+      "name": "CBR – Anime",
+      "url": "https://www.cbr.com/feed/category/anime/",
+      "cat": "anime"
+    },
+    {
+      "name": "Screen Rant – Anime",
+      "url": "https://screenrant.com/feed/category/anime/",
+      "cat": "anime"
+    },
+    {
+      "name": "ComicBook – Anime",
+      "url": "https://comicbook.com/category/anime/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Den of Geek – Anime",
+      "url": "https://www.denofgeek.com/anime/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Siliconera – Anime",
+      "url": "https://www.siliconera.com/category/anime/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Animation Magazine",
+      "url": "https://www.animationmagazine.net/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Anime Feminist",
+      "url": "https://www.animefeminist.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "The Fandom Post",
+      "url": "https://www.thefandompost.com/category/anime-news/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "RandomC",
+      "url": "https://randomc.net/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "MyAnimeList News",
+      "url": "https://myanimelist.net/rss/news.xml",
+      "cat": "anime"
+    },
+    {
+      "name": "Sakuga Blog",
+      "url": "https://blog.sakugabooru.com/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "Nerdist – Anime",
+      "url": "https://nerdist.com/topic/anime/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "9ty5.org",
+      "url": "https://9ty5.org/feed/",
+      "cat": "anime"
+    },
+    {
+      "name": "CBR – Manga",
+      "url": "https://www.cbr.com/feed/tag/manga/",
+      "cat": "manga"
+    },
+    {
+      "name": "CBR – Comics",
+      "url": "https://www.cbr.com/feed/category/comics/",
+      "cat": "manga"
+    },
+    {
+      "name": "Screen Rant – Comics",
+      "url": "https://screenrant.com/feed/category/comics/",
+      "cat": "manga"
+    },
+    {
+      "name": "ComicBook.com",
+      "url": "https://comicbook.com/comics/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "Den of Geek – Comics",
+      "url": "https://www.denofgeek.com/comics/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "Nerdist – Comics",
+      "url": "https://nerdist.com/topic/comics/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "The Comics Beat",
+      "url": "https://www.comicsbeat.com/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "AIPT Comics",
+      "url": "https://aiptcomics.com/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "Multiversity Comics",
+      "url": "https://www.multiversitycomics.com/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "Bleeding Cool",
+      "url": "https://bleedingcool.com/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "VIZ Media",
+      "url": "https://www.viz.com/blog/category/manga/feed",
+      "cat": "manga"
+    },
+    {
+      "name": "Smash Pages",
+      "url": "https://smashpages.net/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "MangaBookshelf",
+      "url": "https://mangabookshelf.com/feed/",
+      "cat": "manga"
+    },
+    {
+      "name": "ICv2",
+      "url": "https://icv2.com/rss.xml",
+      "cat": "manga"
+    },
+    {
+      "name": "IGN",
+      "url": "https://feeds.ign.com/ign/game-reviews",
+      "cat": "gaming"
+    },
+    {
+      "name": "Kotaku",
+      "url": "https://kotaku.com/rss",
+      "cat": "gaming"
+    },
+    {
+      "name": "PC Gamer",
+      "url": "https://www.pcgamer.com/rss/",
+      "cat": "gaming"
+    },
+    {
+      "name": "GameSpot",
+      "url": "https://www.gamespot.com/feeds/mashup/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Eurogamer",
+      "url": "https://www.eurogamer.net/feed",
+      "cat": "gaming"
+    },
+    {
+      "name": "Rock Paper Shotgun",
+      "url": "https://www.rockpapershotgun.com/feed",
+      "cat": "gaming"
+    },
+    {
+      "name": "GamesRadar",
+      "url": "https://www.gamesradar.com/games/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Destructoid",
+      "url": "https://www.destructoid.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Polygon",
+      "url": "https://www.polygon.com/rss/index.xml",
+      "cat": "gaming"
+    },
+    {
+      "name": "The Verge – Gaming",
+      "url": "https://www.theverge.com/games/rss/index.xml",
+      "cat": "gaming"
+    },
+    {
+      "name": "Siliconera – Gaming",
+      "url": "https://www.siliconera.com/category/game/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Nintendo Life",
+      "url": "https://www.nintendolife.com/feeds/news",
+      "cat": "gaming"
+    },
+    {
+      "name": "Push Square",
+      "url": "https://www.pushsquare.com/feeds/news",
+      "cat": "gaming"
+    },
+    {
+      "name": "Game Rant",
+      "url": "https://gamerant.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "PlayStation Blog",
+      "url": "https://blog.us.playstation.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Xbox Wire",
+      "url": "https://news.xbox.com/en-us/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "PCGamesN",
+      "url": "https://www.pcgamesn.com/feed",
+      "cat": "gaming"
+    },
+    {
+      "name": "DualShockers",
+      "url": "https://www.dualshockers.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "VG247",
+      "url": "https://www.vg247.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "VideoGamesChronicle",
+      "url": "https://www.videogameschronicle.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Ars Technica Gaming",
+      "url": "https://arstechnica.com/gaming/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Niche Gamer",
+      "url": "https://nichegamer.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Noisy Pixel",
+      "url": "https://noisypixel.net/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Twinfinite",
+      "url": "https://twinfinite.net/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "TouchArcade",
+      "url": "https://toucharcade.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "Hardcore Gamer",
+      "url": "https://hardcoregamer.com/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "WCCFTech Gaming",
+      "url": "https://wccftech.com/category/gaming/feed/",
+      "cat": "gaming"
+    },
+    {
+      "name": "TechRaptor",
+      "url": "https://techraptor.net/feed",
+      "cat": "gaming"
+    },
+    {
+      "name": "Rice Digital",
+      "url": "https://ricedigital.com/feed/",
+      "cat": "gaming"
+    }
+  ],
+  "subreddits": [
+    {
+      "sub": "anime",
+      "cat": "anime"
+    },
+    {
+      "sub": "animenews",
+      "cat": "anime"
+    },
+    {
+      "sub": "OnePiece",
+      "cat": "anime"
+    },
+    {
+      "sub": "JuJutsuKaisen",
+      "cat": "anime"
+    },
+    {
+      "sub": "Bleach",
+      "cat": "anime"
+    },
+    {
+      "sub": "Berserk",
+      "cat": "anime"
+    },
+    {
+      "sub": "Chainsawman",
+      "cat": "anime"
+    },
+    {
+      "sub": "hunterxhunter",
+      "cat": "anime"
+    },
+    {
+      "sub": "Naruto",
+      "cat": "anime"
+    },
+    {
+      "sub": "DragonBallSuper",
+      "cat": "anime"
+    },
+    {
+      "sub": "AttackOnTitan",
+      "cat": "anime"
+    },
+    {
+      "sub": "DemonSlayer",
+      "cat": "anime"
+    },
+    {
+      "sub": "BlueLock",
+      "cat": "anime"
+    },
+    {
+      "sub": "Vinland_Saga",
+      "cat": "anime"
+    },
+    {
+      "sub": "Gachiakuta",
+      "cat": "anime"
+    },
+    {
+      "sub": "ReZero",
+      "cat": "anime"
+    },
+    {
+      "sub": "Overlord",
+      "cat": "anime"
+    },
+    {
+      "sub": "sololeveling",
+      "cat": "anime"
+    },
+    {
+      "sub": "SpyxFamily",
+      "cat": "anime"
+    },
+    {
+      "sub": "Mushokutensei",
+      "cat": "anime"
+    },
+    {
+      "sub": "FairyTail",
+      "cat": "anime"
+    },
+    {
+      "sub": "Animesuggest",
+      "cat": "anime"
+    },
+    {
+      "sub": "tokyoghoul",
+      "cat": "anime"
+    },
+    {
+      "sub": "OreGairu",
+      "cat": "anime"
+    },
+    {
+      "sub": "goodanimemes",
+      "cat": "anime"
+    },
+    {
+      "sub": "manga",
+      "cat": "manga"
+    },
+    {
+      "sub": "manhwa",
+      "cat": "manga"
+    },
+    {
+      "sub": "manhua",
+      "cat": "manga"
+    },
+    {
+      "sub": "comics",
+      "cat": "manga"
+    },
+    {
+      "sub": "Marvel",
+      "cat": "manga"
+    },
+    {
+      "sub": "DC_Cinematic",
+      "cat": "manga"
+    },
+    {
+      "sub": "comicbooks",
+      "cat": "manga"
+    },
+    {
+      "sub": "WebtoonCanvas",
+      "cat": "manga"
+    },
+    {
+      "sub": "lightnovels",
+      "cat": "manga"
+    },
+    {
+      "sub": "OnePunchMan",
+      "cat": "manga"
+    },
+    {
+      "sub": "TokyoRevengers",
+      "cat": "manga"
+    },
+    {
+      "sub": "Boruto",
+      "cat": "manga"
+    },
+    {
+      "sub": "MangaDex",
+      "cat": "manga"
+    },
+    {
+      "sub": "gaming",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Games",
+      "cat": "gaming"
+    },
+    {
+      "sub": "pcgaming",
+      "cat": "gaming"
+    },
+    {
+      "sub": "PS5",
+      "cat": "gaming"
+    },
+    {
+      "sub": "XboxSeriesX",
+      "cat": "gaming"
+    },
+    {
+      "sub": "NintendoSwitch",
+      "cat": "gaming"
+    },
+    {
+      "sub": "indiegaming",
+      "cat": "gaming"
+    },
+    {
+      "sub": "anime_games",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Genshin_Impact",
+      "cat": "gaming"
+    },
+    {
+      "sub": "NieRAutomata",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Sekiro",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Eldenring",
+      "cat": "gaming"
+    },
+    {
+      "sub": "JRPG",
+      "cat": "gaming"
+    },
+    {
+      "sub": "AnimeGamers",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Steam",
+      "cat": "gaming"
+    },
+    {
+      "sub": "patientgamers",
+      "cat": "gaming"
+    },
+    {
+      "sub": "FinalFantasy",
+      "cat": "gaming"
+    },
+    {
+      "sub": "pokemon",
+      "cat": "gaming"
+    },
+    {
+      "sub": "fireemblem",
+      "cat": "gaming"
+    },
+    {
+      "sub": "leagueoflegends",
+      "cat": "gaming"
+    },
+    {
+      "sub": "Minecraft",
+      "cat": "gaming"
+    },
+    {
+      "sub": "gamedev",
+      "cat": "gaming"
+    }
+  ],
+  "x_accounts": [
+    {
+      "handle": "animenewsnetwork",
+      "name": "Anime News Network",
+      "cat": "anime"
+    },
+    {
+      "handle": "MyAnimeList",
+      "name": "MyAnimeList",
+      "cat": "anime"
+    },
+    {
+      "handle": "Crunchyroll",
+      "name": "Crunchyroll",
+      "cat": "anime"
+    },
+    {
+      "handle": "MAPPA_Info",
+      "name": "MAPPA",
+      "cat": "anime"
+    },
+    {
+      "handle": "ufotable",
+      "name": "ufotable",
+      "cat": "anime"
+    },
+    {
+      "handle": "KyotoAnimation",
+      "name": "Kyoto Animation",
+      "cat": "anime"
+    },
+    {
+      "handle": "AniplexUSA",
+      "name": "Aniplex USA",
+      "cat": "anime"
+    },
+    {
+      "handle": "SentaiFilmworks",
+      "name": "Sentai Filmworks",
+      "cat": "anime"
+    },
+    {
+      "handle": "VIZMedia",
+      "name": "VIZ Media",
+      "cat": "manga"
+    },
+    {
+      "handle": "KodanshaUS",
+      "name": "Kodansha USA",
+      "cat": "manga"
+    },
+    {
+      "handle": "MANGAPlus_EN",
+      "name": "MANGA Plus",
+      "cat": "manga"
+    }
+  ]
+}
