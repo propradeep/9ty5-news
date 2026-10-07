@@ -194,19 +194,32 @@ def fetch_reddit(subs):
     mode = "oauth" if token else "public-rss"
     print(f"Reddit mode: {mode}", file=sys.stderr)
     delay = 0.7 if token else 2.0  # stay under rate limits
+    # Without credentials Reddit usually blocks CI servers. Use one sort and give up
+    # quickly after repeated failures so the run still finishes and saves RSS/X data.
+    sorts = REDDIT_SORTS if token else REDDIT_SORTS[:1]
+    consecutive_fail, gave_up = 0, False
     for s in subs:
+        if gave_up:
+            statuses.append({"id": f"reddit:{s['sub']}", "type": "reddit", "name": f"r/{s['sub']}",
+                             "status": "skipped", "count": 0,
+                             "error": "Reddit is blocking this server. Add REDDIT_CLIENT_ID and "
+                                      "REDDIT_CLIENT_SECRET repo secrets (reddit.com/prefs/apps)."})
+            continue
         errors, got = [], 0
-        for sort in REDDIT_SORTS:
+        for sort in sorts:
             try:
                 posts = reddit_api_posts(s["sub"], sort, token) if token else reddit_rss_posts(s["sub"], sort)
                 for p in posts:
                     p["cat"] = s["cat"]
                 by_sort[sort].extend(posts)
                 got += len(posts)
+                consecutive_fail = 0
             except Exception as ex:  # noqa: BLE001
                 errors.append(f"{sort}: {str(ex)[:90]}")
-                if "403" in str(ex) or "429" in str(ex):
-                    time.sleep(delay * 3)
+                consecutive_fail += 1
+                if not token and consecutive_fail >= 5:
+                    gave_up = True
+                    break
             time.sleep(delay)
         st = "ok" if got and not errors else ("error" if not got else "partial")
         entry = {"id": f"reddit:{s['sub']}", "type": "reddit", "name": f"r/{s['sub']}", "status": st, "count": got}
