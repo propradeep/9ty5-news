@@ -67,6 +67,7 @@ body {
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
 .mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
+.mode-btn.active-chapters { color: var(--accent2); border-color: var(--accent2); }
 .mode-btn.active-releases { color: var(--green, #3ecf8e); border-color: var(--green, #3ecf8e); }
 .mode-btn.active-official { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
 .health { display:none; margin: 0 12px 6px; padding: 8px 10px; border-radius: 8px; font-size: 12px;
@@ -381,19 +382,9 @@ body {
 
 <div class="mode-row">
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
-  <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
   <button class="mode-btn" id="modeX" onclick="switchMode('official')">⭐ Official</button>
   <button class="mode-btn" id="modeReleases" onclick="switchMode('releases')">🆕 Releases</button>
-</div>
-
-<div class="reddit-sort" id="redditSort">
-  <button class="sort-btn active" onclick="setSort(this,'hot')">🔥 Hot</button>
-  <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
-  <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
-  <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
-  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')">
-    👤 My Feed <span class="myfeed-count" id="myFeedCount" style="display:none"></span>
-  </button>
+  <button class="mode-btn" id="modeChapters" onclick="switchMode('chapters')">📖 Chapters</button>
 </div>
 
 <div class="search-row">
@@ -478,29 +469,6 @@ body {
     </div>
   </div>
 
-  <!-- My Feed: custom subreddits -->
-  <div class="s-section">
-    <div class="s-label">👤 My Feed — Your Subreddits</div>
-    <div class="subs-card">
-      <div class="s-sublabel">
-        Enter your subreddits one per line (or comma-separated).
-        The <strong style="color:var(--yellow)">👤 My Feed</strong> button in Reddit mode fetches only these.
-      </div>
-      <textarea class="subs-textarea" id="customSubsInput"
-        placeholder="anime&#10;OnePiece&#10;manga&#10;gaming&#10;AskReddit&#10;pics&#10;LOTR&#10;philosophy"
-        oninput="saveCustomSubs()"></textarea>
-      <div class="subs-meta">
-        <span class="subs-count" id="subsCount"></span>
-        <span class="subs-hint">No login needed — uses RSS</span>
-      </div>
-      <div class="paste-hint">
-        💡 <strong>How to find your subreddits:</strong> on Reddit go to
-        <strong>reddit.com/subreddits/mine</strong> — you'll see your full list there.
-        Copy the names and paste them here.
-      </div>
-    </div>
-  </div>
-
   <div class="s-section">
     <div class="s-label">Data</div>
     <button class="danger-btn" onclick="clearCache()">🗑 Clear all cache &amp; saved data</button>
@@ -513,7 +481,7 @@ body {
 
 <script>
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let mode='rss', cat='all', redditSort='hot';
+let mode='rss', cat='all';
 let allArticles=[], filteredPool=[], visibleCount=30;
 const PAGE_SIZE=30;
 let favorites   = JSON.parse(localStorage.getItem('9ty5_favs')||'[]');
@@ -588,33 +556,6 @@ function setBusy(on) {
   on?pf.classList.add('indeterminate'):pf.classList.remove('indeterminate');
 }
 
-// ── MY FEED: custom subreddits ─────────────────────────────────────────────────
-function getCustomSubs() {
-  const raw=localStorage.getItem('9ty5_custom_subs')||'';
-  return raw.split(/[\n,]+/).map(s=>s.trim().replace(/^r\//i,'')).filter(Boolean);
-}
-function saveCustomSubs() {
-  safeStorageSet('9ty5_custom_subs', document.getElementById('customSubsInput').value);
-  updateSubsCount();
-  updateMyFeedBadge();
-}
-function updateSubsCount() {
-  const n=getCustomSubs().length;
-  const el=document.getElementById('subsCount');
-  if(el) el.textContent=n?`${n} subreddits saved`:'';
-}
-function updateMyFeedBadge() {
-  const n=getCustomSubs().length;
-  const el=document.getElementById('myFeedCount');
-  if(el) { el.textContent=n||''; el.style.display=n?'inline':'none'; }
-}
-function initCustomSubsUI() {
-  const el=document.getElementById('customSubsInput');
-  if(el) el.value=localStorage.getItem('9ty5_custom_subs')||'';
-  updateSubsCount();
-  updateMyFeedBadge();
-}
-
 // ── DATA (built server-side by scripts/fetch_news.py → data/news.json) ─────────
 let NEWS=null;
 async function loadNews() {
@@ -632,13 +573,8 @@ function itemsForMode() {
   if(mode==='rss') list=limitPerSource(NEWS.rss||[],cfg.perFeed);
   else if(mode==='official') list=limitPerSource(NEWS.official||[],cfg.perFeed);
   else if(mode==='releases') list=NEWS.releases||[];
-  else if(redditSort==='myfeed') {
-    const mine=new Set(getCustomSubs().map(x=>x.toLowerCase()));
-    const known=new Set((NEWS.reddit.hot||[]).map(a=>a.sub.toLowerCase()));
-    const missing=[...mine].filter(x=>!known.has(x));
-    if(missing.length) showToast(`Not tracked yet: ${missing.slice(0,3).join(', ')}${missing.length>3?'…':''} — add to config/sources.json`,4500);
-    list=(NEWS.reddit.hot||[]).filter(a=>mine.has(a.sub.toLowerCase()));
-  } else list=NEWS.reddit[redditSort]||[];
+  else if(mode==='chapters') list=NEWS.chapters||[];
+  else list=[];
   return list.map(a=>({...a,age:timeAgo(a.pubDate)+(a.stale?' · cached':'')}));
 }
 function showHealth() {
@@ -655,7 +591,7 @@ function showHealth() {
 function showMode() {
   allArticles=itemsForMode(); showHealth();
   const gen=NEWS&&NEWS.generated_at?timeAgo(NEWS.generated_at):'';
-  const label=mode==='rss'?'articles':'posts';
+  const label=mode==='rss'?'articles':mode==='chapters'?'chapters':'posts';
   setStatus(`✓ ${allArticles.length} ${label}${gen?` — updated ${gen}`:''}`,'ok');
   visibleCount=PAGE_SIZE; applyFilter();
 }
@@ -663,9 +599,6 @@ function showMode() {
 // ── MAIN FETCH ────────────────────────────────────────────────────────────────
 async function fetchCurrent() {
   if(isFetching) return;
-  if(mode==='reddit'&&redditSort==='myfeed'&&!getCustomSubs().length) {
-    showToast('Add your subreddits in Settings → My Feed first',3500); openSettings(); return;
-  }
   setBusy(true);
   try { await loadNews(); showMode(); }
   catch(e) { setStatus(`Error: ${escHtml(e.message)}`,'err'); }
@@ -706,30 +639,27 @@ function updateCounts() {
 function renderArticles(items) {
   const el=document.getElementById('articles');
   if(!items.length) {
-    const noSubs=mode==='reddit'&&redditSort==='myfeed'&&!getCustomSubs().length;
     el.innerHTML=`<div class="empty">
       <div class="big">${cat==='fav'?'⭐':'📭'}</div>
       <p>${cat==='fav'?'No saved articles yet.<br>Tap ☆ on any article to save it.':'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
-      ${noSubs?`<button class="empty-action" onclick="openSettings()">⚙ Add my subreddits</button>`:''}
     </div>`;
     return;
   }
   el.innerHTML=items.map((a,i)=>{
     const isRead=readLinks.has(a.link);
     const isFav=favorites.some(f=>f.link===a.link);
-    const tagCls=a.type==='reddit'?'tag-reddit':a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
+    const tagCls=a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
     const newBadge=a.type==='rss'&&isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
     const flairPart=a.flair?`<span class="tag-flair">${escHtml(a.flair)}</span>`:'';
     const readDot=isRead?`<span class="read-dot">✓</span>`:'';
-    const scorePart=a.score!=null?`<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`:'';
     const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
-    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
+    return `<div class="card${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
         <div class="card-body">
           <div class="card-meta">
             <span class="source-tag ${tagCls}">${escHtml(a.source)}</span>
-            ${newBadge}${flairPart}${readDot}${scorePart}
+            ${newBadge}${flairPart}${readDot}
             <span class="card-age">${a.age}</span>
           </div>
           <div class="card-title">${escHtml(a.title)}</div>
@@ -791,10 +721,9 @@ function switchMode(m) {
   if(isFetching) return;
   mode=m;
   document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
-  document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
   document.getElementById('modeX').className='mode-btn'+(m==='official'?' active-official':'');
+  document.getElementById('modeChapters').className='mode-btn'+(m==='chapters'?' active-chapters':'');
   document.getElementById('modeReleases').className='mode-btn'+(m==='releases'?' active-releases':'');
-  document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
   if(NEWS) showMode(); else fetchCurrent();
 }
 function switchCat(btn,c) {
@@ -802,13 +731,6 @@ function switchCat(btn,c) {
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   visibleCount=PAGE_SIZE; applyFilter();
-}
-function setSort(btn,s) {
-  redditSort=s;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if(s==='myfeed'&&!getCustomSubs().length){ fetchCurrent(); return; }
-  if(NEWS) showMode(); else fetchCurrent();
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
@@ -838,7 +760,7 @@ function setupAutoRefresh() {
 }
 function clearCache() {
   if(!confirm('Clear all cached articles and saved items?')) return;
-  ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
+  ['9ty5_rss_cache','9ty5_rss_cache_ts',
    '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
   favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
   updateCounts(); document.getElementById('articles').innerHTML='';
@@ -856,7 +778,6 @@ function applySettingsToUI() {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   updateCounts(); applySettingsToUI(); setupAutoRefresh();
-  initCustomSubsUI();
   fetchCurrent();
 }
 init();

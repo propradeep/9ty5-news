@@ -27,13 +27,7 @@ jobs:
 
       - run: pip install -r scripts/requirements.txt
 
-      - name: Fetch RSS, Reddit and X
-        env:
-          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-          REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
-          # e.g. https://your-rsshub.example.com/twitter/user/{handle}
-          X_FEED_TEMPLATE: ${{ vars.X_FEED_TEMPLATE }}
+      - name: Fetch news
         run: python scripts/fetch_news.py
 
       - name: Commit updated data

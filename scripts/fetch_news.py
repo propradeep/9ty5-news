@@ -5,15 +5,10 @@ Runs in GitHub Actions (or locally) and writes data/news.json, which the page
 reads instead of calling third-party CORS proxies from the browser.
 
 Sources (config/sources.json):
-  feeds        -> plain RSS/Atom
-  subreddits   -> Reddit (official OAuth API if REDDIT_CLIENT_ID/SECRET are set,
-                  otherwise public .rss which Reddit often blocks from CI IPs)
-  bluesky      -> official accounts via Bluesky's native RSS (free, stable)
-  youtube      -> channel uploads via YouTube's native RSS (free, stable)
-  (releases)   -> new anime episodes from AniList's public airing schedule (last 24h)
-  x_accounts   -> X/Twitter via an RSS bridge, only if one is configured (no native RSS exists):
-                    X_FEED_TEMPLATE  e.g. https://your-rsshub.example.com/twitter/user/{handle}
-                    x_feed_overrides in sources.json  {"handle": "https://rss.app/feeds/xxxx.xml"}
+  feeds    -> plain RSS/Atom (optional per-feed "filter" regex for general feeds)
+  bluesky  -> official accounts via Bluesky's native RSS (free, stable)
+  youtube  -> channel uploads via YouTube's native RSS (free, stable)
+  plus new anime episodes (AniList public API) and new manga chapters (MangaUpdates public API).
 
 Every source reports a status so failures are visible instead of silent. If a
 source fails, its items from the previous run are kept and marked stale.
@@ -23,6 +18,7 @@ import os
 import re
 import sys
 import time
+from urllib.parse import quote_plus
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,10 +34,7 @@ UA_BROWSER = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/124.0 Safari/537.36 9ty5-news-bot"
 )
-REDDIT_UA = os.environ.get("REDDIT_USER_AGENT", "linux:9ty5-news:1.0 (by /u/9ty5news)")
 PER_FEED = int(os.environ.get("PER_FEED", "12"))
-PER_SUB = int(os.environ.get("PER_SUB", "8"))
-REDDIT_SORTS = [s for s in os.environ.get("REDDIT_SORTS", "hot,new,top,rising").split(",") if s]
 TIMEOUT = 20
 
 
@@ -136,107 +129,6 @@ def fetch_rss_source(f):
         return {"id": sid, "type": "rss", "name": f["name"], "status": "error", "count": 0, "error": str(ex)[:160]}, []
 
 
-# ── Reddit ───────────────────────────────────────────────────────────────────
-def reddit_token():
-    cid, secret = os.environ.get("REDDIT_CLIENT_ID"), os.environ.get("REDDIT_CLIENT_SECRET")
-    if not (cid and secret):
-        return None
-    r = requests.post(
-        "https://www.reddit.com/api/v1/access_token",
-        auth=(cid, secret),
-        data={"grant_type": "client_credentials"},
-        headers={"User-Agent": REDDIT_UA},
-        timeout=TIMEOUT,
-    )
-    r.raise_for_status()
-    return r.json()["access_token"]
-
-
-def reddit_api_posts(sub, sort, token):
-    params = {"limit": PER_SUB, "raw_json": 1}
-    if sort == "top":
-        params["t"] = "day"
-    r = requests.get(
-        f"https://oauth.reddit.com/r/{sub}/{sort}",
-        params=params,
-        headers={"Authorization": f"bearer {token}", "User-Agent": REDDIT_UA},
-        timeout=TIMEOUT,
-    )
-    r.raise_for_status()
-    out = []
-    for c in r.json()["data"]["children"]:
-        d = c["data"]
-        if d.get("stickied"):
-            continue
-        thumb = d.get("thumbnail") if str(d.get("thumbnail", "")).startswith("http") else None
-        out.append({
-            "title": clip(d.get("title", ""), 200),
-            "link": "https://www.reddit.com" + d.get("permalink", ""),
-            "summary": clip(d.get("selftext", ""), 240),
-            "pubDate": datetime.fromtimestamp(d["created_utc"], tz=timezone.utc).isoformat(timespec="seconds"),
-            "source": f"r/{sub}", "sub": sub, "type": "reddit",
-            "score": d.get("score"), "comments": d.get("num_comments"),
-            "flair": d.get("link_flair_text") or "", "thumb": thumb,
-        })
-    return out
-
-
-def reddit_rss_posts(sub, sort):
-    path = f"{sort}.rss" + ("?t=day" if sort == "top" else "")
-    entries = parse_feed(f"https://www.reddit.com/r/{sub}/{path}", headers={"User-Agent": REDDIT_UA})[:PER_SUB]
-    return [{
-        "title": clip(e.get("title", ""), 200), "link": e.get("link", ""),
-        "summary": clip(e.get("summary", ""), 240), "pubDate": entry_date(e),
-        "source": f"r/{sub}", "sub": sub, "type": "reddit",
-        "score": None, "comments": None, "flair": "", "thumb": entry_thumb(e),
-    } for e in entries]
-
-
-def fetch_reddit(subs):
-    statuses, by_sort = [], {s: [] for s in REDDIT_SORTS}
-    try:
-        token = reddit_token()
-    except Exception as ex:  # noqa: BLE001
-        print(f"Reddit OAuth failed, falling back to public RSS: {ex}", file=sys.stderr)
-        token = None
-    mode = "oauth" if token else "public-rss"
-    print(f"Reddit mode: {mode}", file=sys.stderr)
-    delay = 0.7 if token else 2.0  # stay under rate limits
-    # Without credentials Reddit usually blocks CI servers. Use one sort and give up
-    # quickly after repeated failures so the run still finishes and saves RSS/X data.
-    sorts = REDDIT_SORTS if token else REDDIT_SORTS[:1]
-    consecutive_fail, gave_up = 0, False
-    for s in subs:
-        if gave_up:
-            statuses.append({"id": f"reddit:{s['sub']}", "type": "reddit", "name": f"r/{s['sub']}",
-                             "status": "skipped", "count": 0,
-                             "error": "Reddit is blocking this server. Add REDDIT_CLIENT_ID and "
-                                      "REDDIT_CLIENT_SECRET repo secrets (reddit.com/prefs/apps)."})
-            continue
-        errors, got = [], 0
-        for sort in sorts:
-            try:
-                posts = reddit_api_posts(s["sub"], sort, token) if token else reddit_rss_posts(s["sub"], sort)
-                for p in posts:
-                    p["cat"] = s["cat"]
-                by_sort[sort].extend(posts)
-                got += len(posts)
-                consecutive_fail = 0
-            except Exception as ex:  # noqa: BLE001
-                errors.append(f"{sort}: {str(ex)[:90]}")
-                consecutive_fail += 1
-                if not token and consecutive_fail >= 5:
-                    gave_up = True
-                    break
-            time.sleep(delay)
-        st = "ok" if got and not errors else ("error" if not got else "partial")
-        entry = {"id": f"reddit:{s['sub']}", "type": "reddit", "name": f"r/{s['sub']}", "status": st, "count": got}
-        if errors:
-            entry["error"] = "; ".join(errors[:2])[:200]
-        statuses.append(entry)
-    return statuses, by_sort, mode
-
-
 # ── Official accounts: Bluesky + YouTube (free native RSS) and X (via a bridge) ─
 def fetch_official(cfg):
     """Returns (statuses, items). All entries are type 'official' so the page can
@@ -248,14 +140,6 @@ def fetch_official(cfg):
     for y in cfg.get("youtube", []):
         jobs.append((f"yt:{y['channel_id']}", y.get("name") or y["channel_id"], y["cat"],
                      f"https://www.youtube.com/feeds/videos.xml?channel_id={y['channel_id']}", "youtube"))
-    # X has no native RSS: only fetched when a bridge is configured, otherwise left out
-    template = os.environ.get("X_FEED_TEMPLATE", "").strip()
-    overrides = cfg.get("x_feed_overrides", {})
-    for a in cfg.get("x_accounts", []):
-        url = overrides.get(a["handle"]) or (template.format(handle=a["handle"]) if template else "")
-        if url:
-            jobs.append((f"x:{a['handle']}", f"@{a['handle']} (X)", a["cat"], url, "x"))
-
     def one(job):
         sid, name, cat, url, kind = job
         try:
@@ -327,6 +211,48 @@ def fetch_releases():
                  "error": str(ex)[:160]}], []
 
 
+# ── New manga chapters: MangaUpdates' public releases API ───────────────────
+def fetch_chapters():
+    """Recent releases from MangaUpdates. It lists official publishers and fan groups alike,
+    so each item names the releasing group; links go to a MangaUpdates series search."""
+    sid, name = "mangaupdates:releases", "MangaUpdates"
+    try:
+        r = requests.get("https://api.mangaupdates.com/v1/releases/days",
+                         params={"page": 1, "perpage": 100},
+                         headers={"User-Agent": UA_BROWSER, "Accept": "application/json"}, timeout=TIMEOUT)
+        r.raise_for_status()
+        merged = {}
+        for row in r.json().get("results", []):
+            rec = row.get("record", {})
+            title, ch, vol = (rec.get("title") or "").strip(), rec.get("chapter"), rec.get("volume")
+            if not title or not (ch or vol):
+                continue
+            key = (title, ch, vol)
+            ts = (rec.get("time_added") or {}).get("timestamp") or 0
+            groups = [g.get("name") for g in rec.get("groups", []) if g.get("name")]
+            if key in merged:
+                merged[key]["groups"] |= set(groups)
+                merged[key]["ts"] = max(merged[key]["ts"], ts)
+            else:
+                merged[key] = {"groups": set(groups), "ts": ts, "date": rec.get("release_date")}
+        items = []
+        for (title, ch, vol), v in sorted(merged.items(), key=lambda kv: kv[1]["ts"], reverse=True)[:80]:
+            label = " ".join(x for x in [f"Vol. {vol}" if vol else "", f"Ch. {ch}" if ch else ""] if x)
+            groups = ", ".join(sorted(v["groups"]))
+            items.append({
+                "title": f"{title} — {label}",
+                "link": "https://www.mangaupdates.com/series?search=" + quote_plus(title),
+                "summary": f"Released by {groups}" if groups else "",
+                "pubDate": datetime.fromtimestamp(v["ts"], tz=timezone.utc).isoformat(timespec="seconds") if v["ts"] else (v["date"] or ""),
+                "source": name, "cat": "manga", "type": "chapters", "thumb": None,
+            })
+        st = {"id": sid, "type": "chapters", "name": name, "status": "ok" if items else "empty", "count": len(items)}
+        return [st], items
+    except Exception as ex:  # noqa: BLE001
+        return [{"id": sid, "type": "chapters", "name": name, "status": "error", "count": 0,
+                 "error": str(ex)[:160]}], []
+
+
 # ── stale fallback ───────────────────────────────────────────────────────────
 def keep_stale(statuses, new_items, old_items, key_fn):
     """For sources that errored, carry over their previous items, flagged stale."""
@@ -364,14 +290,6 @@ def main():
     rss_items = keep_stale(rss_status, rss_items, prev.get("rss", []), lambda i: i["source"])
     statuses += rss_status
 
-    reddit_status, reddit_by_sort, reddit_mode = fetch_reddit(cfg["subreddits"])
-    old_reddit = prev.get("reddit", {})
-    for sort in REDDIT_SORTS:
-        reddit_by_sort[sort] = keep_stale(
-            [dict(s) for s in reddit_status], reddit_by_sort[sort], old_reddit.get(sort, []), lambda i: i["source"]
-        )
-    statuses += reddit_status
-
     official_status, official_items = fetch_official(cfg)
     official_items = keep_stale(official_status, official_items, prev.get("official", []), lambda i: i["source"])
     statuses += official_status
@@ -380,14 +298,17 @@ def main():
     releases_items = keep_stale(releases_status, releases_items, prev.get("releases", []), lambda i: i["source"])
     statuses += releases_status
 
+    chapters_status, chapters_items = fetch_chapters()
+    chapters_items = keep_stale(chapters_status, chapters_items, prev.get("chapters", []), lambda i: i["source"])
+    statuses += chapters_status
+
     out = {
         "generated_at": now_iso(),
-        "reddit_mode": reddit_mode,
         "sources": statuses,
         "rss": newest_first(rss_items),
-        "reddit": {s: (newest_first(v) if s == "new" else v) for s, v in reddit_by_sort.items()},
         "official": newest_first(official_items),
         "releases": newest_first(releases_items),
+        "chapters": newest_first(chapters_items),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -398,7 +319,7 @@ def main():
         summary[s["type"]][s["status"]] += 1
     print(json.dumps(summary), file=sys.stderr)
     # Fail the run only if nothing at all was fetched (so a real outage is visible).
-    if not (out["rss"] or any(out["reddit"].values()) or out["official"]):
+    if not (out["rss"] or out["official"] or out["releases"] or out["chapters"]):
         sys.exit("No items fetched from any source")
 
 
