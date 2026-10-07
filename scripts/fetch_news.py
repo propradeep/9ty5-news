@@ -211,30 +211,44 @@ def fetch_releases():
                  "error": str(ex)[:160]}], []
 
 
-# ── New manga chapters: MangaUpdates' public releases API ───────────────────
-def fetch_chapters():
-    """Recent releases from MangaUpdates. It lists official publishers and fan groups alike,
-    so each item names the releasing group; links go to a MangaUpdates series search."""
-    sid, name = "mangaupdates:releases", "MangaUpdates"
+# ── New manga chapters: MangaUpdates' public releases API (official publishers only) ──
+def fetch_chapters(cfg):
+    """Recent releases from MangaUpdates, kept only when the releasing group matches the
+    official-publisher allowlist in config/sources.json -> chapters_official_groups.
+    Links go to a MangaUpdates series search."""
+    sid, name = "mangaupdates:releases", "MangaUpdates (official)"
+    pages = int(os.environ.get("CHAPTER_PAGES", "8"))
+    allow = [re.compile(r"\b" + re.escape(g) + r"\b", re.I) for g in cfg.get("chapters_official_groups", [])]
     try:
-        r = requests.get("https://api.mangaupdates.com/v1/releases/days",
-                         params={"page": 1, "perpage": 100},
-                         headers={"User-Agent": UA_BROWSER, "Accept": "application/json"}, timeout=TIMEOUT)
-        r.raise_for_status()
-        merged = {}
-        for row in r.json().get("results", []):
-            rec = row.get("record", {})
-            title, ch, vol = (rec.get("title") or "").strip(), rec.get("chapter"), rec.get("volume")
-            if not title or not (ch or vol):
-                continue
-            key = (title, ch, vol)
-            ts = (rec.get("time_added") or {}).get("timestamp") or 0
-            groups = [g.get("name") for g in rec.get("groups", []) if g.get("name")]
-            if key in merged:
-                merged[key]["groups"] |= set(groups)
-                merged[key]["ts"] = max(merged[key]["ts"], ts)
-            else:
-                merged[key] = {"groups": set(groups), "ts": ts, "date": rec.get("release_date")}
+        merged, seen_groups, total = {}, {}, 0
+        for page in range(1, pages + 1):
+            r = requests.get("https://api.mangaupdates.com/v1/releases/days",
+                             params={"page": page, "perpage": 100},
+                             headers={"User-Agent": UA_BROWSER, "Accept": "application/json"}, timeout=TIMEOUT)
+            r.raise_for_status()
+            rows = r.json().get("results", [])
+            if not rows:
+                break
+            total += len(rows)
+            for row in rows:
+                rec = row.get("record", {})
+                title, ch, vol = (rec.get("title") or "").strip(), rec.get("chapter"), rec.get("volume")
+                if not title or not (ch or vol):
+                    continue
+                groups = [g.get("name") for g in rec.get("groups", []) if g.get("name")]
+                official = [g for g in groups if any(rx.search(g) for rx in allow)]
+                for g in groups:
+                    seen_groups[g] = seen_groups.get(g, 0) + 1
+                if allow and not official:
+                    continue
+                key = (title, ch, vol)
+                ts = (rec.get("time_added") or {}).get("timestamp") or 0
+                if key in merged:
+                    merged[key]["groups"] |= set(official or groups)
+                    merged[key]["ts"] = max(merged[key]["ts"], ts)
+                else:
+                    merged[key] = {"groups": set(official or groups), "ts": ts, "date": rec.get("release_date")}
+            time.sleep(0.5)
         items = []
         for (title, ch, vol), v in sorted(merged.items(), key=lambda kv: kv[1]["ts"], reverse=True)[:80]:
             label = " ".join(x for x in [f"Vol. {vol}" if vol else "", f"Ch. {ch}" if ch else ""] if x)
@@ -242,11 +256,15 @@ def fetch_chapters():
             items.append({
                 "title": f"{title} — {label}",
                 "link": "https://www.mangaupdates.com/series?search=" + quote_plus(title),
-                "summary": f"Released by {groups}" if groups else "",
+                "summary": f"Official release: {groups}" if groups else "",
                 "pubDate": datetime.fromtimestamp(v["ts"], tz=timezone.utc).isoformat(timespec="seconds") if v["ts"] else (v["date"] or ""),
                 "source": name, "cat": "manga", "type": "chapters", "thumb": None,
             })
-        st = {"id": sid, "type": "chapters", "name": name, "status": "ok" if items else "empty", "count": len(items)}
+        st = {"id": sid, "type": "chapters", "name": name, "status": "ok" if items else "empty", "count": len(items),
+              "scanned": total,
+              # most common groups that did NOT match the allowlist, to help tune the list
+              "top_unmatched": [g for g, _ in sorted(seen_groups.items(), key=lambda kv: -kv[1])
+                                if not any(rx.search(g) for rx in allow)][:25]}
         return [st], items
     except Exception as ex:  # noqa: BLE001
         return [{"id": sid, "type": "chapters", "name": name, "status": "error", "count": 0,
@@ -298,7 +316,7 @@ def main():
     releases_items = keep_stale(releases_status, releases_items, prev.get("releases", []), lambda i: i["source"])
     statuses += releases_status
 
-    chapters_status, chapters_items = fetch_chapters()
+    chapters_status, chapters_items = fetch_chapters(cfg)
     chapters_items = keep_stale(chapters_status, chapters_items, prev.get("chapters", []), lambda i: i["source"])
     statuses += chapters_status
 
