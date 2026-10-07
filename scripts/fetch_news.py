@@ -250,7 +250,13 @@ def fetch_chapters(cfg):
                     merged[key] = {"groups": set(official or groups), "ts": ts, "date": rec.get("release_date")}
             time.sleep(0.5)
         items = []
-        for (title, ch, vol), v in sorted(merged.items(), key=lambda kv: kv[1]["ts"], reverse=True)[:80]:
+        per_group, picked = {}, []
+        for key, v in sorted(merged.items(), key=lambda kv: kv[1]["ts"], reverse=True):
+            g0 = sorted(v["groups"])[0] if v["groups"] else ""
+            per_group[g0] = per_group.get(g0, 0) + 1
+            if per_group[g0] <= 12:  # keep one big publisher (e.g. webtoons) from filling the tab
+                picked.append((key, v))
+        for (title, ch, vol), v in picked[:100]:
             label = " ".join(x for x in [f"Vol. {vol}" if vol else "", f"Ch. {ch}" if ch else ""] if x)
             groups = ", ".join(sorted(v["groups"]))
             items.append({
