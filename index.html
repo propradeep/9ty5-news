@@ -600,7 +600,7 @@ function renderArticles(items) {
     const newBadge=a.type==='rss'&&isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
     const flairPart=a.flair?`<span class="tag-flair">${escHtml(a.flair)}</span>`:'';
     const readDot=isRead?`<span class="read-dot">✓</span>`:'';
-    const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
+    const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">`:'';
     return `<div class="card${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
