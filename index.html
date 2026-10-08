@@ -66,7 +66,6 @@ body {
   border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
-.mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
 .mode-btn.active-chapters { color: var(--accent2); border-color: var(--accent2); }
 .mode-btn.active-releases { color: var(--green, #3ecf8e); border-color: var(--green, #3ecf8e); }
 .mode-btn.active-official { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
@@ -77,26 +76,6 @@ body {
 .health ul { margin: 6px 0 0 16px; padding: 0; display:none; }
 .health.open ul { display:block; }
 .health li { margin: 2px 0; word-break: break-word; }
-
-/* SORT ROW */
-.reddit-sort {
-  display: none; gap: 6px; padding: 6px 16px;
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  overflow-x: auto; scrollbar-width: none; align-items: center;
-}
-.reddit-sort.visible { display: flex; }
-.sort-btn {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
-  color: var(--dim); font-size: 12px; font-weight: 500; padding: 4px 12px;
-  cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
-}
-.sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-.myfeed-btn { border-color: rgba(251,191,36,0.4) !important; color: var(--yellow) !important; }
-.myfeed-btn.active { background: var(--yellow) !important; border-color: var(--yellow) !important; color: #000 !important; }
-.myfeed-count {
-  font-size: 10px; background: rgba(251,191,36,0.15); color: var(--yellow);
-  border-radius: 10px; padding: 1px 5px; margin-left: -4px;
-}
 
 /* SEARCH */
 .search-row {
@@ -188,7 +167,6 @@ body {
 .tag-anime  { background: var(--c-anime); }
 .tag-manga  { background: var(--c-manga); }
 .tag-gaming { background: var(--c-gaming); }
-.tag-reddit { background: var(--orange); }
 .new-badge {
   font-size: 9px; font-weight: 700; color: var(--green);
   background: rgba(74,222,128,0.12); padding: 1px 5px; border-radius: 4px;
@@ -201,16 +179,11 @@ body {
 }
 .card-age { font-size: 11px; color: var(--dim); margin-left: auto; flex-shrink: 0; }
 .read-dot  { font-size: 10px; color: #444; flex-shrink: 0; }
-.reddit-score {
-  display: flex; align-items: center; gap: 6px; font-size: 11px;
-  font-weight: 700; color: var(--green); margin-left: auto; flex-shrink: 0;
-}
 .card-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
   color: var(--text); line-height: 1.4; margin-bottom: 3px; word-break: break-word;
 }
 .card:hover .card-title { color: var(--accent2); }
-.card.is-reddit:hover .card-title { color: var(--orange); }
 .card-summary {
   font-size: 12px; color: var(--dim); line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -239,11 +212,6 @@ body {
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); }
 .empty .big { font-size: 40px; margin-bottom: 12px; }
 .empty p { font-size: 14px; line-height: 1.8; }
-.empty-action {
-  margin-top: 16px; display: inline-block; background: var(--orange); color: #fff;
-  border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px;
-  font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
-}
 
 /* TOAST */
 .toast {
@@ -274,7 +242,6 @@ body {
 .s-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
 .s-section { margin-bottom: 22px; }
 .s-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.s-sublabel { font-size: 12px; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
 .s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .s-opt {
   background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
@@ -295,33 +262,6 @@ body {
 }
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); background: #fff; }
-
-/* My Feed subreddit input */
-.subs-card {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px; margin-top: 4px;
-}
-.subs-textarea {
-  width: 100%; background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
-  min-height: 110px; transition: border-color .15s; line-height: 1.6;
-  margin-top: 8px;
-}
-.subs-textarea:focus { border-color: var(--accent); }
-.subs-textarea::placeholder { color: var(--dim); opacity: 0.6; }
-.subs-meta {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 8px; flex-wrap: wrap; gap: 8px;
-}
-.subs-count { font-size: 11px; color: var(--green); }
-.subs-hint { font-size: 11px; color: var(--dim); }
-.paste-hint {
-  background: rgba(88,85,214,0.1); border: 1px solid rgba(88,85,214,0.2);
-  border-radius: 8px; padding: 10px 12px; margin-top: 10px;
-  font-size: 12px; color: var(--dim); line-height: 1.6;
-}
-.paste-hint strong { color: var(--accent2); }
 
 .danger-btn {
   width: 100%; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
@@ -360,6 +300,9 @@ body {
   .refresh-btn { padding: 8px 10px; font-size: 13px; }
 }
 </style>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -487,7 +430,7 @@ const PAGE_SIZE=30;
 let favorites   = JSON.parse(localStorage.getItem('9ty5_favs')||'[]');
 let readLinks   = new Set(JSON.parse(localStorage.getItem('9ty5_read')||'[]'));
 let isFetching  = false, deferredInstall=null, arTimer=null;
-let cfg = { autoRefresh:0, perFeed:8, hideRead:false, showThumbs:true,
+let cfg = { autoRefresh:15, perFeed:8, hideRead:false, showThumbs:true,
             ...JSON.parse(localStorage.getItem('9ty5_cfg')||'{}') };
 
 // ── PWA ───────────────────────────────────────────────────────────────────────
@@ -557,11 +500,13 @@ function setBusy(on) {
 }
 
 // ── DATA (built server-side by scripts/fetch_news.py → data/news.json) ─────────
-let NEWS=null;
+let NEWS=null, lastLoad=0;
 async function loadNews() {
   const res=await fetch('data/news.json?_='+Date.now(),{cache:'no-store',signal:fetchTimeoutSignal(20000)});
   if(!res.ok) throw new Error(`data/news.json returned HTTP ${res.status}`);
   NEWS=await res.json();
+  for(const k of ['rss','official','releases','chapters','sources']) if(!Array.isArray(NEWS[k])) NEWS[k]=[];
+  lastLoad=Date.now();
   return NEWS;
 }
 function limitPerSource(items,n) {
@@ -592,7 +537,10 @@ function showMode() {
   allArticles=itemsForMode(); showHealth();
   const gen=NEWS&&NEWS.generated_at?timeAgo(NEWS.generated_at):'';
   const label=mode==='rss'?'articles':mode==='chapters'?'chapters':'posts';
-  setStatus(`✓ ${allArticles.length} ${label}${gen?` — updated ${gen}`:''}`,'ok');
+  const ageMin=NEWS&&NEWS.generated_at?(Date.now()-new Date(NEWS.generated_at).getTime())/60000:null;
+  if(ageMin===null) setStatus('No data yet — the first update has not run','err');
+  else if(ageMin>240) setStatus(`⚠ ${allArticles.length} ${label} — data is ${Math.round(ageMin/60)}h old, waiting for the next update`,'err');
+  else setStatus(`✓ ${allArticles.length} ${label}${gen?` — updated ${gen}`:''}`,'ok');
   visibleCount=PAGE_SIZE; applyFilter();
 }
 
@@ -760,8 +708,7 @@ function setupAutoRefresh() {
 }
 function clearCache() {
   if(!confirm('Clear all cached articles and saved items?')) return;
-  ['9ty5_rss_cache','9ty5_rss_cache_ts',
-   '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
+  ['9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
   favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
   updateCounts(); document.getElementById('articles').innerHTML='';
   closeSettings(); showToast('Cache cleared');
@@ -777,13 +724,26 @@ function applySettingsToUI() {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
+  // drop data saved by older versions of this page (Reddit, My Feed, old article caches)
+  ['9ty5_reddit_cache','9ty5_reddit_cache_ts','9ty5_custom_subs','9ty5_rss_cache','9ty5_rss_cache_ts']
+    .forEach(k=>{ try{ localStorage.removeItem(k); }catch{} });
   updateCounts(); applySettingsToUI(); setupAutoRefresh();
   fetchCurrent();
+  // pull fresh data when the person comes back to the tab or app
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'&&!isFetching&&Date.now()-lastLoad>10*60000) fetchCurrent();
+  });
 }
 init();
 </script>
 
-<link rel="manifest" href="manifest.json">
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});</script>
+<script>
+if('serviceWorker' in navigator){
+  // when a new service worker takes over, reload once so the page and data are the new version
+  const hadController=!!navigator.serviceWorker.controller; let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(hadController&&!reloaded){ reloaded=true; location.reload(); } });
+  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+}
+</script>
 </body>
 </html>

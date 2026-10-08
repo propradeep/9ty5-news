@@ -80,8 +80,15 @@ def entry_thumb(e):
 
 
 def parse_feed(url, headers=None):
-    r = requests.get(url, headers=headers or {"User-Agent": UA_BROWSER}, timeout=TIMEOUT)
-    r.raise_for_status()
+    hdrs = headers or {"User-Agent": UA_BROWSER}
+    for attempt in range(2):
+        r = requests.get(url, headers=hdrs, timeout=TIMEOUT)
+        if r.status_code in (429, 500, 502, 503, 504) and attempt == 0:
+            ra = r.headers.get("Retry-After", "")
+            time.sleep(min(int(ra), 8) if ra.isdigit() else 3)  # one polite retry
+            continue
+        r.raise_for_status()
+        break
     parsed = feedparser.parse(r.content)
     if parsed.bozo and not parsed.entries:
         raise ValueError(f"unparseable feed ({type(parsed.bozo_exception).__name__})")
@@ -302,6 +309,17 @@ def newest_first(items):
 def main():
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
     prev = load_previous()
+
+    # Scheduled runs can fire more often than needed; skip if the data is already fresh.
+    min_age = float(os.environ.get("SKIP_IF_YOUNGER_MIN", "0") or 0)
+    if min_age and prev.get("generated_at"):
+        try:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(prev["generated_at"])).total_seconds() / 60
+            if age < min_age:
+                print(f"Data is {age:.0f} min old (< {min_age:.0f}); skipping this run", file=sys.stderr)
+                return
+        except ValueError:
+            pass
     statuses = []
 
     with ThreadPoolExecutor(max_workers=8) as pool:

@@ -1,55 +1,47 @@
-const CACHE = '9ty5-news-v3';
-const STATIC = ['./', './index.html'];
+const CACHE = '9ty5-news-v4';
+const STATIC = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(STATIC))
-  );
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)).catch(() => {}));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
-  const url = e.request.url;
-  if (url.includes('api.rss2json') || url.includes('reddit.com') || url.includes('allorigins')) {
-    // Network only for data fetches
-    e.respondWith(fetch(e.request).catch(() => new Response('[]')));
-    return;
-  }
-  const path = new URL(url).pathname;
-  if (path.endsWith('/data/news.json')) {
-    // News data: always try the network; cache under a fixed key (ignoring the
-    // cache-busting query) so the last good copy is shown when offline.
+  if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith('/data/news.json')) {
+    // News data: always try the network (the page adds a cache-busting query), keep the last
+    // good copy under a fixed key and serve it only when offline.
     const key = new Request(new URL('./data/news.json', self.registration.scope).href);
     e.respondWith(
       fetch(e.request).then(res => {
         if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(key, copy)); }
         return res;
-      }).catch(() => caches.match(key))
+      }).catch(() => caches.match(key).then(r => r || new Response('{}', { headers: { 'Content-Type': 'application/json' } })))
     );
     return;
   }
-  if (e.request.mode === 'navigate' || path.endsWith('/index.html') || path.endsWith('.js') || path.endsWith('.json')) {
-    // Network-first for the app shell so pushed updates are picked up immediately;
-    // cache is only a fallback when offline.
+
+  if (e.request.mode === 'navigate' || url.pathname.endsWith('/index.html') ||
+      url.pathname.endsWith('.js') || url.pathname.endsWith('.json')) {
+    // Network-first for the app shell so pushed updates are picked up immediately.
     e.respondWith(
       fetch(e.request).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy));
+        if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); }
         return res;
       }).catch(() => caches.match(e.request))
     );
     return;
   }
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
-  );
+
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });

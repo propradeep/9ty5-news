@@ -2,7 +2,9 @@ name: Fetch news
 
 on:
   schedule:
-    - cron: "7,37 * * * *"   # every 30 minutes
+    # GitHub delays or drops some scheduled runs, so trigger every 15 minutes; the script skips
+    # a run when the data is already fresh (see SKIP_IF_YOUNGER_MIN), giving about 30 minutes.
+    - cron: "4,19,34,49 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +17,7 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +30,8 @@ jobs:
       - run: pip install -r scripts/requirements.txt
 
       - name: Fetch news
+        env:
+          SKIP_IF_YOUNGER_MIN: ${{ github.event_name == 'schedule' && '20' || '0' }}
         run: python scripts/fetch_news.py
 
       - name: Commit updated data
