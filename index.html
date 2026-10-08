@@ -53,41 +53,6 @@ body {
 .spin { animation: spin .8s linear infinite; display: inline-block; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* MODE TABS */
-.mode-row {
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; overflow-x: auto; scrollbar-width: none;
-}
-.mode-row::-webkit-scrollbar { display: none; }
-.mode-btn {
-  background: none; border: none; color: var(--dim);
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-  padding: 10px 18px; cursor: pointer; white-space: nowrap;
-  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
-}
-.mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
-.mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
-
-/* SORT ROW */
-.reddit-sort {
-  display: none; gap: 6px; padding: 6px 16px;
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  overflow-x: auto; scrollbar-width: none; align-items: center;
-}
-.reddit-sort.visible { display: flex; }
-.sort-btn {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
-  color: var(--dim); font-size: 12px; font-weight: 500; padding: 4px 12px;
-  cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
-}
-.sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-.myfeed-btn { border-color: rgba(251,191,36,0.4) !important; color: var(--yellow) !important; }
-.myfeed-btn.active { background: var(--yellow) !important; border-color: var(--yellow) !important; color: #000 !important; }
-.myfeed-count {
-  font-size: 10px; background: rgba(251,191,36,0.15); color: var(--yellow);
-  border-radius: 10px; padding: 1px 5px; margin-left: -4px;
-}
-
 /* SEARCH */
 .search-row {
   padding: 8px 16px 6px; display: flex; gap: 8px; align-items: center;
@@ -178,7 +143,6 @@ body {
 .tag-anime  { background: var(--c-anime); }
 .tag-manga  { background: var(--c-manga); }
 .tag-gaming { background: var(--c-gaming); }
-.tag-reddit { background: var(--orange); }
 .new-badge {
   font-size: 9px; font-weight: 700; color: var(--green);
   background: rgba(74,222,128,0.12); padding: 1px 5px; border-radius: 4px;
@@ -191,16 +155,11 @@ body {
 }
 .card-age { font-size: 11px; color: var(--dim); margin-left: auto; flex-shrink: 0; }
 .read-dot  { font-size: 10px; color: #444; flex-shrink: 0; }
-.reddit-score {
-  display: flex; align-items: center; gap: 6px; font-size: 11px;
-  font-weight: 700; color: var(--green); margin-left: auto; flex-shrink: 0;
-}
 .card-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
   color: var(--text); line-height: 1.4; margin-bottom: 3px; word-break: break-word;
 }
 .card:hover .card-title { color: var(--accent2); }
-.card.is-reddit:hover .card-title { color: var(--orange); }
 .card-summary {
   font-size: 12px; color: var(--dim); line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -229,11 +188,6 @@ body {
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); }
 .empty .big { font-size: 40px; margin-bottom: 12px; }
 .empty p { font-size: 14px; line-height: 1.8; }
-.empty-action {
-  margin-top: 16px; display: inline-block; background: var(--orange); color: #fff;
-  border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px;
-  font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
-}
 
 /* TOAST */
 .toast {
@@ -264,7 +218,6 @@ body {
 .s-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
 .s-section { margin-bottom: 22px; }
 .s-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.s-sublabel { font-size: 12px; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
 .s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .s-opt {
   background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
@@ -285,33 +238,6 @@ body {
 }
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); background: #fff; }
-
-/* My Feed subreddit input */
-.subs-card {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px; margin-top: 4px;
-}
-.subs-textarea {
-  width: 100%; background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
-  min-height: 110px; transition: border-color .15s; line-height: 1.6;
-  margin-top: 8px;
-}
-.subs-textarea:focus { border-color: var(--accent); }
-.subs-textarea::placeholder { color: var(--dim); opacity: 0.6; }
-.subs-meta {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 8px; flex-wrap: wrap; gap: 8px;
-}
-.subs-count { font-size: 11px; color: var(--green); }
-.subs-hint { font-size: 11px; color: var(--dim); }
-.paste-hint {
-  background: rgba(88,85,214,0.1); border: 1px solid rgba(88,85,214,0.2);
-  border-radius: 8px; padding: 10px 12px; margin-top: 10px;
-  font-size: 12px; color: var(--dim); line-height: 1.6;
-}
-.paste-hint strong { color: var(--accent2); }
 
 .danger-btn {
   width: 100%; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
@@ -368,21 +294,6 @@ body {
       <span id="refreshIcon">⟳</span> Refresh
     </button>
   </div>
-</div>
-
-<div class="mode-row">
-  <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
-  <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
-</div>
-
-<div class="reddit-sort" id="redditSort">
-  <button class="sort-btn active" onclick="setSort(this,'hot')">🔥 Hot</button>
-  <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
-  <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
-  <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
-  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')">
-    👤 My Feed <span class="myfeed-count" id="myFeedCount" style="display:none"></span>
-  </button>
 </div>
 
 <div class="search-row">
@@ -463,29 +374,6 @@ body {
         <div class="toggle-sub">Display images when available</div>
       </div>
       <button class="toggle on" id="thumbToggle" onclick="toggleSetting('showThumbs')"></button>
-    </div>
-  </div>
-
-  <!-- My Feed: custom subreddits -->
-  <div class="s-section">
-    <div class="s-label">👤 My Feed — Your Subreddits</div>
-    <div class="subs-card">
-      <div class="s-sublabel">
-        Enter your subreddits one per line (or comma-separated).
-        The <strong style="color:var(--yellow)">👤 My Feed</strong> button in Reddit mode fetches only these.
-      </div>
-      <textarea class="subs-textarea" id="customSubsInput"
-        placeholder="anime&#10;OnePiece&#10;manga&#10;gaming&#10;AskReddit&#10;pics&#10;LOTR&#10;philosophy"
-        oninput="saveCustomSubs()"></textarea>
-      <div class="subs-meta">
-        <span class="subs-count" id="subsCount"></span>
-        <span class="subs-hint">No login needed — uses RSS</span>
-      </div>
-      <div class="paste-hint">
-        💡 <strong>How to find your subreddits:</strong> on Reddit go to
-        <strong>reddit.com/subreddits/mine</strong> — you'll see your full list there.
-        Copy the names and paste them here.
-      </div>
     </div>
   </div>
 
@@ -574,32 +462,10 @@ const ALL_FEEDS = [
   ['Rice Digital',         'https://ricedigital.com/feed/',                               'gaming'],
 ];
 
-// Format: [subreddit, category] — used for category-filtered Reddit fetching
-const ALL_SUBS = [
-  ['anime','anime'],['animenews','anime'],['OnePiece','anime'],['JuJutsuKaisen','anime'],
-  ['Bleach','anime'],['Berserk','anime'],['Chainsawman','anime'],['hunterxhunter','anime'],
-  ['Naruto','anime'],['DragonBallSuper','anime'],['AttackOnTitan','anime'],
-  ['DemonSlayer','anime'],['BlueLock','anime'],['Vinland_Saga','anime'],['Gachiakuta','anime'],
-  ['ReZero','anime'],['Overlord','anime'],['sololeveling','anime'],['SpyxFamily','anime'],
-  ['Mushokutensei','anime'],['FairyTail','anime'],['Animesuggest','anime'],
-  ['tokyoghoul','anime'],['OreGairu','anime'],['goodanimemes','anime'],
-  ['manga','manga'],['manhwa','manga'],['manhua','manga'],['comics','manga'],
-  ['Marvel','manga'],['DC_Cinematic','manga'],['comicbooks','manga'],
-  ['WebtoonCanvas','manga'],['lightnovels','manga'],['OnePunchMan','manga'],
-  ['TokyoRevengers','manga'],['Boruto','manga'],['MangaDex','manga'],
-  ['gaming','gaming'],['Games','gaming'],['pcgaming','gaming'],['PS5','gaming'],
-  ['XboxSeriesX','gaming'],['NintendoSwitch','gaming'],['indiegaming','gaming'],
-  ['anime_games','gaming'],['Genshin_Impact','gaming'],['NieRAutomata','gaming'],
-  ['Sekiro','gaming'],['Eldenring','gaming'],['JRPG','gaming'],['AnimeGamers','gaming'],
-  ['Steam','gaming'],['patientgamers','gaming'],['FinalFantasy','gaming'],
-  ['pokemon','gaming'],['fireemblem','gaming'],['leagueoflegends','gaming'],
-  ['Minecraft','gaming'],['gamedev','gaming'],
-];
-
 const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let mode='rss', cat='all', redditSort='hot';
+let cat='all';
 let allArticles=[], filteredPool=[], visibleCount=30;
 const PAGE_SIZE=30;
 let favorites   = JSON.parse(localStorage.getItem('9ty5_favs')||'[]');
@@ -623,18 +489,25 @@ window.addEventListener('scroll',()=>{
 });
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
+// The proxy sends times like "2026-10-08 05:30:00" with no timezone (UTC). Without this the
+// browser reads them as local time, which makes posts look hours older than they are.
+function parseDate(d) {
+  if(!d) return new Date(NaN);
+  const s=String(d).trim();
+  return /^\d{4}-\d\d-\d\d \d\d:\d\d(:\d\d)?$/.test(s) ? new Date(s.replace(' ','T')+'Z') : new Date(s);
+}
 function timeAgo(d) {
   if (!d) return '';
   try {
-    const s=(Date.now()-new Date(d).getTime())/1000;
+    const s=(Date.now()-parseDate(d).getTime())/1000;
     if(s<60)    return 'just now';
     if(s<3600)  return `${Math.floor(s/60)}m ago`;
     if(s<86400) return `${Math.floor(s/3600)}h ago`;
     if(s<604800)return `${Math.floor(s/86400)}d ago`;
-    return new Date(d).toLocaleDateString('en',{month:'short',day:'numeric'});
+    return parseDate(d).toLocaleDateString('en',{month:'short',day:'numeric'});
   } catch { return ''; }
 }
-function isRecent(d) { try { return d&&(Date.now()-new Date(d).getTime())<7200000; } catch { return false; } }
+function isRecent(d) { try { return d&&(Date.now()-parseDate(d).getTime())<7200000; } catch { return false; } }
 function stripHtml(s) {
   if(!s) return '';
   return s.replace(/<[^>]*>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
@@ -674,37 +547,10 @@ function setBusy(on) {
   on?pf.classList.add('indeterminate'):pf.classList.remove('indeterminate');
 }
 
-// ── MY FEED: custom subreddits ─────────────────────────────────────────────────
-function getCustomSubs() {
-  const raw=localStorage.getItem('9ty5_custom_subs')||'';
-  return raw.split(/[\n,]+/).map(s=>s.trim().replace(/^r\//i,'')).filter(Boolean);
-}
-function saveCustomSubs() {
-  safeStorageSet('9ty5_custom_subs', document.getElementById('customSubsInput').value);
-  updateSubsCount();
-  updateMyFeedBadge();
-}
-function updateSubsCount() {
-  const n=getCustomSubs().length;
-  const el=document.getElementById('subsCount');
-  if(el) el.textContent=n?`${n} subreddits saved`:'';
-}
-function updateMyFeedBadge() {
-  const n=getCustomSubs().length;
-  const el=document.getElementById('myFeedCount');
-  if(el) { el.textContent=n||''; el.style.display=n?'inline':'none'; }
-}
-function initCustomSubsUI() {
-  const el=document.getElementById('customSubsInput');
-  if(el) el.value=localStorage.getItem('9ty5_custom_subs')||'';
-  updateSubsCount();
-  updateMyFeedBadge();
-}
-
 // ── RSS FETCH ─────────────────────────────────────────────────────────────────
 async function fetchFeed([name,url,feedCat]) {
   try {
-    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{signal:fetchTimeoutSignal(9000)});
+    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{cache:'no-store',signal:fetchTimeoutSignal(9000)});
     const data=await res.json();
     if(data.status!=='ok'||!data.items?.length) return [];
     return data.items.slice(0,cfg.perFeed).map(item=>{
@@ -719,7 +565,7 @@ async function fetchFeed([name,url,feedCat]) {
   } catch { return []; }
 }
 async function fetchAllRss() {
-  const feeds=ALL_FEEDS.filter(f=>cat==='all'||cat==='fav'||f[2]===cat);
+  const feeds=ALL_FEEDS;  // always fetch all, so every category tab has posts
   const total=feeds.length; let done=0; const results=[]; const BATCH=6;
   for(let i=0;i<feeds.length;i+=BATCH) {
     const rows=await Promise.all(feeds.slice(i,i+BATCH).map(fetchFeed));
@@ -727,66 +573,10 @@ async function fetchAllRss() {
     done+=Math.min(BATCH,feeds.length-i);
     setStatus(`Fetching RSS ${done}/${total}…`);
   }
-  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  results.sort((a,b)=>(parseDate(b.pubDate).getTime()||0)-(parseDate(a.pubDate).getTime()||0));
   allArticles=results;
   safeStorageSet('9ty5_rss_cache',JSON.stringify(results));
   safeStorageSet('9ty5_rss_cache_ts',Date.now());
-  return results;
-}
-
-// ── REDDIT FETCH (RSS via rss2json — no API key, no CORS, no login needed) ────
-async function fetchSubRss([sub, subCat]) {
-  try {
-    const sort = redditSort==='myfeed'?'hot':redditSort;
-    const rssUrl=`https://www.reddit.com/r/${sub}/${sort}.rss`;
-    const res=await fetch(RSS_PROXY+encodeURIComponent(rssUrl),{signal:fetchTimeoutSignal(9000)});
-    const data=await res.json();
-    if(data.status!=='ok'||!data.items?.length) return [];
-    return data.items.slice(0,10).map(item=>({
-      // Reddit RSS titles look like "Username: Post title" — strip the prefix
-      title:   cleanTitle(item.title.replace(/^[^:]+:\s*/,'')),
-      link:    safeUrl(item.link||item.guid||''),
-      summary: cleanSummary(item.description||''),
-      age:     timeAgo(item.pubDate), pubDate:item.pubDate||'',
-      source:  `r/${sub}`, sub, cat:subCat, type:'reddit',
-      score:null, comments:null, flair:'', thumb:null,
-    }));
-  } catch { return []; }
-}
-
-async function fetchAllReddit() {
-  let subs;
-  if(redditSort==='myfeed') {
-    const custom=getCustomSubs();
-    if(!custom.length) {
-      showToast('Add your subreddits in Settings → My Feed first',3500);
-      openSettings();
-      return [];
-    }
-    // Map custom names to [sub, cat], categorise against known list where possible
-    subs=custom.map(sub=>{
-      const found=ALL_SUBS.find(s=>s[0].toLowerCase()===sub.toLowerCase());
-      return [sub, found?found[1]:'all'];
-    });
-    setStatus(`Loading My Feed — ${subs.length} subreddits…`);
-  } else {
-    subs=ALL_SUBS.filter(s=>cat==='all'||cat==='fav'||s[1]===cat);
-    setStatus(`Fetching Reddit…`);
-  }
-
-  const total=subs.length; let done=0; const results=[]; const BATCH=4;
-  for(let i=0;i<subs.length;i+=BATCH) {
-    const rows=await Promise.all(subs.slice(i,i+BATCH).map(fetchSubRss));
-    rows.forEach(r=>results.push(...r));
-    done+=Math.min(BATCH,subs.length-i);
-    setStatus(`Fetching Reddit ${done}/${total}…`);
-    if(i+BATCH<subs.length) await new Promise(r=>setTimeout(r,400));
-  }
-  // My Feed: sort by date. Others: sort by date too (no scores in RSS)
-  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
-  allArticles=results;
-  safeStorageSet('9ty5_reddit_cache',JSON.stringify(results));
-  safeStorageSet('9ty5_reddit_cache_ts',Date.now());
   return results;
 }
 
@@ -795,9 +585,8 @@ async function fetchCurrent() {
   if(isFetching) return;
   setBusy(true);
   try {
-    const results=mode==='rss'?await fetchAllRss():await fetchAllReddit();
-    const label=mode==='rss'?'articles':'posts';
-    setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`,'ok');
+    const results=await fetchAllRss();
+    setStatus(`✓ ${results.length} articles — ${new Date().toLocaleTimeString()}`,'ok');
     visibleCount=PAGE_SIZE; applyFilter();
   } catch(e) { setStatus(`Error: ${e.message}`,'err'); }
   finally { setBusy(false); }
@@ -837,30 +626,27 @@ function updateCounts() {
 function renderArticles(items) {
   const el=document.getElementById('articles');
   if(!items.length) {
-    const noSubs=mode==='reddit'&&redditSort==='myfeed'&&!getCustomSubs().length;
     el.innerHTML=`<div class="empty">
       <div class="big">${cat==='fav'?'⭐':'📭'}</div>
       <p>${cat==='fav'?'No saved articles yet.<br>Tap ☆ on any article to save it.':'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
-      ${noSubs?`<button class="empty-action" onclick="openSettings()">⚙ Add my subreddits</button>`:''}
     </div>`;
     return;
   }
   el.innerHTML=items.map((a,i)=>{
     const isRead=readLinks.has(a.link);
     const isFav=favorites.some(f=>f.link===a.link);
-    const tagCls=a.type==='reddit'?'tag-reddit':a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
-    const newBadge=a.type==='rss'&&isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
+    const tagCls=a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
+    const newBadge=isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
     const flairPart=a.flair?`<span class="tag-flair">${escHtml(a.flair)}</span>`:'';
     const readDot=isRead?`<span class="read-dot">✓</span>`:'';
-    const scorePart=a.score!=null?`<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`:'';
     const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
-    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
+    return `<div class="card${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
         <div class="card-body">
           <div class="card-meta">
             <span class="source-tag ${tagCls}">${escHtml(a.source)}</span>
-            ${newBadge}${flairPart}${readDot}${scorePart}
+            ${newBadge}${flairPart}${readDot}
             <span class="card-age">${a.age}</span>
           </div>
           <div class="card-title">${escHtml(a.title)}</div>
@@ -917,37 +703,13 @@ function markAllRead() {
   renderArticles(r); showToast(`✓ Marked ${r.length} as read`);
 }
 
-// ── MODE / CAT / SORT ─────────────────────────────────────────────────────────
-function switchMode(m) {
-  if(isFetching) return;
-  mode=m;
-  document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
-  document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
-  document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
-  const cKey=m==='rss'?'9ty5_rss_cache':'9ty5_reddit_cache';
-  const tKey=m==='rss'?'9ty5_rss_cache_ts':'9ty5_reddit_cache_ts';
-  const cached=localStorage.getItem(cKey);
-  if(cached){
-    allArticles=JSON.parse(cached);
-    const ts=localStorage.getItem(tKey);
-    const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
-    setStatus(`Cached ${ago} — tap Refresh to update`);
-    visibleCount=PAGE_SIZE; applyFilter();
-  } else { fetchCurrent(); }
-}
+// ── CATEGORY ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 function switchCat(btn,c) {
   cat=c;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   visibleCount=PAGE_SIZE; applyFilter();
 }
-function setSort(btn,s) {
-  redditSort=s;
-  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  fetchCurrent();
-}
-
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
 function saveCfg() { safeStorageSet('9ty5_cfg',JSON.stringify(cfg)); }
 function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); document.getElementById('settingsPanel').classList.add('open'); }
@@ -975,7 +737,7 @@ function setupAutoRefresh() {
 }
 function clearCache() {
   if(!confirm('Clear all cached articles and saved items?')) return;
-  ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
+  ['9ty5_rss_cache','9ty5_rss_cache_ts',
    '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
   favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
   updateCounts(); document.getElementById('articles').innerHTML='';
@@ -993,14 +755,15 @@ function applySettingsToUI() {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   updateCounts(); applySettingsToUI(); setupAutoRefresh();
-  initCustomSubsUI();
   const cached=localStorage.getItem('9ty5_rss_cache');
   const ts=localStorage.getItem('9ty5_rss_cache_ts');
   if(cached){
     allArticles=JSON.parse(cached);
     const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
-    setStatus(`Cached ${ago} — tap Refresh to update`);
+    setStatus(`Cached ${ago} — updating…`);
     applyFilter();
+    if(!ts||Date.now()-(+ts)>10*60000) fetchCurrent();   // saved posts are old: get new ones
+    else setStatus(`Cached ${ago} — tap Refresh to update`);
   } else { fetchCurrent(); }
 }
 init();
