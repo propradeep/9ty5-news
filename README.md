@@ -28,19 +28,3 @@ Mobile-friendly web app for anime, manga & gaming news.
 4. Switch between RSS and Reddit tabs
 5. Star articles to save them
 6. Copy any article for Instagram/Facebook captioning
-
-## How the data works
-
-News is fetched server-side, not in the browser. A GitHub Actions workflow
-(`.github/workflows/fetch-news.yml`, every 30 minutes) runs `scripts/fetch_news.py`,
-which reads `config/sources.json` and writes `data/news.json`. The page only reads that file.
-
-- **RSS News**: add or remove feeds in `config/sources.json` → `feeds`. For a general feed, add
-  `"filter": "anime|manga"` to keep only matching posts.
-- **⭐ Official**: Bluesky handles under `bluesky` (free native RSS at `bsky.app/profile/<handle>/rss`)
-  and YouTube channels under `youtube` (`channel_id`).
-- **🆕 Releases**: anime episodes that aired in the last 24 hours (AniList public API).
-- **📖 Chapters**: recent manga chapter releases (MangaUpdates public API). It lists official
-  publishers and fan groups; each item names the releasing group and links to a MangaUpdates search.
-- Each source reports `ok / empty / error` in `data/news.json`; the page shows a warning banner listing
-  any problems. If a source fails, its previous posts are kept (marked "cached").

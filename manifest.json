@@ -2,7 +2,7 @@
   "name": "9ty5 News — Anime · Manga · Gaming",
   "short_name": "9ty5 News",
   "description": "Daily anime, manga and gaming news aggregator",
-  "start_url": "./",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0f0f13",
   "theme_color": "#5855d6",
@@ -20,7 +20,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "scope": "./",
-  "id": "./"
+  ]
 }

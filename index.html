@@ -66,16 +66,27 @@ body {
   border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
 }
 .mode-btn.active-rss    { color: var(--accent2); border-color: var(--accent); }
-.mode-btn.active-chapters { color: var(--accent2); border-color: var(--accent2); }
-.mode-btn.active-releases { color: var(--green, #3ecf8e); border-color: var(--green, #3ecf8e); }
-.mode-btn.active-official { color: var(--text, #e8e8f0); border-color: var(--text, #e8e8f0); }
-.health { display:none; margin: 0 12px 6px; padding: 8px 10px; border-radius: 8px; font-size: 12px;
-  background: rgba(255,170,0,.12); border: 1px solid rgba(255,170,0,.4); color: #ffb84d; cursor: pointer; }
-.health.show { display:block; }
-.health.bad { background: rgba(255,80,80,.12); border-color: rgba(255,80,80,.45); color: #ff7a7a; }
-.health ul { margin: 6px 0 0 16px; padding: 0; display:none; }
-.health.open ul { display:block; }
-.health li { margin: 2px 0; word-break: break-word; }
+.mode-btn.active-reddit { color: var(--orange);  border-color: var(--orange); }
+
+/* SORT ROW */
+.reddit-sort {
+  display: none; gap: 6px; padding: 6px 16px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none; align-items: center;
+}
+.reddit-sort.visible { display: flex; }
+.sort-btn {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+  color: var(--dim); font-size: 12px; font-weight: 500; padding: 4px 12px;
+  cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0;
+}
+.sort-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+.myfeed-btn { border-color: rgba(251,191,36,0.4) !important; color: var(--yellow) !important; }
+.myfeed-btn.active { background: var(--yellow) !important; border-color: var(--yellow) !important; color: #000 !important; }
+.myfeed-count {
+  font-size: 10px; background: rgba(251,191,36,0.15); color: var(--yellow);
+  border-radius: 10px; padding: 1px 5px; margin-left: -4px;
+}
 
 /* SEARCH */
 .search-row {
@@ -167,6 +178,7 @@ body {
 .tag-anime  { background: var(--c-anime); }
 .tag-manga  { background: var(--c-manga); }
 .tag-gaming { background: var(--c-gaming); }
+.tag-reddit { background: var(--orange); }
 .new-badge {
   font-size: 9px; font-weight: 700; color: var(--green);
   background: rgba(74,222,128,0.12); padding: 1px 5px; border-radius: 4px;
@@ -179,11 +191,16 @@ body {
 }
 .card-age { font-size: 11px; color: var(--dim); margin-left: auto; flex-shrink: 0; }
 .read-dot  { font-size: 10px; color: #444; flex-shrink: 0; }
+.reddit-score {
+  display: flex; align-items: center; gap: 6px; font-size: 11px;
+  font-weight: 700; color: var(--green); margin-left: auto; flex-shrink: 0;
+}
 .card-title {
   font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
   color: var(--text); line-height: 1.4; margin-bottom: 3px; word-break: break-word;
 }
 .card:hover .card-title { color: var(--accent2); }
+.card.is-reddit:hover .card-title { color: var(--orange); }
 .card-summary {
   font-size: 12px; color: var(--dim); line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -212,6 +229,11 @@ body {
 .empty { padding: 60px 20px; text-align: center; color: var(--dim); }
 .empty .big { font-size: 40px; margin-bottom: 12px; }
 .empty p { font-size: 14px; line-height: 1.8; }
+.empty-action {
+  margin-top: 16px; display: inline-block; background: var(--orange); color: #fff;
+  border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
 
 /* TOAST */
 .toast {
@@ -242,6 +264,7 @@ body {
 .s-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
 .s-section { margin-bottom: 22px; }
 .s-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.s-sublabel { font-size: 12px; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
 .s-opts { display: flex; gap: 8px; flex-wrap: wrap; }
 .s-opt {
   background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
@@ -262,6 +285,33 @@ body {
 }
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); background: #fff; }
+
+/* My Feed subreddit input */
+.subs-card {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-top: 4px;
+}
+.subs-textarea {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
+  min-height: 110px; transition: border-color .15s; line-height: 1.6;
+  margin-top: 8px;
+}
+.subs-textarea:focus { border-color: var(--accent); }
+.subs-textarea::placeholder { color: var(--dim); opacity: 0.6; }
+.subs-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px; flex-wrap: wrap; gap: 8px;
+}
+.subs-count { font-size: 11px; color: var(--green); }
+.subs-hint { font-size: 11px; color: var(--dim); }
+.paste-hint {
+  background: rgba(88,85,214,0.1); border: 1px solid rgba(88,85,214,0.2);
+  border-radius: 8px; padding: 10px 12px; margin-top: 10px;
+  font-size: 12px; color: var(--dim); line-height: 1.6;
+}
+.paste-hint strong { color: var(--accent2); }
 
 .danger-btn {
   width: 100%; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25);
@@ -300,9 +350,6 @@ body {
   .refresh-btn { padding: 8px 10px; font-size: 13px; }
 }
 </style>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -325,9 +372,17 @@ body {
 
 <div class="mode-row">
   <button class="mode-btn active-rss" id="modeRss" onclick="switchMode('rss')">📰 RSS News</button>
-  <button class="mode-btn" id="modeX" onclick="switchMode('official')">⭐ Official</button>
-  <button class="mode-btn" id="modeReleases" onclick="switchMode('releases')">🆕 Releases</button>
-  <button class="mode-btn" id="modeChapters" onclick="switchMode('chapters')">📖 Chapters</button>
+  <button class="mode-btn" id="modeReddit" onclick="switchMode('reddit')">🔥 Reddit</button>
+</div>
+
+<div class="reddit-sort" id="redditSort">
+  <button class="sort-btn active" onclick="setSort(this,'hot')">🔥 Hot</button>
+  <button class="sort-btn" onclick="setSort(this,'top')">⭐ Top</button>
+  <button class="sort-btn" onclick="setSort(this,'new')">🆕 New</button>
+  <button class="sort-btn" onclick="setSort(this,'rising')">📈 Rising</button>
+  <button class="sort-btn myfeed-btn" id="myFeedBtn" onclick="setSort(this,'myfeed')">
+    👤 My Feed <span class="myfeed-count" id="myFeedCount" style="display:none"></span>
+  </button>
 </div>
 
 <div class="search-row">
@@ -363,7 +418,6 @@ body {
   <span class="auto-badge" id="autoBadge" style="display:none"></span>
   <button class="mark-read-btn" onclick="markAllRead()">✓ Mark all read</button>
 </div>
-<div class="health" id="health" onclick="this.classList.toggle('open')"></div>
 
 <div id="articles"></div>
 <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
@@ -412,6 +466,29 @@ body {
     </div>
   </div>
 
+  <!-- My Feed: custom subreddits -->
+  <div class="s-section">
+    <div class="s-label">👤 My Feed — Your Subreddits</div>
+    <div class="subs-card">
+      <div class="s-sublabel">
+        Enter your subreddits one per line (or comma-separated).
+        The <strong style="color:var(--yellow)">👤 My Feed</strong> button in Reddit mode fetches only these.
+      </div>
+      <textarea class="subs-textarea" id="customSubsInput"
+        placeholder="anime&#10;OnePiece&#10;manga&#10;gaming&#10;AskReddit&#10;pics&#10;LOTR&#10;philosophy"
+        oninput="saveCustomSubs()"></textarea>
+      <div class="subs-meta">
+        <span class="subs-count" id="subsCount"></span>
+        <span class="subs-hint">No login needed — uses RSS</span>
+      </div>
+      <div class="paste-hint">
+        💡 <strong>How to find your subreddits:</strong> on Reddit go to
+        <strong>reddit.com/subreddits/mine</strong> — you'll see your full list there.
+        Copy the names and paste them here.
+      </div>
+    </div>
+  </div>
+
   <div class="s-section">
     <div class="s-label">Data</div>
     <button class="danger-btn" onclick="clearCache()">🗑 Clear all cache &amp; saved data</button>
@@ -423,14 +500,112 @@ body {
         onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
+// ── FEED DATA ─────────────────────────────────────────────────────────────────
+const ALL_FEEDS = [
+  // ANIME — each source in exactly one category
+  ['Anime News Network',   'https://www.animenewsnetwork.com/all/rss.xml',               'anime'],
+  ['AnimeCorner',          'https://animecorner.me/feed/',                                'anime'],
+  ['Otaquest',             'https://www.otaquest.com/feed/',                              'anime'],
+  ['Anime Senpai',         'https://www.animesenpai.net/feed/',                           'anime'],
+  ['Anime Trending',       'https://anitrendz.net/news/feed/',                            'anime'],
+  ['Anime UK News',        'https://animeuknews.net/feed/',                               'anime'],
+  ['Otaku USA',            'https://otakuusamagazine.com/anime/feed',                     'anime'],
+  ["Honey's Anime",        'https://honeysanime.com/feed/',                               'anime'],
+  ['The Anime Daily',      'https://theanimedaily.com/feed/',                             'anime'],
+  ['Anime Herald',         'https://animeherald.com/feed/',                               'anime'],
+  ['Otaku News',           'https://otakunews.com/rss/rss.xml',                           'anime'],
+  ['CBR – Anime',          'https://www.cbr.com/feed/category/anime/',                    'anime'],
+  ['Screen Rant – Anime',  'https://screenrant.com/feed/category/anime/',                 'anime'],
+  ['ComicBook – Anime',    'https://comicbook.com/category/anime/feed/',                  'anime'],
+  ['Den of Geek – Anime',  'https://www.denofgeek.com/anime/feed/',                       'anime'],
+  ['Siliconera – Anime',   'https://www.siliconera.com/category/anime/feed/',             'anime'],
+  ['Animation Magazine',   'https://www.animationmagazine.net/feed/',                     'anime'],
+  ['Anime Feminist',       'https://www.animefeminist.com/feed/',                         'anime'],
+  ['The Fandom Post',      'https://www.thefandompost.com/category/anime-news/feed/',     'anime'],
+  ['RandomC',              'https://randomc.net/feed/',                                   'anime'],
+  ['MyAnimeList News',     'https://myanimelist.net/rss/news.xml',                        'anime'],
+  ['Sakuga Blog',          'https://blog.sakugabooru.com/feed/',                          'anime'],
+  ['Nerdist – Anime',      'https://nerdist.com/topic/anime/feed/',                       'anime'],
+  ['9ty5.org',             'https://9ty5.org/feed/',                                      'anime'],
+  // MANGA / COMICS
+  ['CBR – Manga',          'https://www.cbr.com/feed/tag/manga/',                         'manga'],
+  ['CBR – Comics',         'https://www.cbr.com/feed/category/comics/',                   'manga'],
+  ['Screen Rant – Comics', 'https://screenrant.com/feed/category/comics/',                'manga'],
+  ['ComicBook.com',        'https://comicbook.com/comics/feed/',                          'manga'],
+  ['Den of Geek – Comics', 'https://www.denofgeek.com/comics/feed/',                      'manga'],
+  ['Nerdist – Comics',     'https://nerdist.com/topic/comics/feed/',                      'manga'],
+  ['The Comics Beat',      'https://www.comicsbeat.com/feed/',                            'manga'],
+  ['AIPT Comics',          'https://aiptcomics.com/feed/',                                'manga'],
+  ['Multiversity Comics',  'https://www.multiversitycomics.com/feed/',                    'manga'],
+  ['Bleeding Cool',        'https://bleedingcool.com/feed/',                              'manga'],
+  ['VIZ Media',            'https://www.viz.com/blog/category/manga/feed',               'manga'],
+  ['Smash Pages',          'https://smashpages.net/feed/',                                'manga'],
+  ['MangaBookshelf',       'https://mangabookshelf.com/feed/',                            'manga'],
+  ['ICv2',                 'https://icv2.com/rss.xml',                                    'manga'],
+  // GAMING
+  ['IGN',                  'https://feeds.ign.com/ign/game-reviews',                     'gaming'],
+  ['Kotaku',               'https://kotaku.com/rss',                                      'gaming'],
+  ['PC Gamer',             'https://www.pcgamer.com/rss/',                                'gaming'],
+  ['GameSpot',             'https://www.gamespot.com/feeds/mashup/',                      'gaming'],
+  ['Eurogamer',            'https://www.eurogamer.net/feed',                              'gaming'],
+  ['Rock Paper Shotgun',   'https://www.rockpapershotgun.com/feed',                       'gaming'],
+  ['GamesRadar',           'https://www.gamesradar.com/games/feed/',                      'gaming'],
+  ['Destructoid',          'https://www.destructoid.com/feed/',                           'gaming'],
+  ['Polygon',              'https://www.polygon.com/rss/index.xml',                       'gaming'],
+  ['The Verge – Gaming',   'https://www.theverge.com/games/rss/index.xml',               'gaming'],
+  ['Siliconera – Gaming',  'https://www.siliconera.com/category/game/feed/',             'gaming'],
+  ['Nintendo Life',        'https://www.nintendolife.com/feeds/news',                     'gaming'],
+  ['Push Square',          'https://www.pushsquare.com/feeds/news',                       'gaming'],
+  ['Game Rant',            'https://gamerant.com/feed/',                                  'gaming'],
+  ['PlayStation Blog',     'https://blog.us.playstation.com/feed/',                       'gaming'],
+  ['Xbox Wire',            'https://news.xbox.com/en-us/feed/',                           'gaming'],
+  ['PCGamesN',             'https://www.pcgamesn.com/feed',                               'gaming'],
+  ['DualShockers',         'https://www.dualshockers.com/feed/',                          'gaming'],
+  ['VG247',                'https://www.vg247.com/feed/',                                 'gaming'],
+  ['VideoGamesChronicle',  'https://www.videogameschronicle.com/feed/',                   'gaming'],
+  ['Ars Technica Gaming',  'https://arstechnica.com/gaming/feed/',                        'gaming'],
+  ['Niche Gamer',          'https://nichegamer.com/feed/',                                'gaming'],
+  ['Noisy Pixel',          'https://noisypixel.net/feed/',                                'gaming'],
+  ['Twinfinite',           'https://twinfinite.net/feed/',                                'gaming'],
+  ['TouchArcade',          'https://toucharcade.com/feed/',                               'gaming'],
+  ['Hardcore Gamer',       'https://hardcoregamer.com/feed/',                             'gaming'],
+  ['WCCFTech Gaming',      'https://wccftech.com/category/gaming/feed/',                  'gaming'],
+  ['TechRaptor',           'https://techraptor.net/feed',                                 'gaming'],
+  ['Rice Digital',         'https://ricedigital.com/feed/',                               'gaming'],
+];
+
+// Format: [subreddit, category] — used for category-filtered Reddit fetching
+const ALL_SUBS = [
+  ['anime','anime'],['animenews','anime'],['OnePiece','anime'],['JuJutsuKaisen','anime'],
+  ['Bleach','anime'],['Berserk','anime'],['Chainsawman','anime'],['hunterxhunter','anime'],
+  ['Naruto','anime'],['DragonBallSuper','anime'],['AttackOnTitan','anime'],
+  ['DemonSlayer','anime'],['BlueLock','anime'],['Vinland_Saga','anime'],['Gachiakuta','anime'],
+  ['ReZero','anime'],['Overlord','anime'],['sololeveling','anime'],['SpyxFamily','anime'],
+  ['Mushokutensei','anime'],['FairyTail','anime'],['Animesuggest','anime'],
+  ['tokyoghoul','anime'],['OreGairu','anime'],['goodanimemes','anime'],
+  ['manga','manga'],['manhwa','manga'],['manhua','manga'],['comics','manga'],
+  ['Marvel','manga'],['DC_Cinematic','manga'],['comicbooks','manga'],
+  ['WebtoonCanvas','manga'],['lightnovels','manga'],['OnePunchMan','manga'],
+  ['TokyoRevengers','manga'],['Boruto','manga'],['MangaDex','manga'],
+  ['gaming','gaming'],['Games','gaming'],['pcgaming','gaming'],['PS5','gaming'],
+  ['XboxSeriesX','gaming'],['NintendoSwitch','gaming'],['indiegaming','gaming'],
+  ['anime_games','gaming'],['Genshin_Impact','gaming'],['NieRAutomata','gaming'],
+  ['Sekiro','gaming'],['Eldenring','gaming'],['JRPG','gaming'],['AnimeGamers','gaming'],
+  ['Steam','gaming'],['patientgamers','gaming'],['FinalFantasy','gaming'],
+  ['pokemon','gaming'],['fireemblem','gaming'],['leagueoflegends','gaming'],
+  ['Minecraft','gaming'],['gamedev','gaming'],
+];
+
+const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let mode='rss', cat='all';
+let mode='rss', cat='all', redditSort='hot';
 let allArticles=[], filteredPool=[], visibleCount=30;
 const PAGE_SIZE=30;
 let favorites   = JSON.parse(localStorage.getItem('9ty5_favs')||'[]');
 let readLinks   = new Set(JSON.parse(localStorage.getItem('9ty5_read')||'[]'));
 let isFetching  = false, deferredInstall=null, arTimer=null;
-let cfg = { autoRefresh:15, perFeed:8, hideRead:false, showThumbs:true,
+let cfg = { autoRefresh:0, perFeed:8, hideRead:false, showThumbs:true,
             ...JSON.parse(localStorage.getItem('9ty5_cfg')||'{}') };
 
 // ── PWA ───────────────────────────────────────────────────────────────────────
@@ -499,57 +674,132 @@ function setBusy(on) {
   on?pf.classList.add('indeterminate'):pf.classList.remove('indeterminate');
 }
 
-// ── DATA (built server-side by scripts/fetch_news.py → data/news.json) ─────────
-let NEWS=null, lastLoad=0;
-async function loadNews() {
-  const res=await fetch('data/news.json?_='+Date.now(),{cache:'no-store',signal:fetchTimeoutSignal(20000)});
-  if(!res.ok) throw new Error(`data/news.json returned HTTP ${res.status}`);
-  NEWS=await res.json();
-  for(const k of ['rss','official','releases','chapters','sources']) if(!Array.isArray(NEWS[k])) NEWS[k]=[];
-  lastLoad=Date.now();
-  return NEWS;
+// ── MY FEED: custom subreddits ─────────────────────────────────────────────────
+function getCustomSubs() {
+  const raw=localStorage.getItem('9ty5_custom_subs')||'';
+  return raw.split(/[\n,]+/).map(s=>s.trim().replace(/^r\//i,'')).filter(Boolean);
 }
-function limitPerSource(items,n) {
-  const seen={}; return items.filter(a=>(seen[a.source]=(seen[a.source]||0)+1)<=n);
+function saveCustomSubs() {
+  safeStorageSet('9ty5_custom_subs', document.getElementById('customSubsInput').value);
+  updateSubsCount();
+  updateMyFeedBadge();
 }
-function itemsForMode() {
-  if(!NEWS) return [];
-  let list;
-  if(mode==='rss') list=limitPerSource(NEWS.rss||[],cfg.perFeed);
-  else if(mode==='official') list=limitPerSource(NEWS.official||[],cfg.perFeed);
-  else if(mode==='releases') list=NEWS.releases||[];
-  else if(mode==='chapters') list=NEWS.chapters||[];
-  else list=[];
-  return list.map(a=>({...a,age:timeAgo(a.pubDate)+(a.stale?' · cached':'')}));
+function updateSubsCount() {
+  const n=getCustomSubs().length;
+  const el=document.getElementById('subsCount');
+  if(el) el.textContent=n?`${n} subreddits saved`:'';
 }
-function showHealth() {
-  const el=document.getElementById('health'); if(!el||!NEWS) return;
-  const type=mode==='rss'?'rss':mode;
-  const src=(NEWS.sources||[]).filter(s=>s.type===type);
-  const bad=src.filter(s=>s.status!=='ok');
-  if(!bad.length){ el.className='health'; el.innerHTML=''; return; }
-  const allBad=bad.length===src.length;
-  el.className='health show'+(allBad?' bad':'');
-  const lis=bad.slice(0,40).map(s=>`<li><b>${escHtml(s.name)}</b> — ${escHtml(s.status)}${s.error?': '+escHtml(s.error):''}${s.stale?' (showing older posts)':''}</li>`).join('');
-  el.innerHTML=`⚠ ${bad.length} of ${src.length} sources had problems — tap for details<ul>${lis}</ul>`;
+function updateMyFeedBadge() {
+  const n=getCustomSubs().length;
+  const el=document.getElementById('myFeedCount');
+  if(el) { el.textContent=n||''; el.style.display=n?'inline':'none'; }
 }
-function showMode() {
-  allArticles=itemsForMode(); showHealth();
-  const gen=NEWS&&NEWS.generated_at?timeAgo(NEWS.generated_at):'';
-  const label=mode==='rss'?'articles':mode==='chapters'?'chapters':'posts';
-  const ageMin=NEWS&&NEWS.generated_at?(Date.now()-new Date(NEWS.generated_at).getTime())/60000:null;
-  if(ageMin===null) setStatus('No data yet — the first update has not run','err');
-  else if(ageMin>240) setStatus(`⚠ ${allArticles.length} ${label} — data is ${Math.round(ageMin/60)}h old, waiting for the next update`,'err');
-  else setStatus(`✓ ${allArticles.length} ${label}${gen?` — updated ${gen}`:''}`,'ok');
-  visibleCount=PAGE_SIZE; applyFilter();
+function initCustomSubsUI() {
+  const el=document.getElementById('customSubsInput');
+  if(el) el.value=localStorage.getItem('9ty5_custom_subs')||'';
+  updateSubsCount();
+  updateMyFeedBadge();
+}
+
+// ── RSS FETCH ─────────────────────────────────────────────────────────────────
+async function fetchFeed([name,url,feedCat]) {
+  try {
+    const res=await fetch(RSS_PROXY+encodeURIComponent(url),{signal:fetchTimeoutSignal(9000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items?.length) return [];
+    return data.items.slice(0,cfg.perFeed).map(item=>{
+      const thumb=item.thumbnail||(item.enclosure?.link?.match(/\.(jpe?g|png|webp|gif)/i)?item.enclosure.link:null);
+      return {
+        title:cleanTitle(item.title), link:safeUrl(item.link||item.guid||''),
+        summary:cleanSummary(item.description||item.content||''),
+        age:timeAgo(item.pubDate), pubDate:item.pubDate||'',
+        source:name, cat:feedCat, type:'rss', thumb:safeUrl(thumb||'')||null,
+      };
+    });
+  } catch { return []; }
+}
+async function fetchAllRss() {
+  const feeds=ALL_FEEDS.filter(f=>cat==='all'||cat==='fav'||f[2]===cat);
+  const total=feeds.length; let done=0; const results=[]; const BATCH=6;
+  for(let i=0;i<feeds.length;i+=BATCH) {
+    const rows=await Promise.all(feeds.slice(i,i+BATCH).map(fetchFeed));
+    rows.forEach(r=>results.push(...r));
+    done+=Math.min(BATCH,feeds.length-i);
+    setStatus(`Fetching RSS ${done}/${total}…`);
+  }
+  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  allArticles=results;
+  safeStorageSet('9ty5_rss_cache',JSON.stringify(results));
+  safeStorageSet('9ty5_rss_cache_ts',Date.now());
+  return results;
+}
+
+// ── REDDIT FETCH (RSS via rss2json — no API key, no CORS, no login needed) ────
+async function fetchSubRss([sub, subCat]) {
+  try {
+    const sort = redditSort==='myfeed'?'hot':redditSort;
+    const rssUrl=`https://www.reddit.com/r/${sub}/${sort}.rss`;
+    const res=await fetch(RSS_PROXY+encodeURIComponent(rssUrl),{signal:fetchTimeoutSignal(9000)});
+    const data=await res.json();
+    if(data.status!=='ok'||!data.items?.length) return [];
+    return data.items.slice(0,10).map(item=>({
+      // Reddit RSS titles look like "Username: Post title" — strip the prefix
+      title:   cleanTitle(item.title.replace(/^[^:]+:\s*/,'')),
+      link:    safeUrl(item.link||item.guid||''),
+      summary: cleanSummary(item.description||''),
+      age:     timeAgo(item.pubDate), pubDate:item.pubDate||'',
+      source:  `r/${sub}`, sub, cat:subCat, type:'reddit',
+      score:null, comments:null, flair:'', thumb:null,
+    }));
+  } catch { return []; }
+}
+
+async function fetchAllReddit() {
+  let subs;
+  if(redditSort==='myfeed') {
+    const custom=getCustomSubs();
+    if(!custom.length) {
+      showToast('Add your subreddits in Settings → My Feed first',3500);
+      openSettings();
+      return [];
+    }
+    // Map custom names to [sub, cat], categorise against known list where possible
+    subs=custom.map(sub=>{
+      const found=ALL_SUBS.find(s=>s[0].toLowerCase()===sub.toLowerCase());
+      return [sub, found?found[1]:'all'];
+    });
+    setStatus(`Loading My Feed — ${subs.length} subreddits…`);
+  } else {
+    subs=ALL_SUBS.filter(s=>cat==='all'||cat==='fav'||s[1]===cat);
+    setStatus(`Fetching Reddit…`);
+  }
+
+  const total=subs.length; let done=0; const results=[]; const BATCH=4;
+  for(let i=0;i<subs.length;i+=BATCH) {
+    const rows=await Promise.all(subs.slice(i,i+BATCH).map(fetchSubRss));
+    rows.forEach(r=>results.push(...r));
+    done+=Math.min(BATCH,subs.length-i);
+    setStatus(`Fetching Reddit ${done}/${total}…`);
+    if(i+BATCH<subs.length) await new Promise(r=>setTimeout(r,400));
+  }
+  // My Feed: sort by date. Others: sort by date too (no scores in RSS)
+  results.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  allArticles=results;
+  safeStorageSet('9ty5_reddit_cache',JSON.stringify(results));
+  safeStorageSet('9ty5_reddit_cache_ts',Date.now());
+  return results;
 }
 
 // ── MAIN FETCH ────────────────────────────────────────────────────────────────
 async function fetchCurrent() {
   if(isFetching) return;
   setBusy(true);
-  try { await loadNews(); showMode(); }
-  catch(e) { setStatus(`Error: ${escHtml(e.message)}`,'err'); }
+  try {
+    const results=mode==='rss'?await fetchAllRss():await fetchAllReddit();
+    const label=mode==='rss'?'articles':'posts';
+    setStatus(`✓ ${results.length} ${label} — ${new Date().toLocaleTimeString()}`,'ok');
+    visibleCount=PAGE_SIZE; applyFilter();
+  } catch(e) { setStatus(`Error: ${e.message}`,'err'); }
   finally { setBusy(false); }
 }
 
@@ -587,27 +837,30 @@ function updateCounts() {
 function renderArticles(items) {
   const el=document.getElementById('articles');
   if(!items.length) {
+    const noSubs=mode==='reddit'&&redditSort==='myfeed'&&!getCustomSubs().length;
     el.innerHTML=`<div class="empty">
       <div class="big">${cat==='fav'?'⭐':'📭'}</div>
       <p>${cat==='fav'?'No saved articles yet.<br>Tap ☆ on any article to save it.':'No articles found.<br>Tap ⟳ Refresh to load latest news.'}</p>
+      ${noSubs?`<button class="empty-action" onclick="openSettings()">⚙ Add my subreddits</button>`:''}
     </div>`;
     return;
   }
   el.innerHTML=items.map((a,i)=>{
     const isRead=readLinks.has(a.link);
     const isFav=favorites.some(f=>f.link===a.link);
-    const tagCls=a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
+    const tagCls=a.type==='reddit'?'tag-reddit':a.cat==='anime'?'tag-anime':a.cat==='manga'?'tag-manga':'tag-gaming';
     const newBadge=a.type==='rss'&&isRecent(a.pubDate)?`<span class="new-badge">NEW</span>`:'';
     const flairPart=a.flair?`<span class="tag-flair">${escHtml(a.flair)}</span>`:'';
     const readDot=isRead?`<span class="read-dot">✓</span>`:'';
-    const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">`:'';
-    return `<div class="card${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
+    const scorePart=a.score!=null?`<span class="reddit-score">⬆${a.score.toLocaleString()} 💬${(a.comments||0).toLocaleString()}</span>`:'';
+    const thumbPart=cfg.showThumbs&&a.thumb?`<img class="card-thumb" src="${escHtml(a.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
+    return `<div class="card${a.type==='reddit'?' is-reddit':''}${isRead?' is-read':''}" data-idx="${i}" onclick="openCard(${i})">
       <div class="card-inner">
         ${thumbPart}
         <div class="card-body">
           <div class="card-meta">
             <span class="source-tag ${tagCls}">${escHtml(a.source)}</span>
-            ${newBadge}${flairPart}${readDot}
+            ${newBadge}${flairPart}${readDot}${scorePart}
             <span class="card-age">${a.age}</span>
           </div>
           <div class="card-title">${escHtml(a.title)}</div>
@@ -669,16 +922,30 @@ function switchMode(m) {
   if(isFetching) return;
   mode=m;
   document.getElementById('modeRss').className='mode-btn'+(m==='rss'?' active-rss':'');
-  document.getElementById('modeX').className='mode-btn'+(m==='official'?' active-official':'');
-  document.getElementById('modeChapters').className='mode-btn'+(m==='chapters'?' active-chapters':'');
-  document.getElementById('modeReleases').className='mode-btn'+(m==='releases'?' active-releases':'');
-  if(NEWS) showMode(); else fetchCurrent();
+  document.getElementById('modeReddit').className='mode-btn'+(m==='reddit'?' active-reddit':'');
+  document.getElementById('redditSort').classList.toggle('visible',m==='reddit');
+  const cKey=m==='rss'?'9ty5_rss_cache':'9ty5_reddit_cache';
+  const tKey=m==='rss'?'9ty5_rss_cache_ts':'9ty5_reddit_cache_ts';
+  const cached=localStorage.getItem(cKey);
+  if(cached){
+    allArticles=JSON.parse(cached);
+    const ts=localStorage.getItem(tKey);
+    const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
+    setStatus(`Cached ${ago} — tap Refresh to update`);
+    visibleCount=PAGE_SIZE; applyFilter();
+  } else { fetchCurrent(); }
 }
 function switchCat(btn,c) {
   cat=c;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   visibleCount=PAGE_SIZE; applyFilter();
+}
+function setSort(btn,s) {
+  redditSort=s;
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fetchCurrent();
 }
 
 // ── SETTINGS ──────────────────────────────────────────────────────────────────
@@ -708,7 +975,8 @@ function setupAutoRefresh() {
 }
 function clearCache() {
   if(!confirm('Clear all cached articles and saved items?')) return;
-  ['9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
+  ['9ty5_rss_cache','9ty5_rss_cache_ts','9ty5_reddit_cache','9ty5_reddit_cache_ts',
+   '9ty5_favs','9ty5_read'].forEach(k=>localStorage.removeItem(k));
   favorites=[]; readLinks=new Set(); allArticles=[]; filteredPool=[];
   updateCounts(); document.getElementById('articles').innerHTML='';
   closeSettings(); showToast('Cache cleared');
@@ -724,26 +992,21 @@ function applySettingsToUI() {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
-  // drop data saved by older versions of this page (Reddit, My Feed, old article caches)
-  ['9ty5_reddit_cache','9ty5_reddit_cache_ts','9ty5_custom_subs','9ty5_rss_cache','9ty5_rss_cache_ts']
-    .forEach(k=>{ try{ localStorage.removeItem(k); }catch{} });
   updateCounts(); applySettingsToUI(); setupAutoRefresh();
-  fetchCurrent();
-  // pull fresh data when the person comes back to the tab or app
-  document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='visible'&&!isFetching&&Date.now()-lastLoad>10*60000) fetchCurrent();
-  });
+  initCustomSubsUI();
+  const cached=localStorage.getItem('9ty5_rss_cache');
+  const ts=localStorage.getItem('9ty5_rss_cache_ts');
+  if(cached){
+    allArticles=JSON.parse(cached);
+    const ago=ts?timeAgo(new Date(+ts).toISOString()):'';
+    setStatus(`Cached ${ago} — tap Refresh to update`);
+    applyFilter();
+  } else { fetchCurrent(); }
 }
 init();
 </script>
 
-<script>
-if('serviceWorker' in navigator){
-  // when a new service worker takes over, reload once so the page and data are the new version
-  const hadController=!!navigator.serviceWorker.controller; let reloaded=false;
-  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(hadController&&!reloaded){ reloaded=true; location.reload(); } });
-  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
-}
-</script>
+<link rel="manifest" href="manifest.json">
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});</script>
 </body>
 </html>
